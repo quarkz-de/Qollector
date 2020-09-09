@@ -1,0 +1,6 @@
+[submodule "submodules/spring4d"]
+	path = submodules/spring4d
+	url = https://bitbucket.org/sglienke/spring4d.git
+[submodule "submodules/Qodelib"]
+	path = submodules/Qodelib
+	url = https://github.com/quarkz-de/Qodelib.git
