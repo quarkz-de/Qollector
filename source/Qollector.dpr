@@ -8,7 +8,8 @@ uses
   Qollector.Main in 'Qollector.Main.pas' {wMain},
   Qollector.DataModule in 'Qollector.DataModule.pas' {dmCommon: TDataModule},
   Qollector.Bereiche in 'core\Qollector.Bereiche.pas',
-  Qollector.Database in 'core\Qollector.Database.pas';
+  Qollector.Database in 'core\Qollector.Database.pas',
+  Qollector.Notes in 'models\Qollector.Notes.pas';
 
 {$R *.res}
 

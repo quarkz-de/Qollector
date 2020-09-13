@@ -30,7 +30,8 @@ implementation
 uses
   System.IOUtils,
   Spring.Container,
-  SQLiteTable3;
+  SQLiteTable3,
+  Qollector.Notes;
 
 type
   TQollectorDatabase = class(TInterfacedObject, IQollectorDatabase)
@@ -62,7 +63,8 @@ var
 begin
   DBManager := TDatabaseManager.Create(FConnection);
   try
-    DBManager.BuildDatabase;
+    if not DBManager.EntityExists(TNote) then
+      DBManager.BuildDatabase;
   finally
     DBManager.Free;
   end;
@@ -114,8 +116,7 @@ begin
   FConnection.Connect;
   FSession := TSession.Create(FConnection);
 
-  if not FileExists(Filename) then
-    BuildDatabase;
+  BuildDatabase;
 
   Result := FileExists(Filename);
 end;
