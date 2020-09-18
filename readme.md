@@ -1,4 +1,5 @@
-# Qollector
+![alt text](/img/Qollector.png "Qollector Logo")
+
 Ein Manager für Notizen, Links etc.
 
 ## Suchpfad
