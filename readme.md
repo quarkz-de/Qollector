@@ -24,6 +24,10 @@ Ein Manager für Notizen, Links etc.
 * ..\submodules\spring4d\source\Persistence\Mapping
 * ..\submodules\spring4d\source\Persistence\SQL
 * ..\submodules\spring4d\Marshmallow\External\SQLite3
+* ..\submodules\vcl-styles-utils\Common
+* ..\submodules\DDetours\source
+* ..\submodules\delphi-event-bus\source
+* ..\submodules\delphi-event-bus\source\external
 
 ## Links
 * [spring4d](https://bitbucket.org/sglienke/spring4d/) Dependency Injection Framework

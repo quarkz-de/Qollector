@@ -4,3 +4,12 @@
 [submodule "submodules/Qodelib"]
 	path = submodules/Qodelib
 	url = https://github.com/quarkz-de/Qodelib.git
+[submodule "submodules/vcl-styles-utils"]
+	path = submodules/vcl-styles-utils
+	url = https://github.com/RRUZ/vcl-styles-utils.git
+[submodule "submodules/DDetours"]
+	path = submodules/DDetours
+	url = https://github.com/MahdiSafsafi/DDetours.git
+[submodule "submodules/delphi-event-bus"]
+	path = submodules/delphi-event-bus
+	url = https://github.com/spinettaro/delphi-event-bus.git
