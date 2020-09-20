@@ -63,7 +63,7 @@ var
 begin
   DBManager := TDatabaseManager.Create(FConnection);
   try
-    if not DBManager.EntityExists(TNote) then
+    if not DBManager.EntityExists(TNoteItem) then
       DBManager.BuildDatabase;
   finally
     DBManager.Free;

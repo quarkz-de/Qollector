@@ -7,9 +7,16 @@ uses
   Vcl.Styles,
   Qollector.Main in 'Qollector.Main.pas' {wMain},
   Qollector.DataModule in 'Qollector.DataModule.pas' {dmCommon: TDataModule},
-  Qollector.Bereiche in 'core\Qollector.Bereiche.pas',
   Qollector.Database in 'core\Qollector.Database.pas',
-  Qollector.Notes in 'models\Qollector.Notes.pas';
+  Qollector.Notes in 'models\Qollector.Notes.pas',
+  Vcl.Styles.Hooks,
+  Vcl.Styles.UxTheme,
+  Vcl.Styles.Utils.Menus,
+  Vcl.Styles.Utils.Forms,
+  Vcl.Styles.Utils.ComCtrls,
+  Vcl.Styles.Utils.ScreenTips,
+  Qollector.Visualizers in 'views\Qollector.Visualizers.pas',
+  Qollector.Events in 'core\Qollector.Events.pas';
 
 {$R *.res}
 

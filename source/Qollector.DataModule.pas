@@ -19,6 +19,7 @@ type
     FDatabase: IQollectorDatabase;
   public
     property Database: IQollectorDatabase read FDatabase;
+    procedure LoadDatabase(const AFilename: String);
   end;
 
 var
@@ -27,7 +28,9 @@ var
 implementation
 
 uses
-  Spring.Container;
+  Spring.Container,
+  EventBus,
+  Qollector.Events;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -38,13 +41,24 @@ begin
   Database.Close;
 end;
 
-procedure TdmCommon.DataModuleCreate(Sender: TObject);
+procedure TdmCommon.LoadDatabase(const AFilename: String);
 begin
   FDatabase := GlobalContainer.Resolve<IQollectorDatabase>;
-  if (ParamCount > 0) and FileExists(ParamStr(1)) then
-    Database.Load(ParamStr(1))
+  if AFilename = '' then
+    Database.Load
   else
-    Database.Load;
+    Database.Load(AFilename);
+
+  GlobalEventBus.Post(TDatabaseLoadEvent.Create(Database.Filename), '', TEventMM.mmAutomatic);
+end;
+
+procedure TdmCommon.DataModuleCreate(Sender: TObject);
+begin
+exit;
+  if (ParamCount > 0) and FileExists(ParamStr(1)) then
+    LoadDatabase(ParamStr(1))
+  else
+    LoadDatabase('');
 end;
 
 end.

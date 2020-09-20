@@ -9,59 +9,33 @@ object wMain: TwMain
   Constraints.MinWidth = 500
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -13
   Font.Name = 'Segoe UI'
   Font.Style = []
   Menu = mmMenu
   OldCreateOrder = False
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 15
-  object svBereiche: TSplitView
+  TextHeight = 17
+  object spSplitter: TSplitter
+    Left = 221
+    Top = 0
+    Height = 537
+    ExplicitLeft = 664
+    ExplicitTop = 416
+    ExplicitHeight = 100
+  end
+  object stNotebooks: TVirtualStringTree
     Left = 0
     Top = 0
-    Width = 150
+    Width = 221
     Height = 537
-    OpenedWidth = 150
-    Placement = svpLeft
+    Align = alLeft
+    DefaultNodeHeight = 19
+    Header.AutoSizeIndex = 0
+    Header.MainColumn = -1
     TabOrder = 0
-    OnResize = svBereicheResize
-    object catBereiche: TCategoryButtons
-      Left = 0
-      Top = -20
-      Width = 150
-      Height = 177
-      BorderStyle = bsNone
-      ButtonFlow = cbfVertical
-      ButtonHeight = 40
-      ButtonWidth = 100
-      ButtonOptions = [boFullSize, boShowCaptions, boCaptionOnlyBorder]
-      Categories = <
-        item
-          Color = clNone
-          Collapsed = False
-          Items = <
-            item
-              Action = acBereichNotizen
-            end
-            item
-              Action = acBereichFavoriten
-            end
-            item
-              Action = acBereichLesezeichen
-            end>
-        end>
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -12
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      HotButtonColor = 12477460
-      Images = dmCommon.vilLargeIcons
-      RegularButtonColor = clNone
-      SelectedButtonColor = clNone
-      TabOrder = 0
-    end
+    Columns = <>
   end
   object mmMenu: TMainMenu
     Left = 352
@@ -83,24 +57,6 @@ object wMain: TwMain
     Images = dmCommon.vilIcons
     Left = 424
     Top = 36
-    object acBereichNotizen: TAction
-      Category = 'Bereiche'
-      Caption = 'Notizen'
-      ImageIndex = 0
-      ImageName = 'icons8_copybook_96px'
-    end
-    object acBereichFavoriten: TAction
-      Category = 'Bereiche'
-      Caption = 'Favoriten'
-      ImageIndex = 2
-      ImageName = 'icons8_window_favorite_96px'
-    end
-    object acBereichLesezeichen: TAction
-      Category = 'Bereiche'
-      Caption = 'Lesezeichen'
-      ImageIndex = 1
-      ImageName = 'icons8_bookmark_book_96px'
-    end
     object acFileExit: TFileExit
       Category = 'Datei'
       Caption = '&Beenden'
