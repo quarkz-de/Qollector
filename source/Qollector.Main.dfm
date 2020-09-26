@@ -34,7 +34,10 @@ object wMain: TwMain
     DefaultNodeHeight = 19
     Header.AutoSizeIndex = 0
     Header.MainColumn = -1
+    Images = dmCommon.vilIcons
     TabOrder = 0
+    OnFocusChanged = stNotebooksFocusChanged
+    OnFocusChanging = stNotebooksFocusChanging
     Columns = <>
   end
   object mmMenu: TMainMenu
@@ -50,6 +53,15 @@ object wMain: TwMain
       end
       object miFileExit: TMenuItem
         Action = acFileExit
+      end
+    end
+    object miNotes: TMenuItem
+      Caption = '&Notizen'
+      object miNewNotebook: TMenuItem
+        Action = acNewNotebook
+      end
+      object miNewNote: TMenuItem
+        Action = acNewNote
       end
     end
   end
@@ -69,6 +81,18 @@ object wMain: TwMain
       Dialog.Filter = 'Kollektionen (*.qollection)|*.qollection'
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
       ShortCut = 16463
+    end
+    object acNewNotebook: TAction
+      Category = 'Notizen'
+      Caption = 'Neues Notiz&buch'
+      ShortCut = 16450
+      OnExecute = acNewNotebookExecute
+    end
+    object acNewNote: TAction
+      Category = 'Notizen'
+      Caption = '&Neue Notiz'
+      ShortCut = 16462
+      OnExecute = acNewNoteExecute
     end
   end
 end

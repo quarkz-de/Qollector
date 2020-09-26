@@ -23,8 +23,8 @@ type
     FCaption: String;
     FData: String;
 //    FNotebook: TNotebookItem;
-    function GeTNoteItemType: TNoteItemType;
-    procedure SeTNoteItemType(const Value: TNoteItemType);
+    function GetNoteItemType: TNoteItemType;
+    procedure SetNoteItemType(const Value: TNoteItemType);
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -41,7 +41,7 @@ type
     [Column('DATA')]
     property Data: String read FData write FData;
 
-    property NoteType: TNoteItemType read GeTNoteItemType write SeTNoteItemType;
+    property NoteType: TNoteItemType read GetNoteItemType write SetNoteItemType;
 
 //    [ManyToOne(False, [ckCascadeAll], 'NOTEBOOK')]
 //    property Notebook: TNotebookItem read FNotebook write FNotebook;
@@ -150,12 +150,12 @@ begin
   inherited;
 end;
 
-function TNoteItem.GeTNoteItemType: TNoteItemType;
+function TNoteItem.GetNoteItemType: TNoteItemType;
 begin
   Result := TNoteItemTypeConverter.FromInteger(FNoteType);
 end;
 
-procedure TNoteItem.SeTNoteItemType(const Value: TNoteItemType);
+procedure TNoteItem.SetNoteItemType(const Value: TNoteItemType);
 begin
   FNoteType := TNoteItemTypeConverter.ToInteger(Value);
 end;

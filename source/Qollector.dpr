@@ -16,7 +16,9 @@ uses
   Vcl.Styles.Utils.ComCtrls,
   Vcl.Styles.Utils.ScreenTips,
   Qollector.Visualizers in 'views\Qollector.Visualizers.pas',
-  Qollector.Events in 'core\Qollector.Events.pas';
+  Qollector.Events in 'core\Qollector.Events.pas',
+  Qollector.NoteFrame in 'views\Qollector.NoteFrame.pas' {frNoteFrame: TFrame},
+  Qollector.Frames in 'views\Qollector.Frames.pas';
 
 {$R *.res}
 
