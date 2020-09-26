@@ -9,7 +9,7 @@ uses
 type
   TNotebookItem = class;
 
-  TNoteItemType = (tnNote, tnLink, tnBookmark, tnTodo);
+  TNoteItemType = (tnUnknown, tnNote, tnLink, tnBookmark, tnTodo);
 
   [Entity]
   [Table('NOTES')]
@@ -99,6 +99,8 @@ type
 class function TNoteItemTypeConverter.FromInteger(const AValue: Integer): TNoteItemType;
 begin
   case AValue of
+    -1:
+      Result := tnUnknown;
     0:
       Result := tnNote;
     1:
@@ -108,7 +110,7 @@ begin
     3:
       Result := tnTodo;
     else
-      Result := tnNote;
+      Result := tnUnknown;
   end;
 end;
 
@@ -123,8 +125,10 @@ begin
       Result := 2;
     tnTodo:
       Result := 3;
+    tnUnknown:
+      Result := -1
     else
-      Result := 0;
+      Result := -1;
   end;
 end;
 

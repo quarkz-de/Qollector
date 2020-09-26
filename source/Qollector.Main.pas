@@ -10,7 +10,7 @@ uses
   Vcl.StdActns,
   VirtualTrees,
   Eventbus,
-  Qollector.Visualizers, Qollector.Events, Qollector.NoteFrame;
+  Qollector.Visualizers, Qollector.Events, Qollector.Frames;
 
 type
   TwMain = class(TForm)
@@ -38,7 +38,9 @@ type
         PVirtualNode; OldColumn, NewColumn: TColumnIndex; var Allowed: Boolean);
   private
     FTreeVisualizer: INotesTreeVisualizer;
-    FNoteFrame: TfrNoteFrame;
+    FFrames: TQollectorFrameList;
+  protected
+    property Frames: TQollectorFrameList read FFrames;
   public
     [Subscribe(TThreadMode.Main)]
     procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
@@ -67,10 +69,7 @@ end;
 
 procedure TwMain.FormCreate(Sender: TObject);
 begin
-  FNoteFrame := TfrNoteFrame.Create(self);
-  FNoteFrame.Visible := false;
-  FNoteFrame.Parent := self;
-  FNoteFrame.Align := alClient;
+  FFrames := TQollectorFrameList.Create(self);
 
   GlobalEventBus.RegisterSubscriberForEvents(Self);
 
@@ -97,16 +96,15 @@ begin
   case FTreeVisualizer.GetSelectedItemType of
     itNone:
       begin
-        FNoteFrame.Visible := false;
+        Frames.ShowFrame(tnUnknown);
       end;
     itNotebookItem:
       begin
-        FNoteFrame.Visible := false;
+        Frames.ShowFrame(tnUnknown);
       end;
     itNoteItem:
       begin
-        FNoteFrame.Note := FTreeVisualizer.GetSelectedNote;
-        FNoteFrame.Visible := true;
+        Frames.ShowFrame(FTreeVisualizer.GetSelectedNote);
       end;
   end;
 end;
@@ -124,7 +122,7 @@ begin
       end;
     itNoteItem:
       begin
-        FNoteFrame.SaveData;
+        Frames.ActiveFrame.SaveData;
       end;
   end;
 end;

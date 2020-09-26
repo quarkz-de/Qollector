@@ -14,9 +14,5 @@ object frNoteFrame: TfrNoteFrame
     Margins.Bottom = 0
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 12
-    ExplicitWidth = 377
-    ExplicitHeight = 265
   end
 end
