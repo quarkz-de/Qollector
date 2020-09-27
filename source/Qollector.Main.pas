@@ -32,7 +32,11 @@ type
     acDeleteNote: TAction;
     miDeleteNode: TMenuItem;
     N2: TMenuItem;
+    acHelpAbout: TAction;
+    miHelp: TMenuItem;
+    miHelpAbout: TMenuItem;
     procedure acDeleteNoteExecute(Sender: TObject);
+    procedure acHelpAboutExecute(Sender: TObject);
     procedure acNewNotebookExecute(Sender: TObject);
     procedure acNewNoteExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -62,11 +66,16 @@ implementation
 
 uses
   Spring.Container, Spring.Collections,
-  Qollector.DataModule, Qollector.Notes;
+  Qollector.DataModule, Qollector.Notes, Qollector.About;
 
 procedure TwMain.acDeleteNoteExecute(Sender: TObject);
 begin
   FTreeVisualizer.DeleteSelectedItem;
+end;
+
+procedure TwMain.acHelpAboutExecute(Sender: TObject);
+begin
+  wAbout.ShowModal;
 end;
 
 procedure TwMain.acNewNotebookExecute(Sender: TObject);

@@ -70,6 +70,12 @@ object wMain: TwMain
         Action = acDeleteNote
       end
     end
+    object miHelp: TMenuItem
+      Caption = '&Hilfe'
+      object miHelpAbout: TMenuItem
+        Action = acHelpAbout
+      end
+    end
   end
   object alActions: TActionList
     Images = dmCommon.vilIcons
@@ -104,6 +110,11 @@ object wMain: TwMain
       Category = 'Notizen'
       Caption = '&L'#246'schen'
       OnExecute = acDeleteNoteExecute
+    end
+    object acHelpAbout: TAction
+      Category = 'Hilfe'
+      Caption = '&'#220'ber...'
+      OnExecute = acHelpAboutExecute
     end
   end
 end
