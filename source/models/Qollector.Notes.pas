@@ -22,7 +22,7 @@ type
     FNotebookId: Integer;
     FCaption: String;
     FData: String;
-//    FNotebook: TNotebookItem;
+    FNotebook: TNotebookItem;
     function GetNoteItemType: TNoteItemType;
     procedure SetNoteItemType(const Value: TNoteItemType);
   public
@@ -43,8 +43,8 @@ type
 
     property NoteType: TNoteItemType read GetNoteItemType write SetNoteItemType;
 
-//    [ManyToOne(False, [ckCascadeAll], 'NOTEBOOK')]
-//    property Notebook: TNotebookItem read FNotebook write FNotebook;
+    [ManyToOne(False, [ckCascadeAll], 'NotebookId')]
+    property Notebook: TNotebookItem read FNotebook write FNotebook;
 
     function ToString: String; override;
   end;
@@ -144,13 +144,13 @@ end;
 
 destructor TNoteItem.Destroy;
 begin
-//  if Assigned(FNotebook) then
-//    begin
+  if Assigned(FNotebook) then
+    begin
 {$IFDEF AUTOREFCOUNT}
-//      FNotebook.DisposeOf;
+      FNotebook.DisposeOf;
 {$ENDIF}
-//      FNotebook.Free;
-//    end;
+      FNotebook.Free;
+    end;
   inherited;
 end;
 
