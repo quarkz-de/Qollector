@@ -18,6 +18,7 @@ type
     procedure UpdateContent;
     function NewNote: TNoteItem;
     function NewNotebook: TNotebookItem;
+    function DeleteSelectedItem: Boolean;
     function GetSelectedItemType: TNotesTreeItemType;
     function GetSelectedNote: TNoteItem;
     function GetSelectedNotebook: TNotebookItem;
@@ -58,6 +59,7 @@ type
     procedure UpdateContent;
     function NewNote: TNoteItem;
     function NewNotebook: TNotebookItem;
+    function DeleteSelectedItem: Boolean;
     function GetSelectedItemType: TNotesTreeItemType;
     function GetSelectedNote: TNoteItem;
     function GetSelectedNotebook: TNotebookItem;
@@ -74,6 +76,47 @@ type
   PNotesTreeItem = ^TNotesTreeItem;
 
 {$REGION 'TNotesTreeVisualizer'}
+
+function TNotesTreeVisualizer.DeleteSelectedItem: Boolean;
+var
+  Data: PNotesTreeItem;
+  Node, NextNode: PVirtualNode;
+  Database: IQollectorDatabase;
+begin
+  Result := false;
+  Node := FTree.FocusedNode;
+  NextNode := nil;
+  if Node <> nil then
+    begin
+      NextNode := Node.PrevSibling;
+      if NextNode = nil then
+        NextNode := Node.NextSibling;
+      if NextNode = nil then
+        NextNode := Node.Parent;
+
+      Data := FTree.GetNodeData(Node);
+      case Data.ItemType of
+        itNotebookItem:
+          begin
+            Database := GlobalContainer.Resolve<IQollectorDatabase>;
+            Database.GetSession.Delete(Data.Notebook);
+          end;
+        itNoteItem:
+          begin
+            Database := GlobalContainer.Resolve<IQollectorDatabase>;
+            Database.GetSession.Delete(Data.Note);
+          end;
+      end;
+
+      FTree.DeleteNode(Node);
+
+      if NextNode <> nil then
+        begin
+          FTree.FocusedNode := NextNode;
+          FTree.Selected[NextNode] := true;
+        end;
+    end;
+end;
 
 procedure TNotesTreeVisualizer.Edited(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex);

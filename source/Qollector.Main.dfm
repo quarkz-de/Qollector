@@ -63,6 +63,12 @@ object wMain: TwMain
       object miNewNote: TMenuItem
         Action = acNewNote
       end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object miDeleteNode: TMenuItem
+        Action = acDeleteNote
+      end
     end
   end
   object alActions: TActionList
@@ -93,6 +99,11 @@ object wMain: TwMain
       Caption = '&Neue Notiz'
       ShortCut = 16462
       OnExecute = acNewNoteExecute
+    end
+    object acDeleteNote: TAction
+      Category = 'Notizen'
+      Caption = '&L'#246'schen'
+      OnExecute = acDeleteNoteExecute
     end
   end
 end

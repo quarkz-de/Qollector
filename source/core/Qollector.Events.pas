@@ -4,7 +4,7 @@ interface
 
 uses
   EventBus,
-  Qollector.Notes;
+  Qollector.Notes, Qollector.Visualizers;
 
 type
   TDatabaseLoadEvent = class(TObject)
@@ -30,6 +30,14 @@ type
   public
     constructor Create(const ANote: TNoteItem);
     property Note: TNoteItem read FNote write FNote;
+  end;
+
+  TSelectItemEvent = class(TObject)
+  private
+    FItemType: TNotesTreeItemType;
+  public
+    constructor Create(const AItemType: TNotesTreeItemType);
+    property ItemType: TNotesTreeItemType read FItemType write FItemType;
   end;
 
 implementation
@@ -61,6 +69,14 @@ constructor TNoteEditEvent.Create(const ANote: TNoteItem);
 begin
   inherited Create;
   FNote := ANote;
+end;
+
+{ TSelectItemEvent }
+
+constructor TSelectItemEvent.Create(const AItemType: TNotesTreeItemType);
+begin
+  inherited Create;
+  FItemType := AItemType;
 end;
 
 end.

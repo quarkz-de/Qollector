@@ -29,21 +29,28 @@ type
     miNotes: TMenuItem;
     miNewNotebook: TMenuItem;
     miNewNote: TMenuItem;
+    acDeleteNote: TAction;
+    miDeleteNode: TMenuItem;
+    N2: TMenuItem;
+    procedure acDeleteNoteExecute(Sender: TObject);
     procedure acNewNotebookExecute(Sender: TObject);
     procedure acNewNoteExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
-        Column: TColumnIndex);
+      Column: TColumnIndex);
     procedure stNotebooksFocusChanging(Sender: TBaseVirtualTree; OldNode, NewNode:
-        PVirtualNode; OldColumn, NewColumn: TColumnIndex; var Allowed: Boolean);
+      PVirtualNode; OldColumn, NewColumn: TColumnIndex; var Allowed: Boolean);
   private
     FTreeVisualizer: INotesTreeVisualizer;
     FFrames: TQollectorFrameList;
+    procedure UpateActions(const ASelectedItemType: TNotesTreeItemType);
   protected
     property Frames: TQollectorFrameList read FFrames;
   public
     [Subscribe(TThreadMode.Main)]
     procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+    [Subscribe(TThreadMode.Main)]
+    procedure OnSelectItem(AEvent: TSelectItemEvent);
   end;
 
 var
@@ -56,6 +63,11 @@ implementation
 uses
   Spring.Container, Spring.Collections,
   Qollector.DataModule, Qollector.Notes;
+
+procedure TwMain.acDeleteNoteExecute(Sender: TObject);
+begin
+  FTreeVisualizer.DeleteSelectedItem;
+end;
 
 procedure TwMain.acNewNotebookExecute(Sender: TObject);
 begin
@@ -88,25 +100,27 @@ begin
   Notebooks := dmCommon.Database.GetSession.FindAll<TNotebookItem>();
   FTreeVisualizer.SetNotebookItems(Notebooks);
   FTreeVisualizer.UpdateContent;
+
+  UpateActions(itNone);
+end;
+
+procedure TwMain.OnSelectItem(AEvent: TSelectItemEvent);
+begin
+  case AEvent.ItemType of
+    itNone:
+      Frames.ShowFrame(tnUnknown);
+    itNotebookItem:
+      Frames.ShowFrame(tnUnknown);
+    itNoteItem:
+      Frames.ShowFrame(FTreeVisualizer.GetSelectedNote);
+  end;
+  UpateActions(AEvent.ItemType);
 end;
 
 procedure TwMain.stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node:
   PVirtualNode; Column: TColumnIndex);
 begin
-  case FTreeVisualizer.GetSelectedItemType of
-    itNone:
-      begin
-        Frames.ShowFrame(tnUnknown);
-      end;
-    itNotebookItem:
-      begin
-        Frames.ShowFrame(tnUnknown);
-      end;
-    itNoteItem:
-      begin
-        Frames.ShowFrame(FTreeVisualizer.GetSelectedNote);
-      end;
-  end;
+  GlobalEventBus.Post(TSelectItemEvent.Create(FTreeVisualizer.GetSelectedItemType), '', TEventMM.mmAutomatic);
 end;
 
 procedure TwMain.stNotebooksFocusChanging(Sender: TBaseVirtualTree; OldNode,
@@ -125,6 +139,16 @@ begin
         Frames.ActiveFrame.SaveData;
       end;
   end;
+end;
+
+procedure TwMain.UpateActions(const ASelectedItemType: TNotesTreeItemType);
+var
+  IsItemSelected: Boolean;
+begin
+  IsItemSelected := ASelectedItemType in [itNotebookItem, itNoteItem];
+
+  acDeleteNote.Enabled := IsItemSelected;
+  acNewNote.Enabled := IsItemSelected;
 end;
 
 end.
