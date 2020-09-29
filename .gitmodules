@@ -13,3 +13,6 @@
 [submodule "submodules/delphi-event-bus"]
 	path = submodules/delphi-event-bus
 	url = https://github.com/spinettaro/delphi-event-bus.git
+[submodule "submodules/VirtualTreeView"]
+	path = submodules/VirtualTreeView
+	url = https://github.com/TurboPack/VirtualTreeView.git
