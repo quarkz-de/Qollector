@@ -16,3 +16,6 @@
 [submodule "submodules/VirtualTreeView"]
 	path = submodules/VirtualTreeView
 	url = https://github.com/TurboPack/VirtualTreeView.git
+[submodule "submodules/SynEdit"]
+	path = submodules/SynEdit
+	url = https://github.com/TurboPack/SynEdit.git

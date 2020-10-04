@@ -29,6 +29,7 @@ Ein Manager für Notizen, Links etc.
 * ..\submodules\delphi-event-bus\source
 * ..\submodules\delphi-event-bus\source\external
 * ..\submodules\virtualtreeview\source
+* ..\submodules\synedit\source
 
 ## Links
 * [spring4d](https://bitbucket.org/sglienke/spring4d/) Dependency Injection Framework
