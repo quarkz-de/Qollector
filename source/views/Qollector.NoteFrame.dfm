@@ -4,27 +4,81 @@ object frNoteFrame: TfrNoteFrame
   Width = 501
   Height = 362
   TabOrder = 0
-  object edText: TSynEdit
+  object pcNote: TPageControl
     Left = 0
     Top = 0
     Width = 501
     Height = 362
+    ActivePage = tsEdit
     Align = alClient
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Consolas'
-    Font.Pitch = fpFixed
-    Font.Style = []
-    Font.Quality = fqClearTypeNatural
     TabOrder = 0
-    UseCodeFolding = False
-    Gutter.Font.Charset = DEFAULT_CHARSET
-    Gutter.Font.Color = clWindowText
-    Gutter.Font.Height = -11
-    Gutter.Font.Name = 'Consolas'
-    Gutter.Font.Style = []
-    Gutter.ShowLineNumbers = True
-    OnCommandProcessed = edTextCommandProcessed
+    OnChange = pcNoteChange
+    ExplicitLeft = 20
+    ExplicitTop = 116
+    ExplicitWidth = 289
+    ExplicitHeight = 193
+    object tsEdit: TTabSheet
+      Caption = 'Bearbeiten'
+      ExplicitWidth = 281
+      ExplicitHeight = 165
+      object edText: TSynEdit
+        Left = 0
+        Top = 0
+        Width = 493
+        Height = 334
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        Font.Quality = fqClearTypeNatural
+        TabOrder = 0
+        UseCodeFolding = False
+        Gutter.Font.Charset = DEFAULT_CHARSET
+        Gutter.Font.Color = clWindowText
+        Gutter.Font.Height = -11
+        Gutter.Font.Name = 'Consolas'
+        Gutter.Font.Style = []
+        Gutter.ShowLineNumbers = True
+        OnCommandProcessed = edTextCommandProcessed
+        ExplicitLeft = -8
+        ExplicitTop = -28
+        ExplicitWidth = 501
+        ExplicitHeight = 362
+      end
+    end
+    object tsView: TTabSheet
+      Caption = 'Anzeige'
+      ImageIndex = 1
+      ExplicitWidth = 281
+      ExplicitHeight = 165
+      object hvText: THtmlViewer
+        Left = 0
+        Top = 0
+        Width = 493
+        Height = 334
+        BorderStyle = htNone
+        DefFontName = 'Consolas'
+        DefFontSize = 10
+        HistoryMaxCount = 0
+        NoSelect = False
+        PrintMarginBottom = 2.000000000000000000
+        PrintMarginLeft = 2.000000000000000000
+        PrintMarginRight = 2.000000000000000000
+        PrintMarginTop = 2.000000000000000000
+        PrintScale = 1.000000000000000000
+        Text = ''
+        Align = alClient
+        TabOrder = 0
+        Touch.InteractiveGestures = [igPan]
+        Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
+        ExplicitLeft = 172
+        ExplicitTop = 92
+        ExplicitWidth = 150
+        ExplicitHeight = 150
+      end
+    end
   end
 end

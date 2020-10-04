@@ -6,18 +6,26 @@ uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.ComCtrls,
   SynEdit, SynEditTypes, SynEditKeyCmds,
+  HTMLUn2, HtmlView,
   Qollector.Frames, Qollector.Notes;
 
 type
   TFrame = TQollectorFrame;
 
   TfrNoteFrame = class(TFrame)
+    pcNote: TPageControl;
+    tsEdit: TTabSheet;
+    tsView: TTabSheet;
     edText: TSynEdit;
+    hvText: THtmlViewer;
     procedure edTextCommandProcessed(Sender: TObject; var Command:
       TSynEditorCommand; var AChar: Char; Data: Pointer);
+    procedure pcNoteChange(Sender: TObject);
   private
     FNote: TNoteItem;
+    procedure UpdatePreview;
   protected
     procedure SetNote(const AValue: TNoteItem); virtual;
     procedure SaveValues; override;
@@ -34,6 +42,7 @@ implementation
 
 uses
   Spring.Container,
+  MarkdownProcessor,
   Qollector.Database;
 
 { TfrNoteFrame }
@@ -41,6 +50,7 @@ uses
 constructor TfrNoteFrame.Create(Owner: TComponent);
 begin
   inherited;
+  pcNote.ActivePage := tsEdit;
 end;
 
 procedure TfrNoteFrame.edTextCommandProcessed(Sender: TObject; var Command:
@@ -79,6 +89,17 @@ procedure TfrNoteFrame.LoadValues;
 begin
   edText.Lines.Text := Note.Text;
   edText.Modified := false;
+  UpdatePreview;
+end;
+
+procedure TfrNoteFrame.pcNoteChange(Sender: TObject);
+begin
+  if pcNote.ActivePage = tsView then
+    begin
+      if IsModified then
+        SaveValues;
+      UpdatePreview;
+    end;
 end;
 
 procedure TfrNoteFrame.SaveValues;
@@ -96,6 +117,15 @@ procedure TfrNoteFrame.SetNote(const AValue: TNoteItem);
 begin
   FNote := AValue;
   LoadValues;
+end;
+
+procedure TfrNoteFrame.UpdatePreview;
+var
+  Markdown: TMarkdownProcessor;
+begin
+  Markdown := TMarkdownProcessor.CreateDialect(mdDaringFireball);
+  Markdown.UnSafe := true;
+  hvText.LoadFromString(Markdown.Process(edText.Text));
 end;
 
 end.
