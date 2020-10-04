@@ -82,7 +82,7 @@ end;
 
 function TfrNoteFrame.IsModified: Boolean;
 begin
-  Result := edText.Modified or Application.Terminated;
+  Result := edText.Modified;
 end;
 
 procedure TfrNoteFrame.LoadValues;
