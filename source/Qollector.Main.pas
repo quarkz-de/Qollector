@@ -35,6 +35,7 @@ type
     acHelpAbout: TAction;
     miHelp: TMenuItem;
     miHelpAbout: TMenuItem;
+    procedure FormDestroy(Sender: TObject);
     procedure acDeleteNoteExecute(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acNewNotebookExecute(Sender: TObject);
@@ -67,6 +68,11 @@ implementation
 uses
   Spring.Container, Spring.Collections,
   Qollector.DataModule, Qollector.Notes, Qollector.About;
+
+procedure TwMain.FormDestroy(Sender: TObject);
+begin
+  FFrames.Free;
+end;
 
 procedure TwMain.acDeleteNoteExecute(Sender: TObject);
 begin
@@ -117,9 +123,9 @@ procedure TwMain.OnSelectItem(AEvent: TSelectItemEvent);
 begin
   case AEvent.ItemType of
     itNone:
-      Frames.ShowFrame(tnUnknown);
+      Frames.ShowFrame(ftNone);
     itNotebookItem:
-      Frames.ShowFrame(tnUnknown);
+      Frames.ShowFrame(ftNone);
     itNoteItem:
       Frames.ShowFrame(FTreeVisualizer.GetSelectedNote);
   end;

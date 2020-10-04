@@ -27,7 +27,6 @@ begin
   GlobalContainer.Build;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Windows10 BlackPearl');
   Application.Title := 'Qollector';
   Application.CreateForm(TdmCommon, dmCommon);
   Application.CreateForm(TwMain, wMain);

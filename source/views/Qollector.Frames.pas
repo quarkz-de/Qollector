@@ -7,16 +7,14 @@ uses
   Qollector.Notes;
 
 type
+  TQollectorFrameType = (ftNone, ftNote);
+
   TQollectorFrame = class(TFrame)
-  private
-    FNote: TNoteItem;
   protected
-    procedure SetNote(const AValue: TNoteItem); virtual;
-    procedure SaveValues; virtual;
     procedure LoadValues; virtual;
+    procedure SaveValues; virtual;
   public
     destructor Destroy; override;
-    property Note: TNoteItem read FNote write SetNote;
     procedure SaveData; virtual;
     function IsModified: Boolean; virtual;
   end;
@@ -24,13 +22,13 @@ type
   TQollectorFrameList = class(TObject)
   private
     FParent: TWinControl;
-    FFrames: Array[TNoteItemType] of TQollectorFrame;
+    FFrames: Array[TQollectorFrameType] of TQollectorFrame;
     function GetActiveFrame: TQollectorFrame;
     function CreateNoteFrame: TQollectorFrame;
   public
     constructor Create(const AParent: TWinControl);
     destructor Destroy; override;
-    function ShowFrame(const AType: TNoteItemType): TQollectorFrame; overload;
+    function ShowFrame(const AType: TQollectorFrameType): TQollectorFrame; overload;
     function ShowFrame(const ANote: TNoteItem): TQollectorFrame; overload;
     property ActiveFrame: TQollectorFrame read GetActiveFrame;
   end;
@@ -38,8 +36,7 @@ type
 implementation
 
 uses
-  Spring.Container,
-  Qollector.Database, Qollector.NoteFrame;
+  Qollector.NoteFrame;
 
 { TQollectorFrame }
 
@@ -65,24 +62,9 @@ begin
 end;
 
 procedure TQollectorFrame.SaveData;
-var
-  Database: IQollectorDatabase;
 begin
-  if Note = nil then
-    Exit;
-
   if IsModified then
-    begin
-      SaveValues;
-      Database := GlobalContainer.Resolve<IQollectorDatabase>;
-      Database.GetSession.Save(Note);
-    end;
-end;
-
-procedure TQollectorFrame.SetNote(const AValue: TNoteItem);
-begin
-  FNote := AValue;
-  LoadValues;
+    SaveValues;
 end;
 
 { TQollectorFrameList }
@@ -92,11 +74,8 @@ begin
   inherited Create;
   FParent := AParent;
 
-  FFrames[tnUnknown] := nil;
-  FFrames[tnNote] := CreateNoteFrame;
-  FFrames[tnLink] := nil;
-  FFrames[tnBookmark] := nil;
-  FFrames[tnTodo] := nil;
+  FFrames[ftNone] := nil;
+  FFrames[ftNote] := CreateNoteFrame;
 end;
 
 function TQollectorFrameList.CreateNoteFrame: TQollectorFrame;
@@ -128,14 +107,14 @@ begin
       end;
 end;
 
-function TQollectorFrameList.ShowFrame(const AType: TNoteItemType): TQollectorFrame;
+function TQollectorFrameList.ShowFrame(const AType: TQollectorFrameType): TQollectorFrame;
 var
-  I: TNoteItemType;
+  I: TQollectorFrameType;
   Frame: TQollectorFrame;
 begin
   Result := nil;
 
-  for I := Low(TNoteItemType) to High(TNoteItemType) do
+  for I := Low(TQollectorFrameType) to High(TQollectorFrameType) do
     begin
       Frame := FFrames[I];
       if (Frame <> nil) then
@@ -159,12 +138,12 @@ end;
 function TQollectorFrameList.ShowFrame(const ANote: TNoteItem): TQollectorFrame;
 begin
   if ANote = nil then
-    Result := ShowFrame(tnUnknown)
+    Result := ShowFrame(ftNone)
   else
-    Result := ShowFrame(ANote.NoteType);
+    Result := ShowFrame(ftNote);
 
-  if (Result <> nil) then
-    Result.Note := ANote;
+  if (Result <> nil) and (Result is TfrNoteFrame) then
+    TfrNoteFrame(Result).Note := ANote;
 end;
 
 end.

@@ -75,7 +75,7 @@ type
   end;
   PNotesTreeItem = ^TNotesTreeItem;
 
-{$REGION 'TNotesTreeVisualizer'}
+{ TNotesTreeVisualizer }
 
 function TNotesTreeVisualizer.DeleteSelectedItem: Boolean;
 var
@@ -248,9 +248,9 @@ begin
   Data := FTree.GetNodeData(Node);
   case Data.ItemType of
     itNotebookItem:
-      CellText := Data.Notebook.Caption;
+      CellText := Data.Notebook.Name;
     itNoteItem:
-      CellText := Data.Note.Caption;
+      CellText := Data.Note.Name;
   end;
 end;
 
@@ -269,7 +269,7 @@ begin
   ParentData := FTree.GetNodeData(ParentNode);
 
   Result := TNoteItem.Create;
-  Result.Caption := 'unbenannt';
+  Result.Name := 'unbenannt';
   Result.NotebookId := ParentData.Notebook.Id;
 
   Node := FTree.AddChild(ParentNode);
@@ -293,7 +293,7 @@ begin
   FTree.BeginUpdate;
 
   Result := TNotebookItem.Create;
-  Result.Caption := 'unbenannt';
+  Result.Name := 'unbenannt';
 
   Node := FTree.AddChild(nil);
   Data := FTree.GetNodeData(Node);
@@ -320,12 +320,12 @@ begin
   case Data.ItemType of
     itNotebookItem:
       begin
-        Data.Notebook.Caption := NewText;
+        Data.Notebook.Name := NewText;
         Database.GetSession.Save(Data.Notebook);
       end;
     itNoteItem:
       begin
-        Data.Note.Caption := NewText;
+        Data.Note.Name := NewText;
         Database.GetSession.Save(Data.Note);
       end;
   end;
@@ -392,8 +392,6 @@ begin
   FTree.EndUpdate;
   FTree.FullExpand;
 end;
-
-{$ENDREGION}
 
 initialization
   GlobalContainer.RegisterType<TNotesTreeVisualizer>.Implements<INotesTreeVisualizer>;

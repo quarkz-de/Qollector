@@ -15,6 +15,7 @@ object wMain: TwMain
   Menu = mmMenu
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 17
   object spSplitter: TSplitter
@@ -88,9 +89,9 @@ object wMain: TwMain
     end
     object acFileOpen: TFileOpen
       Category = 'Datei'
-      Caption = #214'&ffnen...'
+      Caption = 'Sammlung '#246'&ffnen...'
       Dialog.DefaultExt = 'qollection'
-      Dialog.Filter = 'Kollektionen (*.qollection)|*.qollection'
+      Dialog.Filter = 'Sammlungen (*.qollection)|*.qollection'
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
       ShortCut = 16463
     end

@@ -14,10 +14,10 @@ uses
 type
   IQollectorDatabase = interface
     ['{8DEC4252-2E6E-4641-9246-10BC7A8D24B1}']
-    {$REGION 'Property Accessors'}
+    { Property Accessors }
     function GetSession: TSession;
     function GetFilename: String;
-    {$ENDREGION}
+
     function Load: Boolean; overload;
     function Load(const AFilename: String): Boolean; overload;
     procedure Close;
@@ -55,7 +55,7 @@ type
     property Filename: String read GetFilename;
   end;
 
-{$REGION 'TQollectorDatabase'}
+{ TQollectorDatabase }
 
 procedure TQollectorDatabase.BuildDatabase;
 var
@@ -125,8 +125,6 @@ function TQollectorDatabase.Load: Boolean;
 begin
   Result := Load(TPath.Combine(TPath.GetDocumentsPath, 'Qollector.qollection'));
 end;
-
-{$ENDREGION}
 
 initialization
   GlobalContainer.RegisterType<TQollectorDatabase>.Implements<IQollectorDatabase>.AsSingleton;

@@ -4,15 +4,27 @@ object frNoteFrame: TfrNoteFrame
   Width = 501
   Height = 362
   TabOrder = 0
-  object edText: TMemo
-    AlignWithMargins = True
-    Left = 3
+  object edText: TSynEdit
+    Left = 0
     Top = 0
-    Width = 495
+    Width = 501
     Height = 362
-    Margins.Top = 0
-    Margins.Bottom = 0
     Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Consolas'
+    Font.Pitch = fpFixed
+    Font.Style = []
+    Font.Quality = fqClearTypeNatural
     TabOrder = 0
+    UseCodeFolding = False
+    Gutter.Font.Charset = DEFAULT_CHARSET
+    Gutter.Font.Color = clWindowText
+    Gutter.Font.Height = -11
+    Gutter.Font.Name = 'Consolas'
+    Gutter.Font.Style = []
+    Gutter.ShowLineNumbers = True
+    OnCommandProcessed = edTextCommandProcessed
   end
 end
