@@ -19,3 +19,9 @@
 [submodule "submodules/SynEdit"]
 	path = submodules/SynEdit
 	url = https://github.com/TurboPack/SynEdit.git
+[submodule "submodules/HtmlViewer"]
+	path = submodules/HtmlViewer
+	url = https://github.com/BerndGabriel/HtmlViewer.git
+[submodule "submodules/delphi-markdown"]
+	path = submodules/delphi-markdown
+	url = https://github.com/grahamegrieve/delphi-markdown.git
