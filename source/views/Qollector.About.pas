@@ -9,8 +9,10 @@ uses
 
 type
   TwAbout = class(TForm)
-    Image1: TImage;
+    imLogo: TImage;
     btOk: TButton;
+    imIcon: TImage;
+    Label1: TLabel;
   private
     { Private-Deklarationen }
   public
