@@ -9,18 +9,12 @@ object frNoteFrame: TfrNoteFrame
     Top = 0
     Width = 501
     Height = 362
-    ActivePage = tsEdit
+    ActivePage = tsLinks
     Align = alClient
     TabOrder = 0
     OnChange = pcNoteChange
-    ExplicitLeft = 20
-    ExplicitTop = 116
-    ExplicitWidth = 289
-    ExplicitHeight = 193
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object edText: TSynEdit
         Left = 0
         Top = 0
@@ -42,18 +36,14 @@ object frNoteFrame: TfrNoteFrame
         Gutter.Font.Name = 'Consolas'
         Gutter.Font.Style = []
         Gutter.ShowLineNumbers = True
+        RightEdge = 0
         OnCommandProcessed = edTextCommandProcessed
-        ExplicitLeft = -8
-        ExplicitTop = -28
-        ExplicitWidth = 501
-        ExplicitHeight = 362
+        ExplicitTop = 3
       end
     end
     object tsView: TTabSheet
       Caption = 'Anzeige'
       ImageIndex = 1
-      ExplicitWidth = 281
-      ExplicitHeight = 165
       object hvText: THtmlViewer
         Left = 0
         Top = 0
@@ -62,6 +52,9 @@ object frNoteFrame: TfrNoteFrame
         BorderStyle = htNone
         DefFontName = 'Consolas'
         DefFontSize = 10
+        DefHotSpotColor = clHighlight
+        DefOverLinkColor = clHighlight
+        DefVisitedLinkColor = clHighlight
         HistoryMaxCount = 0
         NoSelect = False
         PrintMarginBottom = 2.000000000000000000
@@ -74,10 +67,36 @@ object frNoteFrame: TfrNoteFrame
         TabOrder = 0
         Touch.InteractiveGestures = [igPan]
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
-        ExplicitLeft = 172
-        ExplicitTop = 92
-        ExplicitWidth = 150
-        ExplicitHeight = 150
+      end
+    end
+    object tsLinks: TTabSheet
+      Caption = 'Lesezeichen'
+      ImageIndex = 2
+      object stLinks: TVirtualStringTree
+        Left = 0
+        Top = 0
+        Width = 493
+        Height = 334
+        Align = alClient
+        BorderStyle = bsNone
+        DefaultNodeHeight = 19
+        Header.AutoSizeIndex = 1
+        Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoShowSortGlyphs, hoVisible]
+        Images = dmCommon.vilIcons
+        TabOrder = 0
+        TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
+        TreeOptions.SelectionOptions = [toFullRowSelect]
+        Columns = <
+          item
+            Position = 0
+            Text = 'Bezeichung'
+            Width = 200
+          end
+          item
+            Position = 1
+            Text = 'Ziel'
+            Width = 293
+          end>
       end
     end
   end

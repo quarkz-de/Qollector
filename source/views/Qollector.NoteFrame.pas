@@ -7,9 +7,10 @@ uses
   System.SysUtils, System.Variants, System.Classes, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls,
+  VirtualTrees,
   SynEdit, SynEditTypes, SynEditKeyCmds,
   HTMLUn2, HtmlView,
-  Qollector.Frames, Qollector.Notes;
+  Qollector.Frames, Qollector.Notes, Qollector.Visualizers;
 
 type
   TFrame = TQollectorFrame;
@@ -20,11 +21,14 @@ type
     tsView: TTabSheet;
     edText: TSynEdit;
     hvText: THtmlViewer;
+    tsLinks: TTabSheet;
+    stLinks: TVirtualStringTree;
     procedure edTextCommandProcessed(Sender: TObject; var Command:
       TSynEditorCommand; var AChar: Char; Data: Pointer);
     procedure pcNoteChange(Sender: TObject);
   private
     FNote: TNoteItem;
+    FVisualizer: ILinkListVisualizer;
     procedure UpdatePreview;
   protected
     procedure SetNote(const AValue: TNoteItem); virtual;
@@ -51,6 +55,8 @@ constructor TfrNoteFrame.Create(Owner: TComponent);
 begin
   inherited;
   pcNote.ActivePage := tsEdit;
+  FVisualizer := GlobalContainer.Resolve<ILinkListVisualizer>;
+  FVisualizer.SetVirtualTree(stLinks);
 end;
 
 procedure TfrNoteFrame.edTextCommandProcessed(Sender: TObject; var Command:
@@ -76,6 +82,7 @@ begin
       begin
         CopyLastLinePrefix('* ');
         CopyLastLinePrefix('- ');
+        CopyLastLinePrefix('> ');
       end;
   end;
 end;
@@ -90,6 +97,8 @@ begin
   edText.Lines.Text := Note.Text;
   edText.Modified := false;
   UpdatePreview;
+  FVisualizer.SetLinkItems(Note.Links);
+  FVisualizer.UpdateContent;
 end;
 
 procedure TfrNoteFrame.pcNoteChange(Sender: TObject);

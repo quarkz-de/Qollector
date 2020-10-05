@@ -27,6 +27,17 @@ type
     function GetNotebook(const Node: PVirtualNode): TNotebookItem;
   end;
 
+  ILinkListVisualizer = interface
+    ['{462B26E1-7A78-405C-813F-7BB3F1E4B99B}']
+    procedure SetVirtualTree(const ATree: TVirtualStringTree);
+    procedure SetLinkItems(const AList: IList<TLinkItem>);
+    procedure UpdateContent;
+    function NewItem: TLinkItem;
+    function DeleteSelectedItem: Boolean;
+    function GetSelectedItem: TLinkItem;
+    function GetItem(const Node: PVirtualNode): TLinkItem;
+  end;
+
 implementation
 
 uses
@@ -74,6 +85,43 @@ type
     Note: TNoteItem;
   end;
   PNotesTreeItem = ^TNotesTreeItem;
+
+  TLinkListVisualizer = class(TInterfacedObject, ILinkListVisualizer)
+  private
+    FTree: TVirtualStringTree;
+    FLinks: IList<TLinkItem>;
+    procedure FreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
+    procedure GetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize:
+      Integer);
+    procedure GetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
+      Column: TColumnIndex; TextType: TVSTTextType; var CellText: string);
+    procedure GetImageIndex(Sender: TBaseVirtualTree; Node:
+      PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex; var Ghosted:
+      Boolean; var ImageIndex: TImageIndex);
+    procedure Edited(Sender: TBaseVirtualTree; Node:
+      PVirtualNode; Column: TColumnIndex);
+    procedure Editing(Sender: TBaseVirtualTree; Node:
+      PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
+    procedure NewText(Sender: TBaseVirtualTree; Node:
+      PVirtualNode; Column: TColumnIndex; NewText: string);
+  public
+    procedure SetVirtualTree(const ATree: TVirtualStringTree);
+    procedure SetLinkItems(const AList: IList<TLinkItem>);
+    procedure UpdateContent;
+    function NewItem: TLinkItem;
+    function DeleteSelectedItem: Boolean;
+    function GetSelectedItem: TLinkItem;
+    function GetItem(const Node: PVirtualNode): TLinkItem;
+  end;
+
+  TLinkListItem = record
+    Item: TLinkItem;
+  end;
+  PLinkListItem = ^TLinkListItem;
+
+const
+  colLinkName = 0;
+  colLinkTarget = 1;
 
 { TNotesTreeVisualizer }
 
@@ -393,6 +441,122 @@ begin
   FTree.FullExpand;
 end;
 
+{ TLinkListVisualizer }
+
+function TLinkListVisualizer.DeleteSelectedItem: Boolean;
+begin
+
+end;
+
+procedure TLinkListVisualizer.Edited(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex);
+begin
+
+end;
+
+procedure TLinkListVisualizer.Editing(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
+begin
+
+end;
+
+procedure TLinkListVisualizer.FreeNode(Sender: TBaseVirtualTree;
+  Node: PVirtualNode);
+var
+  Data: PLinkListItem;
+begin
+  Data := Sender.GetNodeData(Node);
+  Finalize(Data^);
+end;
+
+procedure TLinkListVisualizer.GetImageIndex(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
+  var Ghosted: Boolean; var ImageIndex: TImageIndex);
+begin
+
+end;
+
+function TLinkListVisualizer.GetItem(const Node: PVirtualNode): TLinkItem;
+begin
+
+end;
+
+procedure TLinkListVisualizer.GetNodeDataSize(Sender: TBaseVirtualTree;
+  var NodeDataSize: Integer);
+begin
+  NodeDataSize := SizeOf(TLinkListItem);
+end;
+
+function TLinkListVisualizer.GetSelectedItem: TLinkItem;
+begin
+
+end;
+
+procedure TLinkListVisualizer.GetText(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
+  var CellText: string);
+var
+  Data: PLinkListItem;
+begin
+  Data := Sender.GetNodeData(Node);
+
+  case Column of
+    colLinkName:
+      CellText := Data.Item.Name;
+    colLinkTarget:
+      CellText := Data.Item.Filename;
+  end;
+end;
+
+function TLinkListVisualizer.NewItem: TLinkItem;
+begin
+
+end;
+
+procedure TLinkListVisualizer.NewText(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; NewText: string);
+begin
+
+end;
+
+procedure TLinkListVisualizer.SetLinkItems(const AList: IList<TLinkItem>);
+begin
+  FLinks := AList;
+end;
+
+procedure TLinkListVisualizer.SetVirtualTree(const ATree: TVirtualStringTree);
+begin
+  FTree := ATree;
+  FTree.OnFreeNode := FreeNode;
+  FTree.OnGetNodeDataSize := GetNodeDataSize;
+  FTree.OnGetText := GetText;
+  FTree.OnGetImageIndex := GetImageIndex;
+  FTree.OnEdited := Edited;
+  FTree.OnEditing := Editing;
+  FTree.OnNewText := NewText;
+end;
+
+procedure TLinkListVisualizer.UpdateContent;
+var
+  Item: TLinkItem;
+  Node: PVirtualNode;
+  Data: PLinkListItem;
+begin
+  FTree.Clear;
+
+  FTree.BeginUpdate;
+
+  for Item in FLinks do
+    begin
+      Node := FTree.AddChild(nil);
+      Data := FTree.GetNodeData(Node);
+      Data.Item := Item;
+    end;
+
+  FTree.EndUpdate;
+end;
+
 initialization
   GlobalContainer.RegisterType<TNotesTreeVisualizer>.Implements<INotesTreeVisualizer>;
+  GlobalContainer.RegisterType<TLinkListVisualizer>.Implements<ILinkListVisualizer>;
 end.
