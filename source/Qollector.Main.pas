@@ -40,6 +40,9 @@ type
     odBookmark: TOpenDialog;
     acNewFavorite: TFileOpen;
     miNewFavorite: TMenuItem;
+    acSettings: TAction;
+    miSettings: TMenuItem;
+    N3: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure acDeleteNoteExecute(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
@@ -47,6 +50,7 @@ type
     procedure acNewFavoriteAccept(Sender: TObject);
     procedure acNewNotebookExecute(Sender: TObject);
     procedure acNewNoteExecute(Sender: TObject);
+    procedure acSettingsExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex);
@@ -74,7 +78,8 @@ implementation
 
 uses
   Spring.Container, Spring.Collections,
-  Qollector.DataModule, Qollector.Notes, Qollector.About;
+  Qollector.DataModule, Qollector.Notes, Qollector.About,
+  Qollector.SettingsDialog;
 
 procedure TwMain.FormDestroy(Sender: TObject);
 begin
@@ -88,7 +93,7 @@ end;
 
 procedure TwMain.acHelpAboutExecute(Sender: TObject);
 begin
-  wAbout.ShowModal;
+  TwAbout.ExecuteDialog;
 end;
 
 procedure TwMain.acNewBookmarkExecute(Sender: TObject);
@@ -109,6 +114,11 @@ end;
 procedure TwMain.acNewNoteExecute(Sender: TObject);
 begin
   FTreeVisualizer.NewNote;
+end;
+
+procedure TwMain.acSettingsExecute(Sender: TObject);
+begin
+  TwSettingsDialog.ExecuteDialog;
 end;
 
 procedure TwMain.FormCreate(Sender: TObject);

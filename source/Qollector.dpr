@@ -20,7 +20,8 @@ uses
   Qollector.NoteFrame in 'views\Qollector.NoteFrame.pas' {frNoteFrame: TFrame},
   Qollector.Frames in 'views\Qollector.Frames.pas',
   Qollector.About in 'views\Qollector.About.pas' {wAbout},
-  Qollector.Settings in 'core\Qollector.Settings.pas';
+  Qollector.Settings in 'core\Qollector.Settings.pas',
+  Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog};
 
 {$R *.res}
 
@@ -31,6 +32,5 @@ begin
   Application.Title := 'Qollector';
   Application.CreateForm(TdmCommon, dmCommon);
   Application.CreateForm(TwMain, wMain);
-  Application.CreateForm(TwAbout, wAbout);
   Application.Run;
 end.

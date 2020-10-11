@@ -33,6 +33,7 @@ Ein Manager für Notizen, Links etc.
 * ..\submodules\synedit\source
 * ..\submodules\HtmlViewer\source
 * ..\submodules\delphi-markdown\source
+* ..\submodules\delphi-neon\source
 
 ## Links
 * [spring4d](https://bitbucket.org/sglienke/spring4d/) Dependency Injection Framework

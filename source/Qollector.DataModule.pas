@@ -44,6 +44,7 @@ uses
 procedure TdmCommon.DataModuleDestroy(Sender: TObject);
 begin
   Database.Close;
+  QollectorSettings.SaveSettings;
 end;
 
 procedure TdmCommon.LoadDatabase(const AFilename: String);
@@ -79,7 +80,8 @@ begin
   TStyleManager.Engine.RegisterStyleHook(TCustomSynEdit, TMemoStyleHook);
 
   QuarkzThemeManager.OnChange := ThemeChangeEvent;
-  QuarkzThemeManager.Theme := qttQuarkzDarkBlue;
+  QollectorSettings.LoadSettings;
+//  QuarkzThemeManager.Theme := qttQuarkzDarkBlue;
 
 //  if (ParamCount > 0) and FileExists(ParamStr(1)) then
 //    LoadDatabase(ParamStr(1))

@@ -332,7 +332,5 @@ object wAbout: TwAbout
     Caption = 'Ok'
     ModalResult = 1
     TabOrder = 0
-    ExplicitLeft = 335
-    ExplicitTop = 183
   end
 end

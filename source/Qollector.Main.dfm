@@ -49,6 +49,12 @@ object wMain: TwMain
       object miFileOpen: TMenuItem
         Action = acFileOpen
       end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object miSettings: TMenuItem
+        Action = acSettings
+      end
       object N1: TMenuItem
         Caption = '-'
       end
@@ -141,6 +147,11 @@ object wMain: TwMain
       ImageIndex = 3
       ShortCut = 16454
       OnAccept = acNewFavoriteAccept
+    end
+    object acSettings: TAction
+      Category = 'Datei'
+      Caption = '&Einstellungen...'
+      OnExecute = acSettingsExecute
     end
   end
   object odBookmark: TOpenDialog

@@ -17,6 +17,8 @@ type
     { Private-Deklarationen }
   public
     { Public-Deklarationen }
+    function Execute: Boolean;
+    class function ExecuteDialog: Boolean;
   end;
 
 var
@@ -25,5 +27,24 @@ var
 implementation
 
 {$R *.dfm}
+
+{ TwAbout }
+
+function TwAbout.Execute: Boolean;
+begin
+  Result := ShowModal = mrOk;
+end;
+
+class function TwAbout.ExecuteDialog: Boolean;
+var
+  Dialog: TwAbout;
+begin
+  Dialog := TwAbout.Create(nil);
+  try
+    Result := Dialog.Execute;
+  finally
+    Dialog.Free;
+  end;
+end;
 
 end.
