@@ -6,6 +6,7 @@ Ein Manager für Notizen, Links etc.
 
 * ..\submodules\Qodelib
 * ..\submodules\Qodelib\core
+* ..\submodules\Qodelib\vcl
 * ..\submodules\spring4d\source
 * ..\submodules\spring4d\source\Base
 * ..\submodules\spring4d\source\Base\Collections

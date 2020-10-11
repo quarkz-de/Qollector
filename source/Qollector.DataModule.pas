@@ -3,9 +3,12 @@ unit Qollector.DataModule;
 interface
 
 uses
+  Winapi.Windows,
   System.SysUtils, System.Classes, System.ImageList,
   Vcl.ImgList, Vcl.VirtualImageList, Vcl.BaseImageCollection,
   Vcl.ImageCollection, Vcl.Themes, Vcl.StdCtrls,
+  EventBus,
+  Qodelib.Themes,
   Qollector.Database;
 
 type
@@ -17,12 +20,11 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     FDatabase: IQollectorDatabase;
-    FDarkStyle: Boolean;
     procedure SetDarkStyle(const Value: Boolean);
+    procedure ThemeChangeEvent(Sender: TObject);
   public
     property Database: IQollectorDatabase read FDatabase;
     procedure LoadDatabase(const AFilename: String);
-    property DarkStyle: Boolean read FDarkStyle write SetDarkStyle;
   end;
 
 var
@@ -32,9 +34,8 @@ implementation
 
 uses
   Spring.Container,
-  EventBus,
   SynEdit,
-  Qollector.Events;
+  Qollector.Events, Qollector.Settings;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -58,18 +59,18 @@ end;
 
 procedure TdmCommon.SetDarkStyle(const Value: Boolean);
 begin
-  FDarkStyle := Value;
-
-  if DarkStyle then
-    begin
-      TStyleManager.TrySetStyle('Windows10 BlackPearl');
-      vilIcons.ImageCollection := icLightIcons;
-    end
+  if Value then
+    vilIcons.ImageCollection := icLightIcons
   else
-    begin
-      TStyleManager.TrySetStyle('Windows');
-//      vilIcons.ImageCollection := icDarkIcons;
-    end;
+    vilIcons.ImageCollection := icLightIcons ; //icDarkIcons;
+end;
+
+procedure TdmCommon.ThemeChangeEvent(Sender: TObject);
+begin
+  if QuarkzThemeManager.IsDark then
+    vilIcons.ImageCollection := icLightIcons
+  else
+    vilIcons.ImageCollection := icLightIcons ; //icDarkIcons;
 end;
 
 procedure TdmCommon.DataModuleCreate(Sender: TObject);
@@ -77,13 +78,13 @@ begin
   // Ref: https://theroadtodelphi.com/2011/12/16/exploring-delphi-xe2-vcl-styles-part-ii/
   TStyleManager.Engine.RegisterStyleHook(TCustomSynEdit, TMemoStyleHook);
 
-  DarkStyle := true;
+  QuarkzThemeManager.OnChange := ThemeChangeEvent;
+  QuarkzThemeManager.Theme := qttQuarkzDarkBlue;
 
-exit;
-  if (ParamCount > 0) and FileExists(ParamStr(1)) then
-    LoadDatabase(ParamStr(1))
-  else
-    LoadDatabase('');
+//  if (ParamCount > 0) and FileExists(ParamStr(1)) then
+//    LoadDatabase(ParamStr(1))
+//  else
+//    LoadDatabase('');
 end;
 
 end.
