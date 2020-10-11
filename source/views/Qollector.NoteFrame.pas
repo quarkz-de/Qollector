@@ -3,18 +3,16 @@ unit Qollector.NoteFrame;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages,
+  Winapi.Windows, Winapi.Messages, Winapi.ShellAPI,
   System.SysUtils, System.Variants, System.Classes, System.StrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls,
   VirtualTrees,
   SynEdit, SynEditTypes, SynEditKeyCmds,
   HTMLUn2, HtmlView,
-  Qollector.Frames, Qollector.Notes, Qollector.Visualizers;
+  Qollector.Notes, Qollector.Visualizers;
 
 type
-  TFrame = TQollectorFrame;
-
   TfrNoteFrame = class(TFrame)
     pcNote: TPageControl;
     tsEdit: TTabSheet;
@@ -26,17 +24,20 @@ type
     procedure edTextCommandProcessed(Sender: TObject; var Command:
       TSynEditorCommand; var AChar: Char; Data: Pointer);
     procedure pcNoteChange(Sender: TObject);
+    procedure stLinksDblClick(Sender: TObject);
   private
     FNote: TNoteItem;
     FVisualizer: ILinkListVisualizer;
     procedure UpdatePreview;
   protected
     procedure SetNote(const AValue: TNoteItem); virtual;
-    procedure SaveValues; override;
-    procedure LoadValues; override;
+    procedure SaveValues;
+    procedure LoadValues;
   public
     constructor Create(Owner: TComponent); override;
-    function IsModified: Boolean; override;
+    function IsModified: Boolean;
+    procedure SaveData;
+    procedure NewFavoriteItem(const AFilename: TFilename);
     property Note: TNoteItem read FNote write SetNote;
   end;
 
@@ -101,6 +102,11 @@ begin
   FVisualizer.UpdateContent;
 end;
 
+procedure TfrNoteFrame.NewFavoriteItem(const AFilename: TFilename);
+begin
+  FVisualizer.NewFavoriteItem(Note, AFilename);
+end;
+
 procedure TfrNoteFrame.pcNoteChange(Sender: TObject);
 begin
   if pcNote.ActivePage = tsView then
@@ -109,6 +115,12 @@ begin
         SaveValues;
       UpdatePreview;
     end;
+end;
+
+procedure TfrNoteFrame.SaveData;
+begin
+  if IsModified then
+    SaveValues;
 end;
 
 procedure TfrNoteFrame.SaveValues;
@@ -126,6 +138,15 @@ procedure TfrNoteFrame.SetNote(const AValue: TNoteItem);
 begin
   FNote := AValue;
   LoadValues;
+end;
+
+procedure TfrNoteFrame.stLinksDblClick(Sender: TObject);
+var
+  Item: TLinkItem;
+begin
+  Item := FVisualizer.GetSelectedItem;
+  if Item <> nil then
+    ShellExecute(0, 'open', PChar(Item.Filename), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TfrNoteFrame.UpdatePreview;

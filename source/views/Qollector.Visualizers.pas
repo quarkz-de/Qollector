@@ -32,7 +32,8 @@ type
     procedure SetVirtualTree(const ATree: TVirtualStringTree);
     procedure SetLinkItems(const AList: IList<TLinkItem>);
     procedure UpdateContent;
-    function NewItem: TLinkItem;
+    function NewFavoriteItem(const ANote: TNoteItem;
+      const AFilename: String): TLinkItem;
     function DeleteSelectedItem: Boolean;
     function GetSelectedItem: TLinkItem;
     function GetItem(const Node: PVirtualNode): TLinkItem;
@@ -108,7 +109,8 @@ type
     procedure SetVirtualTree(const ATree: TVirtualStringTree);
     procedure SetLinkItems(const AList: IList<TLinkItem>);
     procedure UpdateContent;
-    function NewItem: TLinkItem;
+    function NewFavoriteItem(const ANote: TNoteItem;
+      const AFilename: String): TLinkItem;
     function DeleteSelectedItem: Boolean;
     function GetSelectedItem: TLinkItem;
     function GetItem(const Node: PVirtualNode): TLinkItem;
@@ -450,14 +452,17 @@ end;
 
 procedure TLinkListVisualizer.Edited(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex);
+var
+  Data: PLinkListItem;
 begin
-
+  Data := FTree.GetNodeData(Node);
+//  GlobalEventBus.Post(TNoteEditEvent.Create(Data.Note), '', TEventMM.mmAutomatic);
 end;
 
 procedure TLinkListVisualizer.Editing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 begin
-
+  Allowed := Column = colLinkName;
 end;
 
 procedure TLinkListVisualizer.FreeNode(Sender: TBaseVirtualTree;
@@ -508,9 +513,34 @@ begin
   end;
 end;
 
-function TLinkListVisualizer.NewItem: TLinkItem;
+function TLinkListVisualizer.NewFavoriteItem(const ANote: TNoteItem;
+  const AFilename: String): TLinkItem;
+var
+  Node: PVirtualNode;
+  Data: PLinkListItem;
+  Database: IQollectorDatabase;
 begin
+  FTree.BeginUpdate;
 
+  Result := TLinkItem.Create;
+  Result.Name := ExtractFilename(AFilename);
+  Result.Filename := AFilename;
+  Result.NoteId := ANote.Id;
+
+  Database := GlobalContainer.Resolve<IQollectorDatabase>;
+  Database.GetSession.Save(Result);
+
+  FLinks.Add(Result);
+
+  Node := FTree.AddChild(nil);
+  Data := FTree.GetNodeData(Node);
+  Data.Item := Result;
+
+  FTree.EndUpdate;
+
+  FTree.FocusedNode := Node;
+  FTree.Selected[Node] := true;
+  FTree.EditNode(Node, 0);
 end;
 
 procedure TLinkListVisualizer.NewText(Sender: TBaseVirtualTree;

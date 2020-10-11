@@ -38,7 +38,6 @@ object frNoteFrame: TfrNoteFrame
         Gutter.ShowLineNumbers = True
         RightEdge = 0
         OnCommandProcessed = edTextCommandProcessed
-        ExplicitTop = 3
       end
     end
     object tsView: TTabSheet
@@ -86,6 +85,7 @@ object frNoteFrame: TfrNoteFrame
         TabOrder = 0
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
         TreeOptions.SelectionOptions = [toFullRowSelect]
+        OnDblClick = stLinksDblClick
         Columns = <
           item
             Position = 0

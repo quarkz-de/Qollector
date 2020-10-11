@@ -35,9 +35,16 @@ type
     acHelpAbout: TAction;
     miHelp: TMenuItem;
     miHelpAbout: TMenuItem;
+    acNewBookmark: TAction;
+    miNewBookmark: TMenuItem;
+    odBookmark: TOpenDialog;
+    acNewFavorite: TFileOpen;
+    miNewFavorite: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure acDeleteNoteExecute(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
+    procedure acNewBookmarkExecute(Sender: TObject);
+    procedure acNewFavoriteAccept(Sender: TObject);
     procedure acNewNotebookExecute(Sender: TObject);
     procedure acNewNoteExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -84,6 +91,16 @@ begin
   wAbout.ShowModal;
 end;
 
+procedure TwMain.acNewBookmarkExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TwMain.acNewFavoriteAccept(Sender: TObject);
+begin
+  Frames.NoteFrame.NewFavoriteItem(acNewFavorite.Dialog.Filename);
+end;
+
 procedure TwMain.acNewNotebookExecute(Sender: TObject);
 begin
   FTreeVisualizer.NewNotebook;
@@ -123,11 +140,14 @@ procedure TwMain.OnSelectItem(AEvent: TSelectItemEvent);
 begin
   case AEvent.ItemType of
     itNone:
-      Frames.ShowFrame(ftNone);
+      Frames.ShowFrame(nil);
     itNotebookItem:
-      Frames.ShowFrame(ftNone);
+      Frames.ShowFrame(nil);
     itNoteItem:
-      Frames.ShowFrame(FTreeVisualizer.GetSelectedNote);
+      begin
+        Frames.ShowFrame(Frames.NoteFrame);
+        Frames.NoteFrame.Note := FTreeVisualizer.GetSelectedNote;
+      end;
   end;
   UpateActions(AEvent.ItemType);
 end;
@@ -151,7 +171,7 @@ begin
       end;
     itNoteItem:
       begin
-        Frames.ActiveFrame.SaveData;
+        Frames.NoteFrame.SaveData;
       end;
   end;
 end;
@@ -164,6 +184,7 @@ begin
 
   acDeleteNote.Enabled := IsItemSelected;
   acNewNote.Enabled := IsItemSelected;
+  acNewBookmark.Enabled := IsItemSelected;
 end;
 
 end.

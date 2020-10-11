@@ -64,6 +64,12 @@ object wMain: TwMain
       object miNewNote: TMenuItem
         Action = acNewNote
       end
+      object miNewBookmark: TMenuItem
+        Action = acNewBookmark
+      end
+      object miNewFavorite: TMenuItem
+        Action = acNewFavorite
+      end
       object N2: TMenuItem
         Caption = '-'
       end
@@ -117,5 +123,32 @@ object wMain: TwMain
       Caption = '&'#220'ber...'
       OnExecute = acHelpAboutExecute
     end
+    object acNewBookmark: TAction
+      Category = 'Notizen'
+      Caption = 'Neues &Lesezeichen'
+      ShortCut = 16460
+      OnExecute = acNewBookmarkExecute
+    end
+    object acNewFavorite: TFileOpen
+      Category = 'Notizen'
+      Caption = 'Neuer &Datei anheften...'
+      Dialog.Filter = 
+        'Alle Dateien (*.*)|*.*|Dokumente (*.pdf;*.odt;*.ods;*.doc;*.docx' +
+        ';*.xls;*.xlsx)|*.pdf;*.odt;*.ods;*.doc;*.docx;*.xls;*.xlsx'
+      Dialog.Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+      Dialog.Title = 'Datei ausw'#228'hlen'
+      Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
+      ImageIndex = 3
+      ShortCut = 16454
+      OnAccept = acNewFavoriteAccept
+    end
+  end
+  object odBookmark: TOpenDialog
+    Filter = 
+      'Alle Dateien (*.*)|*.*|Dokumente (*.pdf;*.odt;*.ods;*.doc;*.docx' +
+      ';*.xls;*.xlsx)|*.pdf;*.odt;*.ods;*.doc;*.docx;*.xls;*.xlsx'
+    Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+    Left = 496
+    Top = 36
   end
 end
