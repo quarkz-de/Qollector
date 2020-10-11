@@ -19,7 +19,8 @@ uses
   Qollector.Events in 'core\Qollector.Events.pas',
   Qollector.NoteFrame in 'views\Qollector.NoteFrame.pas' {frNoteFrame: TFrame},
   Qollector.Frames in 'views\Qollector.Frames.pas',
-  Qollector.About in 'views\Qollector.About.pas' {wAbout};
+  Qollector.About in 'views\Qollector.About.pas' {wAbout},
+  Qollector.Settings in 'core\Qollector.Settings.pas';
 
 {$R *.res}
 
