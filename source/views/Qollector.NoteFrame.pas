@@ -3,8 +3,9 @@ unit Qollector.NoteFrame;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, Winapi.ShellAPI,
+  Winapi.Windows, Winapi.Messages, Winapi.ShellAPI, Winapi.ActiveX,
   System.SysUtils, System.Variants, System.Classes, System.StrUtils,
+  System.Win.ComObj,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls,
   VirtualTrees,
@@ -25,6 +26,13 @@ type
       TSynEditorCommand; var AChar: Char; Data: Pointer);
     procedure pcNoteChange(Sender: TObject);
     procedure stLinksDblClick(Sender: TObject);
+    procedure stLinksDragDrop(Sender: TBaseVirtualTree; Source: TObject;
+      DataObject: IDataObject; Formats: TFormatArray; Shift: TShiftState;
+      Pt: TPoint; var Effect: Integer; Mode: TDropMode);
+    procedure stLinksDragOver(Sender: TBaseVirtualTree; Source: TObject;
+      Shift: TShiftState; State: TDragState; Pt: TPoint; Mode: TDropMode;
+      var Effect: Integer; var Accept: Boolean);
+    procedure stLinksKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FNote: TNoteItem;
     FVisualizer: ILinkListVisualizer;
@@ -147,6 +155,84 @@ begin
   Item := FVisualizer.GetSelectedItem;
   if Item <> nil then
     ShellExecute(0, 'open', PChar(Item.Filename), nil, nil, SW_SHOWNORMAL);
+end;
+
+procedure TfrNoteFrame.stLinksDragDrop(Sender: TBaseVirtualTree;
+  Source: TObject; DataObject: IDataObject; Formats: TFormatArray;
+  Shift: TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
+
+  procedure GetFileListFromObj(const DataObj: IDataObject;
+    FileList: TStringList);
+  var
+    FmtEtc: TFormatEtc;
+    Medium: TStgMedium;
+    DroppedFileCount: Integer;
+    I: Integer;
+    FileNameLength: Integer;
+    FileName: string;
+  begin
+    FmtEtc.cfFormat := CF_HDROP;
+    FmtEtc.ptd := nil;
+    FmtEtc.dwAspect := DVASPECT_CONTENT;
+    FmtEtc.lindex := -1;
+    FmtEtc.tymed := TYMED_HGLOBAL;
+    OleCheck(DataObj.GetData(FmtEtc, Medium));
+    try
+      try
+        DroppedFileCount := DragQueryFile(Medium.hGlobal, $FFFFFFFF, nil, 0);
+        for I := 0 to Pred(DroppedFileCount) do
+          begin
+            FileNameLength := DragQueryFile(Medium.hGlobal, I, nil, 0);
+            SetLength(FileName, FileNameLength);
+            DragQueryFileW(Medium.hGlobal, I, PWideChar(FileName), FileNameLength + 1);
+            FileList.Append(FileName);
+          end;
+      finally
+        DragFinish(Medium.hGlobal);
+      end;
+    finally
+      ReleaseStgMedium(Medium);
+    end;
+  end;
+
+var
+  I, J: Integer;
+  DroppedFiles: TStringList;
+begin
+  DroppedFiles := TStringList.Create;
+  try
+    for I := 0 to High(Formats) - 1 do
+      begin
+        if (Formats[i] = CF_HDROP) then
+          begin
+            GetFileListFromObj(DataObject, DroppedFiles);
+            for J := 0 to DroppedFiles.Count - 1 do
+              FVisualizer.NewFavoriteItem(Note, DroppedFiles[J]);
+          end;
+      end;
+  finally
+    DroppedFiles.Free;
+  end;
+end;
+
+procedure TfrNoteFrame.stLinksDragOver(Sender: TBaseVirtualTree;
+  Source: TObject; Shift: TShiftState; State: TDragState; Pt: TPoint;
+  Mode: TDropMode; var Effect: Integer; var Accept: Boolean);
+begin
+  Accept := true;
+end;
+
+procedure TfrNoteFrame.stLinksKeyDown(Sender: TObject; var Key: Word; Shift:
+    TShiftState);
+begin
+  case Key of
+    VK_DELETE:
+      if Shift = [] then
+        begin
+          FVisualizer.DeleteSelectedItem;
+          Key := 0;
+        end;
+  end;
 end;
 
 procedure TfrNoteFrame.UpdatePreview;

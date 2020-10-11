@@ -446,8 +446,34 @@ end;
 { TLinkListVisualizer }
 
 function TLinkListVisualizer.DeleteSelectedItem: Boolean;
+var
+  Data: PLinkListItem;
+  Node, NextNode: PVirtualNode;
+  Database: IQollectorDatabase;
 begin
+  Result := false;
+  Node := FTree.FocusedNode;
+  NextNode := nil;
+  if Node <> nil then
+    begin
+      NextNode := Node.PrevSibling;
+      if NextNode = nil then
+        NextNode := Node.NextSibling;
+      if NextNode = nil then
+        NextNode := Node.Parent;
 
+      Data := FTree.GetNodeData(Node);
+      Database := GlobalContainer.Resolve<IQollectorDatabase>;
+      Database.GetSession.Delete(Data.Item);
+
+      FTree.DeleteNode(Node);
+
+      if NextNode <> nil then
+        begin
+          FTree.FocusedNode := NextNode;
+          FTree.Selected[NextNode] := true;
+        end;
+    end;
 end;
 
 procedure TLinkListVisualizer.Edited(Sender: TBaseVirtualTree;
@@ -455,8 +481,8 @@ procedure TLinkListVisualizer.Edited(Sender: TBaseVirtualTree;
 var
   Data: PLinkListItem;
 begin
-  Data := FTree.GetNodeData(Node);
-//  GlobalEventBus.Post(TNoteEditEvent.Create(Data.Note), '', TEventMM.mmAutomatic);
+  Data := Sender.GetNodeData(Node);
+//  GlobalEventBus.Post(TLinkItemEditEvent.Create(Data.Item), '', TEventMM.mmAutomatic);
 end;
 
 procedure TLinkListVisualizer.Editing(Sender: TBaseVirtualTree;
@@ -482,8 +508,14 @@ begin
 end;
 
 function TLinkListVisualizer.GetItem(const Node: PVirtualNode): TLinkItem;
+var
+  Data: PLinkListItem;
 begin
-
+  if Assigned(Node) then
+    begin
+      Data := FTree.GetNodeData(Node);
+      Result := Data.Item;
+    end;
 end;
 
 procedure TLinkListVisualizer.GetNodeDataSize(Sender: TBaseVirtualTree;
@@ -494,7 +526,7 @@ end;
 
 function TLinkListVisualizer.GetSelectedItem: TLinkItem;
 begin
-
+  Result := GetItem(FTree.FocusedNode);
 end;
 
 procedure TLinkListVisualizer.GetText(Sender: TBaseVirtualTree;
@@ -545,8 +577,20 @@ end;
 
 procedure TLinkListVisualizer.NewText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; NewText: string);
+var
+  Data: PLinkListItem;
+  Database: IQollectorDatabase;
 begin
+  Database := GlobalContainer.Resolve<IQollectorDatabase>;
+  Data := Sender.GetNodeData(Node);
 
+  case Column of
+    colLinkName:
+      begin
+        Data.Item.Name := NewText;
+        Database.GetSession.Save(Data.Item);
+      end;
+  end;
 end;
 
 procedure TLinkListVisualizer.SetLinkItems(const AList: IList<TLinkItem>);

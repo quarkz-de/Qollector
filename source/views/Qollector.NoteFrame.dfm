@@ -86,6 +86,9 @@ object frNoteFrame: TfrNoteFrame
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
         TreeOptions.SelectionOptions = [toFullRowSelect]
         OnDblClick = stLinksDblClick
+        OnDragOver = stLinksDragOver
+        OnDragDrop = stLinksDragDrop
+        OnKeyDown = stLinksKeyDown
         Columns = <
           item
             Position = 0
