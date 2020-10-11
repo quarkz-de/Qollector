@@ -25,3 +25,6 @@
 [submodule "submodules/delphi-markdown"]
 	path = submodules/delphi-markdown
 	url = https://github.com/grahamegrieve/delphi-markdown.git
+[submodule "submodules/delphi-neon"]
+	path = submodules/delphi-neon
+	url = https://github.com/paolo-rossi/delphi-neon.git
