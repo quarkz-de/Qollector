@@ -3,9 +3,6 @@ unit Qollector.Execute;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.ShellApi,
-  Vcl.Forms,
   Qollector.Notes;
 
 type
@@ -13,11 +10,23 @@ type
   public
     class function Open(const AItem: String): Boolean; overload;
     class function Open(const AItem: TLinkItem): Boolean; overload;
+    class function IsUrl(const AValue: String): Boolean;
   end;
 
 implementation
 
+uses
+  Winapi.Windows,
+  Winapi.ShellApi,
+  Vcl.Forms,
+  System.RegularExpressions;
+
 { TShellExecute }
+
+class function TShellExecute.IsUrl(const AValue: String): Boolean;
+begin
+  Result := TRegEx.IsMatch(AValue, '^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\''\/\\\+&%\$#_]*)?$');
+end;
 
 class function TShellExecute.Open(const AItem: TLinkItem): Boolean;
 begin

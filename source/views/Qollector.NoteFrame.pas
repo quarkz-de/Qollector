@@ -243,6 +243,12 @@ begin
           TShellExecute.Open(FVisualizer.GetSelectedItem);
           Key := 0;
         end;
+    VK_F2:
+      if Shift = [ssShift] then
+        begin
+          stLinks.EditNode(stLinks.FocusedNode, 1);
+          Key := 0;
+        end;
   end;
 end;
 

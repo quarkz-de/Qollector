@@ -7,7 +7,7 @@ uses
   System.SysUtils, System.Variants, System.Classes, System.Actions,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus,
   Vcl.CategoryButtons, Vcl.ExtCtrls, Vcl.WinXCtrls, Vcl.ActnList,
-  Vcl.StdActns,
+  Vcl.StdActns, Vcl.Clipbrd,
   VirtualTrees,
   Eventbus,
   Qollector.Visualizers, Qollector.Events, Qollector.Frames;
@@ -79,7 +79,7 @@ implementation
 uses
   Spring.Container, Spring.Collections,
   Qollector.DataModule, Qollector.Notes, Qollector.About,
-  Qollector.SettingsDialog;
+  Qollector.SettingsDialog, Qollector.Execute;
 
 procedure TwMain.FormDestroy(Sender: TObject);
 begin
@@ -97,8 +97,18 @@ begin
 end;
 
 procedure TwMain.acNewBookmarkExecute(Sender: TObject);
+var
+  Url: String;
 begin
-  //
+  if Clipboard.HasFormat(CF_TEXT) then
+    Url := Clipboard.AsText
+  else
+    Url := '';
+
+  if TShellExecute.IsUrl(Url) then
+    Frames.NoteFrame.NewFavoriteItem(Url)
+  else
+    Frames.NoteFrame.NewFavoriteItem('');
 end;
 
 procedure TwMain.acNewFavoriteAccept(Sender: TObject);
@@ -195,6 +205,7 @@ begin
   acDeleteNote.Enabled := IsItemSelected;
   acNewNote.Enabled := IsItemSelected;
   acNewBookmark.Enabled := IsItemSelected;
+  acNewFavorite.Enabled := IsItemSelected;
 end;
 
 end.

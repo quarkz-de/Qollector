@@ -9,7 +9,7 @@ object frNoteFrame: TfrNoteFrame
     Top = 0
     Width = 501
     Height = 362
-    ActivePage = tsView
+    ActivePage = tsLinks
     Align = alClient
     TabOrder = 0
     OnChange = pcNoteChange
@@ -86,7 +86,6 @@ object frNoteFrame: TfrNoteFrame
         Images = dmCommon.vilIcons
         TabOrder = 0
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
-        TreeOptions.SelectionOptions = [toFullRowSelect]
         OnDblClick = stLinksDblClick
         OnDragOver = stLinksDragOver
         OnDragDrop = stLinksDragDrop

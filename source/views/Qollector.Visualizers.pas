@@ -34,6 +34,8 @@ type
     procedure UpdateContent;
     function NewFavoriteItem(const ANote: TNoteItem;
       const AFilename: String): TLinkItem;
+    function NewBookmarkItem(const ANote: TNoteItem;
+      const AFilename: String): TLinkItem;
     function DeleteSelectedItem: Boolean;
     function GetSelectedItem: TLinkItem;
     function GetItem(const Node: PVirtualNode): TLinkItem;
@@ -105,11 +107,15 @@ type
       PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
     procedure NewText(Sender: TBaseVirtualTree; Node:
       PVirtualNode; Column: TColumnIndex; NewText: string);
+    function NewItem(const ANote: TNoteItem;
+      const AFilename, AName: String): TLinkItem;
   public
     procedure SetVirtualTree(const ATree: TVirtualStringTree);
     procedure SetLinkItems(const AList: IList<TLinkItem>);
     procedure UpdateContent;
     function NewFavoriteItem(const ANote: TNoteItem;
+      const AFilename: String): TLinkItem;
+    function NewBookmarkItem(const ANote: TNoteItem;
       const AFilename: String): TLinkItem;
     function DeleteSelectedItem: Boolean;
     function GetSelectedItem: TLinkItem;
@@ -488,7 +494,7 @@ end;
 procedure TLinkListVisualizer.Editing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 begin
-  Allowed := Column = colLinkName;
+  Allowed := true; //Column = colLinkName;
 end;
 
 procedure TLinkListVisualizer.FreeNode(Sender: TBaseVirtualTree;
@@ -545,8 +551,20 @@ begin
   end;
 end;
 
+function TLinkListVisualizer.NewBookmarkItem(const ANote: TNoteItem;
+  const AFilename: String): TLinkItem;
+begin
+  Result := NewItem(ANote, AFilename, 'Lesezeichen');
+end;
+
 function TLinkListVisualizer.NewFavoriteItem(const ANote: TNoteItem;
   const AFilename: String): TLinkItem;
+begin
+  Result := NewItem(ANote, AFilename, ExtractFilename(AFilename));
+end;
+
+function TLinkListVisualizer.NewItem(const ANote: TNoteItem; const AFilename,
+  AName: String): TLinkItem;
 var
   Node: PVirtualNode;
   Data: PLinkListItem;
@@ -555,7 +573,7 @@ begin
   FTree.BeginUpdate;
 
   Result := TLinkItem.Create;
-  Result.Name := ExtractFilename(AFilename);
+  Result.Name := AName;
   Result.Filename := AFilename;
   Result.NoteId := ANote.Id;
 
@@ -588,6 +606,11 @@ begin
     colLinkName:
       begin
         Data.Item.Name := NewText;
+        Database.GetSession.Save(Data.Item);
+      end;
+    colLinkTarget:
+      begin
+        Data.Item.Filename := NewText;
         Database.GetSession.Save(Data.Item);
       end;
   end;
