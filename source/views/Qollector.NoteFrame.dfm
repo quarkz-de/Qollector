@@ -9,7 +9,7 @@ object frNoteFrame: TfrNoteFrame
     Top = 0
     Width = 501
     Height = 362
-    ActivePage = tsLinks
+    ActivePage = tsView
     Align = alClient
     TabOrder = 0
     OnChange = pcNoteChange
@@ -53,6 +53,7 @@ object frNoteFrame: TfrNoteFrame
         DefFontSize = 10
         DefHotSpotColor = clHighlight
         DefOverLinkColor = clHighlight
+        DefPreFontName = 'Consolas'
         DefVisitedLinkColor = clHighlight
         HistoryMaxCount = 0
         NoSelect = False
@@ -62,6 +63,7 @@ object frNoteFrame: TfrNoteFrame
         PrintMarginTop = 2.000000000000000000
         PrintScale = 1.000000000000000000
         Text = ''
+        OnHotSpotClick = hvTextHotSpotClick
         Align = alClient
         TabOrder = 0
         Touch.InteractiveGestures = [igPan]

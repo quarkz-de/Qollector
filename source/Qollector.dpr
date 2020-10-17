@@ -21,7 +21,8 @@ uses
   Qollector.Frames in 'views\Qollector.Frames.pas',
   Qollector.About in 'views\Qollector.About.pas' {wAbout},
   Qollector.Settings in 'core\Qollector.Settings.pas',
-  Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog};
+  Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog},
+  Qollector.Execute in 'core\Qollector.Execute.pas';
 
 {$R *.res}
 

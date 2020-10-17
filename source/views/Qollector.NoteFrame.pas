@@ -24,6 +24,8 @@ type
     stLinks: TVirtualStringTree;
     procedure edTextCommandProcessed(Sender: TObject; var Command:
       TSynEditorCommand; var AChar: Char; Data: Pointer);
+    procedure hvTextHotSpotClick(Sender: TObject; const SRC: string; var Handled:
+        Boolean);
     procedure pcNoteChange(Sender: TObject);
     procedure stLinksDblClick(Sender: TObject);
     procedure stLinksDragDrop(Sender: TBaseVirtualTree; Source: TObject;
@@ -56,7 +58,8 @@ implementation
 uses
   Spring.Container,
   MarkdownProcessor,
-  Qollector.Database;
+  Qollector.Database,
+  Qollector.Execute;
 
 { TfrNoteFrame }
 
@@ -94,6 +97,12 @@ begin
         CopyLastLinePrefix('> ');
       end;
   end;
+end;
+
+procedure TfrNoteFrame.hvTextHotSpotClick(Sender: TObject; const SRC: string;
+    var Handled: Boolean);
+begin
+  TShellExecute.Open(SRC);
 end;
 
 function TfrNoteFrame.IsModified: Boolean;
@@ -149,12 +158,8 @@ begin
 end;
 
 procedure TfrNoteFrame.stLinksDblClick(Sender: TObject);
-var
-  Item: TLinkItem;
 begin
-  Item := FVisualizer.GetSelectedItem;
-  if Item <> nil then
-    ShellExecute(0, 'open', PChar(Item.Filename), nil, nil, SW_SHOWNORMAL);
+  TShellExecute.Open(FVisualizer.GetSelectedItem);
 end;
 
 procedure TfrNoteFrame.stLinksDragDrop(Sender: TBaseVirtualTree;
@@ -230,6 +235,12 @@ begin
       if Shift = [] then
         begin
           FVisualizer.DeleteSelectedItem;
+          Key := 0;
+        end;
+    VK_RETURN:
+      if Shift = [] then
+        begin
+          TShellExecute.Open(FVisualizer.GetSelectedItem);
           Key := 0;
         end;
   end;
