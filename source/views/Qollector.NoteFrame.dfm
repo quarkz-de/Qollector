@@ -9,7 +9,7 @@ object frNoteFrame: TfrNoteFrame
     Top = 0
     Width = 501
     Height = 362
-    ActivePage = tsLinks
+    ActivePage = tsView
     Align = alClient
     TabOrder = 0
     OnChange = pcNoteChange
@@ -49,7 +49,7 @@ object frNoteFrame: TfrNoteFrame
         Width = 493
         Height = 334
         BorderStyle = htNone
-        DefFontName = 'Consolas'
+        DefFontName = 'Segoe UI'
         DefFontSize = 10
         DefHotSpotColor = clHighlight
         DefOverLinkColor = clHighlight
@@ -103,5 +103,19 @@ object frNoteFrame: TfrNoteFrame
           end>
       end
     end
+  end
+  object Connectors: ThtConnectionManager
+    Left = 328
+    Top = 56
+  end
+  object FileConnector: ThtFileConnector
+    ConnectionManager = Connectors
+    Left = 328
+    Top = 108
+  end
+  object ResourceConnector: ThtResourceConnector
+    ConnectionManager = Connectors
+    Left = 325
+    Top = 156
   end
 end

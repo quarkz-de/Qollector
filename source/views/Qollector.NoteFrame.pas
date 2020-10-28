@@ -10,7 +10,8 @@ uses
   Vcl.ComCtrls,
   VirtualTrees,
   SynEdit, SynEditTypes, SynEditKeyCmds,
-  HTMLUn2, HtmlView,
+  HTMLUn2, HtmlView, UrlConn,
+  Qodelib.Themes,
   Qollector.Notes, Qollector.Visualizers;
 
 type
@@ -22,6 +23,9 @@ type
     hvText: THtmlViewer;
     tsLinks: TTabSheet;
     stLinks: TVirtualStringTree;
+    Connectors: ThtConnectionManager;
+    FileConnector: ThtFileConnector;
+    ResourceConnector: ThtResourceConnector;
     procedure edTextCommandProcessed(Sender: TObject; var Command:
       TSynEditorCommand; var AChar: Char; Data: Pointer);
     procedure hvTextHotSpotClick(Sender: TObject; const SRC: string; var Handled:
@@ -255,10 +259,17 @@ end;
 procedure TfrNoteFrame.UpdatePreview;
 var
   Markdown: TMarkdownProcessor;
+  Html: String;
 begin
-  Markdown := TMarkdownProcessor.CreateDialect(mdDaringFireball);
-  Markdown.UnSafe := true;
-  hvText.LoadFromString(Markdown.Process(edText.Text));
+  Markdown := TMarkdownProcessor.CreateDialect(mdCommonMark);
+  Html := '<html><head>' + #13#10 +
+    '<link rel="StyleSheet" type="text/css" href="res:///' +
+    QuarkzThemeManager.StyleResource + '.css">' + #13#10 +
+    '</head><body>' + #13#10 +
+    Markdown.Process(edText.Text) + #13#10 +
+    '</body></html>';
+  hvText.LoadFromString(Html);
+  Markdown.Free;
 end;
 
 end.
