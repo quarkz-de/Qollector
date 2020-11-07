@@ -22,7 +22,9 @@ uses
   Qollector.About in 'views\Qollector.About.pas' {wAbout},
   Qollector.Settings in 'core\Qollector.Settings.pas',
   Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog},
-  Qollector.Execute in 'core\Qollector.Execute.pas';
+  Qollector.Execute in 'core\Qollector.Execute.pas',
+  Qollector.Migrations in 'models\Qollector.Migrations.pas',
+  Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas';
 
 {$R *.res}
 

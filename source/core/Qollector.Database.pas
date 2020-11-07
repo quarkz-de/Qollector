@@ -31,6 +31,7 @@ uses
   System.IOUtils,
   Spring.Container,
   SQLiteTable3,
+  Qollector.DatabaseMigrator,
   Qollector.Notes;
 
 type
@@ -59,15 +60,10 @@ type
 
 procedure TQollectorDatabase.BuildDatabase;
 var
-  DBManager: TDatabaseManager;
+  Migrator: IDatabaseMigrator;
 begin
-  DBManager := TDatabaseManager.Create(FConnection);
-  try
-    if not DBManager.EntityExists(TNoteItem) then
-      DBManager.BuildDatabase;
-  finally
-    DBManager.Free;
-  end;
+  Migrator :=  GlobalContainer.Resolve<IDatabaseMigrator>;
+  Migrator.Execute(FConnection);
 end;
 
 procedure TQollectorDatabase.Close;
