@@ -15,13 +15,13 @@ type
   TdmCommon = class(TDataModule)
     icLightIcons: TImageCollection;
     vilIcons: TVirtualImageList;
-    vilLargeIcons: TVirtualImageList;
+    icDarkIcons: TImageCollection;
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
   private
     FDatabase: IQollectorDatabase;
-    procedure SetDarkStyle(const Value: Boolean);
     procedure ThemeChangeEvent(Sender: TObject);
+    procedure UpdateIcons;
   public
     property Database: IQollectorDatabase read FDatabase;
     procedure LoadDatabase(const AFilename: String);
@@ -58,20 +58,17 @@ begin
   GlobalEventBus.Post(TDatabaseLoadEvent.Create(Database.Filename), '', TEventMM.mmAutomatic);
 end;
 
-procedure TdmCommon.SetDarkStyle(const Value: Boolean);
+procedure TdmCommon.ThemeChangeEvent(Sender: TObject);
 begin
-  if Value then
-    vilIcons.ImageCollection := icLightIcons
-  else
-    vilIcons.ImageCollection := icLightIcons ; //icDarkIcons;
+  UpdateIcons;
 end;
 
-procedure TdmCommon.ThemeChangeEvent(Sender: TObject);
+procedure TdmCommon.UpdateIcons;
 begin
   if QuarkzThemeManager.IsDark then
     vilIcons.ImageCollection := icLightIcons
   else
-    vilIcons.ImageCollection := icLightIcons ; //icDarkIcons;
+    vilIcons.ImageCollection := icDarkIcons;
 end;
 
 procedure TdmCommon.DataModuleCreate(Sender: TObject);
@@ -81,6 +78,7 @@ begin
 
   QuarkzThemeManager.OnChange := ThemeChangeEvent;
   QollectorSettings.LoadSettings;
+  UpdateIcons;
 //  QuarkzThemeManager.Theme := qttQuarkzDarkBlue;
 
 //  if (ParamCount > 0) and FileExists(ParamStr(1)) then

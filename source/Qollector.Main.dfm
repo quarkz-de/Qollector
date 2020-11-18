@@ -42,6 +42,7 @@ object wMain: TwMain
     Columns = <>
   end
   object mmMenu: TMainMenu
+    Images = dmCommon.vilIcons
     Left = 352
     Top = 36
     object miFile: TMenuItem
@@ -110,12 +111,16 @@ object wMain: TwMain
     object acNewNotebook: TAction
       Category = 'Notizen'
       Caption = 'Neues Notiz&buch'
+      ImageIndex = 0
+      ImageName = 'icons8_copybook_96px'
       ShortCut = 16450
       OnExecute = acNewNotebookExecute
     end
     object acNewNote: TAction
       Category = 'Notizen'
       Caption = '&Neue Notiz'
+      ImageIndex = 1
+      ImageName = 'icons8_bookmark_book_96px'
       ShortCut = 16462
       OnExecute = acNewNoteExecute
     end
@@ -132,12 +137,14 @@ object wMain: TwMain
     object acNewBookmark: TAction
       Category = 'Notizen'
       Caption = 'Neues &Lesezeichen'
+      ImageIndex = 2
+      ImageName = 'icons8_window_favorite_96px'
       ShortCut = 16460
       OnExecute = acNewBookmarkExecute
     end
     object acNewFavorite: TFileOpen
       Category = 'Notizen'
-      Caption = 'Neuer &Datei anheften...'
+      Caption = 'Neue &Datei anheften...'
       Dialog.Filter = 
         'Alle Dateien (*.*)|*.*|Dokumente (*.pdf;*.odt;*.ods;*.doc;*.docx' +
         ';*.xls;*.xlsx)|*.pdf;*.odt;*.ods;*.doc;*.docx;*.xls;*.xlsx'

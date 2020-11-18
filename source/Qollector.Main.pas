@@ -81,11 +81,6 @@ uses
   Qollector.DataModule, Qollector.Notes, Qollector.About,
   Qollector.SettingsDialog, Qollector.Execute;
 
-procedure TwMain.FormDestroy(Sender: TObject);
-begin
-  FFrames.Free;
-end;
-
 procedure TwMain.acDeleteNoteExecute(Sender: TObject);
 begin
   FTreeVisualizer.DeleteSelectedItem;
@@ -141,6 +136,11 @@ begin
   FTreeVisualizer.SetVirtualTree(stNotebooks);
 
   dmCommon.LoadDatabase('');
+end;
+
+procedure TwMain.FormDestroy(Sender: TObject);
+begin
+  FFrames.Free;
 end;
 
 procedure TwMain.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
