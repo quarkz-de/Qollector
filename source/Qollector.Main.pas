@@ -50,6 +50,7 @@ type
     FFrames: TQollectorFrameList;
     procedure UpateActions(const ASelectedItemType: TNotesTreeItemType);
     procedure WMActivate(var Message: TWMActivate); message WM_ACTIVATE;
+    procedure WmSize(var Message: TWMSize); message WM_SIZE;
   protected
     property Frames: TQollectorFrameList read FFrames;
   public
@@ -227,6 +228,20 @@ begin
   inherited;
   if CustomTitleBar.Enabled and Assigned(mbMain) then
     mbMain.Invalidate;
+end;
+
+procedure TwMain.WmSize(var Message: TWMSize);
+begin
+  inherited;
+  if Assigned(mbMain) then
+    begin
+      case Message.SizeType of
+        SIZE_MAXIMIZED:
+          mbMain.Top := 0;
+        SIZE_RESTORED:
+          mbMain.Top := (CustomTitleBar.Height - mbMain.Height) div 2;
+      end;
+    end;
 end;
 
 end.
