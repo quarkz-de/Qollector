@@ -13,9 +13,9 @@ uses
 
 type
   TdmCommon = class(TDataModule)
-    icLightIcons: TImageCollection;
-    vilIcons: TVirtualImageList;
     icDarkIcons: TImageCollection;
+    vilIcons: TVirtualImageList;
+    icLightIcons: TImageCollection;
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
   private

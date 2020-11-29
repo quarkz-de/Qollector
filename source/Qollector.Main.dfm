@@ -112,7 +112,7 @@ object wMain: TwMain
       Category = 'Notizen'
       Caption = 'Neues Notiz&buch'
       ImageIndex = 0
-      ImageName = 'icons8_copybook_96px'
+      ImageName = '000_Notebook'
       ShortCut = 16450
       OnExecute = acNewNotebookExecute
     end
@@ -120,13 +120,15 @@ object wMain: TwMain
       Category = 'Notizen'
       Caption = '&Neue Notiz'
       ImageIndex = 1
-      ImageName = 'icons8_bookmark_book_96px'
+      ImageName = '001_Note'
       ShortCut = 16462
       OnExecute = acNewNoteExecute
     end
     object acDeleteNote: TAction
       Category = 'Notizen'
       Caption = '&L'#246'schen'
+      ImageIndex = 4
+      ImageName = '004_Delete'
       OnExecute = acDeleteNoteExecute
     end
     object acHelpAbout: TAction
@@ -137,8 +139,8 @@ object wMain: TwMain
     object acNewBookmark: TAction
       Category = 'Notizen'
       Caption = 'Neues &Lesezeichen'
-      ImageIndex = 2
-      ImageName = 'icons8_window_favorite_96px'
+      ImageIndex = 3
+      ImageName = '003_Bookmark'
       ShortCut = 16460
       OnExecute = acNewBookmarkExecute
     end
@@ -151,7 +153,7 @@ object wMain: TwMain
       Dialog.Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
       Dialog.Title = 'Datei ausw'#228'hlen'
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
-      ImageIndex = 3
+      ImageIndex = 2
       ShortCut = 16454
       OnAccept = acNewFavoriteAccept
     end
