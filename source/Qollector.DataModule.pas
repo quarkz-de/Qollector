@@ -21,10 +21,12 @@ type
   private
     FDatabase: IQollectorDatabase;
     procedure ThemeChangeEvent(Sender: TObject);
+    procedure ThemeChanged;
     procedure UpdateIcons;
   public
     property Database: IQollectorDatabase read FDatabase;
     procedure LoadDatabase(const AFilename: String);
+    procedure MainFormCreated;
   end;
 
 var
@@ -58,11 +60,21 @@ begin
   GlobalEventBus.Post(TDatabaseLoadEvent.Create(Database.Filename), '', TEventMM.mmAutomatic);
 end;
 
+procedure TdmCommon.MainFormCreated;
+begin
+  ThemeChanged;
+end;
+
+procedure TdmCommon.ThemeChanged;
+begin
+  GlobalEventBus.Post(TThemeChangeEvent.Create(QuarkzThemeManager.ThemeName,
+    QuarkzThemeManager.IsDark), '', TEventMM.mmAutomatic);
+end;
+
 procedure TdmCommon.ThemeChangeEvent(Sender: TObject);
 begin
   UpdateIcons;
-  GlobalEventBus.Post(TThemeChangeEvent.Create(QuarkzThemeManager.ThemeName,
-    QuarkzThemeManager.IsDark), '', TEventMM.mmAutomatic);
+  ThemeChanged;
 end;
 
 procedure TdmCommon.UpdateIcons;
@@ -81,7 +93,7 @@ begin
   QuarkzThemeManager.OnChange := ThemeChangeEvent;
   QollectorSettings.LoadSettings;
   UpdateIcons;
-//  QuarkzThemeManager.Theme := qttQuarkzDarkBlue;
+  ThemeChanged;
 
 //  if (ParamCount > 0) and FileExists(ParamStr(1)) then
 //    LoadDatabase(ParamStr(1))

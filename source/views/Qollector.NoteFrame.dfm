@@ -5,16 +5,23 @@ object frNoteFrame: TfrNoteFrame
   Height = 362
   TabOrder = 0
   object pcNote: TPageControl
-    Left = 0
-    Top = 0
-    Width = 501
-    Height = 362
+    AlignWithMargins = True
+    Left = 3
+    Top = 3
+    Width = 495
+    Height = 356
     ActivePage = tsView
     Align = alClient
+    TabHeight = 30
     TabOrder = 0
+    TabWidth = 80
     OnChange = pcNoteChange
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object edText: TSynEdit
         Left = 0
         Top = 0
@@ -43,11 +50,13 @@ object frNoteFrame: TfrNoteFrame
     object tsView: TTabSheet
       Caption = 'Anzeige'
       ImageIndex = 1
+      ExplicitWidth = 493
+      ExplicitHeight = 322
       object hvText: THtmlViewer
         Left = 0
         Top = 0
-        Width = 493
-        Height = 334
+        Width = 487
+        Height = 316
         BorderStyle = htNone
         DefFontName = 'Segoe UI'
         DefFontSize = 10
@@ -68,11 +77,17 @@ object frNoteFrame: TfrNoteFrame
         TabOrder = 0
         Touch.InteractiveGestures = [igPan]
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
+        ExplicitWidth = 493
+        ExplicitHeight = 322
       end
     end
     object tsLinks: TTabSheet
       Caption = 'Lesezeichen'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object stLinks: TVirtualStringTree
         Left = 0
         Top = 0

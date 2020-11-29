@@ -123,6 +123,7 @@ begin
   FFrames := TQollectorFrameList.Create(self);
 
   GlobalEventBus.RegisterSubscriberForEvents(Self);
+  dmCommon.MainFormCreated;
 
   FTreeVisualizer := GlobalContainer.Resolve<INotesTreeVisualizer>;
   FTreeVisualizer.SetVirtualTree(stNotebooks);
@@ -182,6 +183,7 @@ end;
 procedure TwMain.OnThemeChange(AEvent: TThemeChangeEvent);
 begin
   CustomTitleBar.SystemColors := AEvent.ThemeName = 'Windows';
+  mbMain.Invalidate;
 end;
 
 procedure TwMain.stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node:

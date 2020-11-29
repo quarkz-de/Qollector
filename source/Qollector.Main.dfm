@@ -9,7 +9,6 @@ object wMain: TwMain
   CustomTitleBar.Enabled = True
   CustomTitleBar.Height = 31
   CustomTitleBar.ShowCaption = False
-  CustomTitleBar.SystemColors = False
   CustomTitleBar.BackgroundColor = 14123008
   CustomTitleBar.ForegroundColor = clWhite
   CustomTitleBar.InactiveBackgroundColor = clWhite
@@ -58,7 +57,6 @@ object wMain: TwMain
     TabOrder = 0
     OnFocusChanged = stNotebooksFocusChanged
     OnFocusChanging = stNotebooksFocusChanging
-    ExplicitLeft = 3
     Columns = <>
   end
   object tbpTitleBar: TTitleBarPanel
