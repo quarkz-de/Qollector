@@ -10,39 +10,27 @@ uses
   Vcl.StdActns, Vcl.Clipbrd,
   VirtualTrees,
   Eventbus,
-  Qollector.Visualizers, Qollector.Events, Qollector.Frames;
+  Qollector.Visualizers, Qollector.Events, Qollector.Frames,
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls,
+  Vcl.ActnMenus, Vcl.TitleBarCtrls;
 
 type
   TwMain = class(TForm)
-    mmMenu: TMainMenu;
-    alActions: TActionList;
-    acFileExit: TFileExit;
-    miFile: TMenuItem;
-    miFileExit: TMenuItem;
-    acFileOpen: TFileOpen;
-    N1: TMenuItem;
-    miFileOpen: TMenuItem;
     stNotebooks: TVirtualStringTree;
     spSplitter: TSplitter;
+    odBookmark: TOpenDialog;
+    amActions: TActionManager;
+    acHelpAbout: TAction;
+    acFileExit: TFileExit;
+    acFileOpen: TFileOpen;
+    acSettings: TAction;
     acNewNotebook: TAction;
     acNewNote: TAction;
-    miNotes: TMenuItem;
-    miNewNotebook: TMenuItem;
-    miNewNote: TMenuItem;
     acDeleteNote: TAction;
-    miDeleteNode: TMenuItem;
-    N2: TMenuItem;
-    acHelpAbout: TAction;
-    miHelp: TMenuItem;
-    miHelpAbout: TMenuItem;
     acNewBookmark: TAction;
-    miNewBookmark: TMenuItem;
-    odBookmark: TOpenDialog;
     acNewFavorite: TFileOpen;
-    miNewFavorite: TMenuItem;
-    acSettings: TAction;
-    miSettings: TMenuItem;
-    N3: TMenuItem;
+    tbpTitleBar: TTitleBarPanel;
+    mbMain: TActionMainMenuBar;
     procedure FormDestroy(Sender: TObject);
     procedure acDeleteNoteExecute(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
@@ -52,6 +40,7 @@ type
     procedure acNewNoteExecute(Sender: TObject);
     procedure acSettingsExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure mbMainPaint(Sender: TObject);
     procedure stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex);
     procedure stNotebooksFocusChanging(Sender: TBaseVirtualTree; OldNode, NewNode:
@@ -60,6 +49,7 @@ type
     FTreeVisualizer: INotesTreeVisualizer;
     FFrames: TQollectorFrameList;
     procedure UpateActions(const ASelectedItemType: TNotesTreeItemType);
+    procedure WMActivate(var Message: TWMActivate); message WM_ACTIVATE;
   protected
     property Frames: TQollectorFrameList read FFrames;
   public
@@ -67,6 +57,8 @@ type
     procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
     [Subscribe(TThreadMode.Main)]
     procedure OnSelectItem(AEvent: TSelectItemEvent);
+    [Subscribe(TThreadMode.Main)]
+    procedure OnThemeChange(AEvent: TThemeChangeEvent);
   end;
 
 var
@@ -143,6 +135,21 @@ begin
   FFrames.Free;
 end;
 
+procedure TwMain.mbMainPaint(Sender: TObject);
+var
+  Color: TColor;
+begin
+  if CustomTitleBar.Enabled and not CustomTitleBar.SystemColors then
+    begin
+      if Active then
+        Color := CustomTitleBar.BackgroundColor
+      else
+        Color := CustomTitleBar.InactiveBackgroundColor;
+      mbMain.Canvas.Brush.Color := Color;
+      mbMain.Canvas.FillRect(mbMain.ClientRect);
+    end;
+end;
+
 procedure TwMain.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
 var
   Notebooks: IList<TNotebookItem>;
@@ -170,6 +177,11 @@ begin
       end;
   end;
   UpateActions(AEvent.ItemType);
+end;
+
+procedure TwMain.OnThemeChange(AEvent: TThemeChangeEvent);
+begin
+  CustomTitleBar.SystemColors := AEvent.ThemeName = 'Windows';
 end;
 
 procedure TwMain.stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node:
@@ -206,6 +218,13 @@ begin
   acNewNote.Enabled := IsItemSelected;
   acNewBookmark.Enabled := IsItemSelected;
   acNewFavorite.Enabled := IsItemSelected;
+end;
+
+procedure TwMain.WMActivate(var Message: TWMActivate);
+begin
+  inherited;
+  if CustomTitleBar.Enabled and Assigned(mbMain) then
+    mbMain.Invalidate;
 end;
 
 end.

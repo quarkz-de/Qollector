@@ -40,6 +40,16 @@ type
     property ItemType: TNotesTreeItemType read FItemType write FItemType;
   end;
 
+  TThemeChangeEvent = class(TObject)
+  private
+    FThemeName: String;
+    FIsDark: Boolean;
+  public
+    constructor Create(const AThemeName: String; const AIsDark: Boolean);
+    property ThemeName: String read FThemeName;
+    property IsDark: Boolean read FIsDark;
+  end;
+
 implementation
 
 { TDatabaseLoadEvent }
@@ -77,6 +87,16 @@ constructor TSelectItemEvent.Create(const AItemType: TNotesTreeItemType);
 begin
   inherited Create;
   FItemType := AItemType;
+end;
+
+{ TThemeChangeEvent }
+
+constructor TThemeChangeEvent.Create(const AThemeName: String;
+  const AIsDark: Boolean);
+begin
+  inherited Create;
+  FThemeName := AThemeName;
+  FIsDark := AIsDark;
 end;
 
 end.

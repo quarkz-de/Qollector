@@ -61,6 +61,8 @@ end;
 procedure TdmCommon.ThemeChangeEvent(Sender: TObject);
 begin
   UpdateIcons;
+  GlobalEventBus.Post(TThemeChangeEvent.Create(QuarkzThemeManager.ThemeName,
+    QuarkzThemeManager.IsDark), '', TEventMM.mmAutomatic);
 end;
 
 procedure TdmCommon.UpdateIcons;
