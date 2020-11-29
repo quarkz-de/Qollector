@@ -12,7 +12,8 @@ uses
   Vcl.ActnMenus, Vcl.TitleBarCtrls,
   VirtualTrees,
   Eventbus,
-  Qollector.Visualizers, Qollector.Events, Qollector.Frames;
+  Qollector.Visualizers, Qollector.Events, Qollector.Frames, Vcl.VirtualImage,
+  Vcl.StdCtrls, Vcl.Buttons;
 
 type
   TwMain = class(TForm)
@@ -23,10 +24,19 @@ type
     acSettings: TAction;
     tbpTitleBar: TTitleBarPanel;
     mbMain: TActionMainMenuBar;
+    svSplitView: TSplitView;
+    pnHeader: TPanel;
+    imBurgerButton: TVirtualImage;
+    pnNavigation: TPanel;
+    txHeaderText: TLabel;
+    sbStart: TSpeedButton;
+    sbNotes: TSpeedButton;
+    txVersion: TLabel;
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acSettingsExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure imBurgerButtonClick(Sender: TObject);
     procedure mbMainPaint(Sender: TObject);
   private
     FFrames: TQollectorFrameList;
@@ -76,6 +86,11 @@ begin
   FFrames.Free;
 end;
 
+procedure TwMain.imBurgerButtonClick(Sender: TObject);
+begin
+  svSplitView.Opened := not svSplitView.Opened;
+end;
+
 procedure TwMain.mbMainPaint(Sender: TObject);
 var
   Color: TColor;
@@ -101,6 +116,7 @@ procedure TwMain.OnThemeChange(AEvent: TThemeChangeEvent);
 begin
   CustomTitleBar.SystemColors := AEvent.ThemeName = 'Windows';
   mbMain.Invalidate;
+  imBurgerButton.ImageCollection := dmCommon.GetImageCollection;
 end;
 
 procedure TwMain.WMActivate(var Message: TWMActivate);

@@ -66,6 +66,97 @@ object wMain: TwMain
       OnPaint = mbMainPaint
     end
   end
+  object svSplitView: TSplitView
+    Left = 0
+    Top = 30
+    Width = 200
+    Height = 527
+    CloseStyle = svcCompact
+    OpenedWidth = 200
+    Placement = svpLeft
+    TabOrder = 1
+    ExplicitLeft = 360
+    ExplicitTop = 280
+    ExplicitHeight = 41
+    object pnHeader: TPanel
+      Left = 0
+      Top = 0
+      Width = 200
+      Height = 45
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 0
+      object imBurgerButton: TVirtualImage
+        Left = 8
+        Top = 6
+        Width = 32
+        Height = 32
+        ImageWidth = 0
+        ImageHeight = 0
+        ImageIndex = 6
+        OnClick = imBurgerButtonClick
+      end
+      object txHeaderText: TLabel
+        Left = 52
+        Top = 12
+        Width = 64
+        Height = 21
+        Caption = 'Qollector'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txVersion: TLabel
+        Left = 136
+        Top = 16
+        Width = 17
+        Height = 17
+        Caption = '1.0'
+      end
+    end
+    object pnNavigation: TPanel
+      Left = 0
+      Top = 45
+      Width = 200
+      Height = 482
+      Align = alClient
+      BevelOuter = bvNone
+      TabOrder = 1
+      ExplicitTop = 44
+      object sbStart: TSpeedButton
+        Left = 0
+        Top = 0
+        Width = 200
+        Height = 38
+        Align = alTop
+        GroupIndex = 1
+        Caption = 'Startseite'
+        ImageIndex = 7
+        ImageName = '007_Home'
+        Images = dmCommon.vilLargeIcons
+        Margin = 14
+        ExplicitTop = -6
+      end
+      object sbNotes: TSpeedButton
+        Left = 0
+        Top = 38
+        Width = 200
+        Height = 38
+        Align = alTop
+        GroupIndex = 1
+        Down = True
+        Caption = 'Notizen'
+        ImageIndex = 0
+        ImageName = '000_Notebook'
+        Images = dmCommon.vilLargeIcons
+        Margin = 14
+        ExplicitTop = 4
+      end
+    end
+  end
   object amActions: TActionManager
     ActionBars = <
       item

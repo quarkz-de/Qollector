@@ -16,6 +16,7 @@ type
     icDarkIcons: TImageCollection;
     vilIcons: TVirtualImageList;
     icLightIcons: TImageCollection;
+    vilLargeIcons: TVirtualImageList;
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
   private
@@ -27,6 +28,7 @@ type
     property Database: IQollectorDatabase read FDatabase;
     procedure LoadDatabase(const AFilename: String);
     procedure MainFormCreated;
+    function GetImageCollection: TImageCollection;
   end;
 
 var
@@ -47,6 +49,14 @@ procedure TdmCommon.DataModuleDestroy(Sender: TObject);
 begin
   Database.Close;
   QollectorSettings.SaveSettings;
+end;
+
+function TdmCommon.GetImageCollection: TImageCollection;
+begin
+  if QuarkzThemeManager.IsDark then
+    Result := icLightIcons
+  else
+    Result := icDarkIcons;
 end;
 
 procedure TdmCommon.LoadDatabase(const AFilename: String);
@@ -79,10 +89,8 @@ end;
 
 procedure TdmCommon.UpdateIcons;
 begin
-  if QuarkzThemeManager.IsDark then
-    vilIcons.ImageCollection := icLightIcons
-  else
-    vilIcons.ImageCollection := icDarkIcons;
+  vilIcons.ImageCollection := GetImageCollection;
+  vilLargeIcons.ImageCollection := GetImageCollection;
 end;
 
 procedure TdmCommon.DataModuleCreate(Sender: TObject);
