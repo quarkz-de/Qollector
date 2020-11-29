@@ -24,7 +24,8 @@ uses
   Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog},
   Qollector.Execute in 'core\Qollector.Execute.pas',
   Qollector.Migrations in 'models\Qollector.Migrations.pas',
-  Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas';
+  Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas',
+  Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor};
 
 {$R *.res}
 
@@ -35,5 +36,6 @@ begin
   Application.Title := 'Qollector';
   Application.CreateForm(TdmCommon, dmCommon);
   Application.CreateForm(TwMain, wMain);
+  Application.CreateForm(TwLinkEditor, wLinkEditor);
   Application.Run;
 end.

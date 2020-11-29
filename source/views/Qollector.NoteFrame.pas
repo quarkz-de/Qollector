@@ -5,14 +5,16 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, Winapi.ShellAPI, Winapi.ActiveX,
   System.SysUtils, System.Variants, System.Classes, System.StrUtils,
-  System.Win.ComObj,
+  System.Win.ComObj, System.Actions,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  Vcl.ComCtrls,
+  Vcl.ComCtrls, Vcl.StdActns, Vcl.ActnList, Vcl.Buttons, Vcl.ExtCtrls,
+  Vcl.ToolWin, Vcl.Clipbrd,
   VirtualTrees,
+  Eventbus,
   SynEdit, SynEditTypes, SynEditKeyCmds,
   HTMLUn2, HtmlView, UrlConn,
   Qodelib.Themes,
-  Qollector.Notes, Qollector.Visualizers;
+  Qollector.Notes, Qollector.Events, Qollector.Visualizers, Vcl.Menus;
 
 type
   TfrNoteFrame = class(TFrame)
@@ -26,6 +28,44 @@ type
     Connectors: ThtConnectionManager;
     FileConnector: ThtFileConnector;
     ResourceConnector: ThtResourceConnector;
+    spSplitter: TSplitter;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    stNotebooks: TVirtualStringTree;
+    Label1: TLabel;
+    alActions: TActionList;
+    acNewNotebook: TAction;
+    acNewNote: TAction;
+    acDeleteItem: TAction;
+    acNewBookmark: TAction;
+    acNewFavorite: TFileOpen;
+    tbBookmarks: TToolBar;
+    tbNewBookmark: TToolButton;
+    tbNewFavorite: TToolButton;
+    tbNotes: TToolBar;
+    tbNewNotebook: TToolButton;
+    tbNewNote: TToolButton;
+    tbDeleteItem: TToolButton;
+    acDeleteLink: TAction;
+    acEditLink: TAction;
+    btEditLink: TToolButton;
+    btDeleteLink: TToolButton;
+    pmNotes: TPopupMenu;
+    pmLinks: TPopupMenu;
+    miNewNotebook: TMenuItem;
+    miNewNote: TMenuItem;
+    miDeleteItem: TMenuItem;
+    miNewBookmark: TMenuItem;
+    miNewFavorite: TMenuItem;
+    miEditLink: TMenuItem;
+    miDeleteLink: TMenuItem;
+    procedure acDeleteItemExecute(Sender: TObject);
+    procedure acDeleteLinkExecute(Sender: TObject);
+    procedure acEditLinkExecute(Sender: TObject);
+    procedure acNewBookmarkExecute(Sender: TObject);
+    procedure acNewFavoriteAccept(Sender: TObject);
+    procedure acNewNotebookExecute(Sender: TObject);
+    procedure acNewNoteExecute(Sender: TObject);
     procedure edTextCommandProcessed(Sender: TObject; var Command:
       TSynEditorCommand; var AChar: Char; Data: Pointer);
     procedure hvTextHotSpotClick(Sender: TObject; const SRC: string; var Handled:
@@ -38,21 +78,31 @@ type
     procedure stLinksDragOver(Sender: TBaseVirtualTree; Source: TObject;
       Shift: TShiftState; State: TDragState; Pt: TPoint; Mode: TDropMode;
       var Effect: Integer; var Accept: Boolean);
+    procedure stLinksFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
+        Column: TColumnIndex);
     procedure stLinksKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure stNotebooksFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
+        Column: TColumnIndex);
+    procedure stNotebooksFocusChanging(Sender: TBaseVirtualTree; OldNode, NewNode:
+        PVirtualNode; OldColumn, NewColumn: TColumnIndex; var Allowed: Boolean);
   private
-    FNote: TNoteItem;
-    FVisualizer: ILinkListVisualizer;
+    FLinkVisualizer: ILinkListVisualizer;
+    FTreeVisualizer: INotesTreeVisualizer;
+    function IsModified: Boolean;
     procedure UpdatePreview;
+    procedure UpdateNoteActions(const ASelectedItemType: TNotesTreeItemType);
+    procedure UpdateLinkActions;
+    procedure NewFavoriteItem(const AFilename: TFilename);
+    function GetCurrentNote: TNoteItem;
   protected
-    procedure SetNote(const AValue: TNoteItem); virtual;
-    procedure SaveValues;
-    procedure LoadValues;
+    procedure LoadNote(const ANote: TNoteItem);
+    procedure SaveNote(const ANote: TNoteItem);
+    property CurrentNote: TNoteItem read GetCurrentNote;
   public
     constructor Create(Owner: TComponent); override;
-    function IsModified: Boolean;
-    procedure SaveData;
-    procedure NewFavoriteItem(const AFilename: TFilename);
-    property Note: TNoteItem read FNote write SetNote;
+    [Subscribe(TThreadMode.Main)]
+    procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+    procedure SaveChanges;
   end;
 
 implementation
@@ -60,19 +110,78 @@ implementation
 {$R *.dfm}
 
 uses
-  Spring.Container,
+  Spring.Container, Spring.Collections,
   MarkdownProcessor,
-  Qollector.Database,
-  Qollector.Execute;
+  Qollector.Database, Qollector.Execute, Qollector.DataModule,
+  Qollector.EditLink;
 
 { TfrNoteFrame }
 
 constructor TfrNoteFrame.Create(Owner: TComponent);
 begin
   inherited;
+  GlobalEventBus.RegisterSubscriberForEvents(Self);
+
   pcNote.ActivePage := tsEdit;
-  FVisualizer := GlobalContainer.Resolve<ILinkListVisualizer>;
-  FVisualizer.SetVirtualTree(stLinks);
+
+  FLinkVisualizer := GlobalContainer.Resolve<ILinkListVisualizer>;
+  FLinkVisualizer.SetVirtualTree(stLinks);
+
+  FTreeVisualizer := GlobalContainer.Resolve<INotesTreeVisualizer>;
+  FTreeVisualizer.SetVirtualTree(stNotebooks);
+end;
+
+procedure TfrNoteFrame.acDeleteItemExecute(Sender: TObject);
+begin
+  FTreeVisualizer.DeleteSelectedItem;
+end;
+
+procedure TfrNoteFrame.acDeleteLinkExecute(Sender: TObject);
+begin
+  FLinkVisualizer.DeleteSelectedItem;
+end;
+
+procedure TfrNoteFrame.acEditLinkExecute(Sender: TObject);
+var
+  Link: TLinkItem;
+  Database: IQollectorDatabase;
+begin
+  Link := FLinkVisualizer.GetSelectedItem;
+  if TwLinkEditor.ExecuteDialog(Link) then
+    begin
+      Database := GlobalContainer.Resolve<IQollectorDatabase>;
+      Database.GetSession.Save(Link);
+    end;
+end;
+
+procedure TfrNoteFrame.acNewBookmarkExecute(Sender: TObject);
+var
+  Url: String;
+begin
+  if Clipboard.HasFormat(CF_TEXT) then
+    Url := Clipboard.AsText
+  else
+    Url := '';
+
+  if TShellExecute.IsUrl(Url) then
+    NewFavoriteItem(Url)
+  else
+    NewFavoriteItem('');
+end;
+
+procedure TfrNoteFrame.acNewFavoriteAccept(Sender: TObject);
+begin
+  NewFavoriteItem(acNewFavorite.Dialog.Filename);
+end;
+
+procedure TfrNoteFrame.acNewNotebookExecute(Sender: TObject);
+begin
+  FTreeVisualizer.NewNotebook;
+end;
+
+procedure TfrNoteFrame.acNewNoteExecute(Sender: TObject);
+begin
+  FTreeVisualizer.NewNote;
 end;
 
 procedure TfrNoteFrame.edTextCommandProcessed(Sender: TObject; var Command:
@@ -103,6 +212,11 @@ begin
   end;
 end;
 
+function TfrNoteFrame.GetCurrentNote: TNoteItem;
+begin
+  Result := FTreeVisualizer.GetSelectedNote;
+end;
+
 procedure TfrNoteFrame.hvTextHotSpotClick(Sender: TObject; const SRC: string;
     var Handled: Boolean);
 begin
@@ -111,59 +225,65 @@ end;
 
 function TfrNoteFrame.IsModified: Boolean;
 begin
-  Result := edText.Modified;
+  Result := (CurrentNote.Id < 1) or edText.Modified;
 end;
 
-procedure TfrNoteFrame.LoadValues;
+procedure TfrNoteFrame.LoadNote(const ANote: TNoteItem);
 begin
-  edText.Lines.Text := Note.Text;
+  edText.Lines.Text := ANote.Text;
   edText.Modified := false;
   UpdatePreview;
-  FVisualizer.SetLinkItems(Note.Links);
-  FVisualizer.UpdateContent;
+  FLinkVisualizer.SetLinkItems(ANote.Links);
+  FLinkVisualizer.UpdateContent;
+  UpdateLinkActions;
 end;
 
 procedure TfrNoteFrame.NewFavoriteItem(const AFilename: TFilename);
 begin
-  FVisualizer.NewFavoriteItem(Note, AFilename);
+  FLinkVisualizer.NewFavoriteItem(CurrentNote, AFilename);
+end;
+
+procedure TfrNoteFrame.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+var
+  Notebooks: IList<TNotebookItem>;
+begin
+  Notebooks := dmCommon.Database.GetSession.FindAll<TNotebookItem>();
+  FTreeVisualizer.SetNotebookItems(Notebooks);
+  FTreeVisualizer.UpdateContent;
+  UpdateNoteActions(itNone);
 end;
 
 procedure TfrNoteFrame.pcNoteChange(Sender: TObject);
 begin
   if pcNote.ActivePage = tsView then
     begin
-      if IsModified then
-        SaveValues;
+      SaveNote(CurrentNote);
       UpdatePreview;
     end;
 end;
 
-procedure TfrNoteFrame.SaveData;
+procedure TfrNoteFrame.SaveChanges;
 begin
-  if IsModified then
-    SaveValues;
+  SaveNote(CurrentNote);
 end;
 
-procedure TfrNoteFrame.SaveValues;
+procedure TfrNoteFrame.SaveNote(const ANote: TNoteItem);
 var
   Database: IQollectorDatabase;
 begin
-  Note.Text := edText.Lines.Text;
-  edText.Modified := false;
+  if (ANote <> nil) and IsModified then
+    begin
+      ANote.Text := edText.Lines.Text;
+      edText.Modified := false;
 
-  Database := GlobalContainer.Resolve<IQollectorDatabase>;
-  Database.GetSession.Save(Note);
-end;
-
-procedure TfrNoteFrame.SetNote(const AValue: TNoteItem);
-begin
-  FNote := AValue;
-  LoadValues;
+      Database := GlobalContainer.Resolve<IQollectorDatabase>;
+      Database.GetSession.Save(ANote);
+    end;
 end;
 
 procedure TfrNoteFrame.stLinksDblClick(Sender: TObject);
 begin
-  TShellExecute.Open(FVisualizer.GetSelectedItem);
+  TShellExecute.Open(FLinkVisualizer.GetSelectedItem);
 end;
 
 procedure TfrNoteFrame.stLinksDragDrop(Sender: TBaseVirtualTree;
@@ -216,7 +336,7 @@ begin
           begin
             GetFileListFromObj(DataObject, DroppedFiles);
             for J := 0 to DroppedFiles.Count - 1 do
-              FVisualizer.NewFavoriteItem(Note, DroppedFiles[J]);
+              FLinkVisualizer.NewFavoriteItem(CurrentNote, DroppedFiles[J]);
           end;
       end;
   finally
@@ -231,6 +351,12 @@ begin
   Accept := true;
 end;
 
+procedure TfrNoteFrame.stLinksFocusChanged(Sender: TBaseVirtualTree; Node:
+    PVirtualNode; Column: TColumnIndex);
+begin
+  UpdateLinkActions;
+end;
+
 procedure TfrNoteFrame.stLinksKeyDown(Sender: TObject; var Key: Word; Shift:
     TShiftState);
 begin
@@ -238,13 +364,13 @@ begin
     VK_DELETE:
       if Shift = [] then
         begin
-          FVisualizer.DeleteSelectedItem;
+          FLinkVisualizer.DeleteSelectedItem;
           Key := 0;
         end;
     VK_RETURN:
       if Shift = [] then
         begin
-          TShellExecute.Open(FVisualizer.GetSelectedItem);
+          TShellExecute.Open(FLinkVisualizer.GetSelectedItem);
           Key := 0;
         end;
     VK_F2:
@@ -254,6 +380,67 @@ begin
           Key := 0;
         end;
   end;
+end;
+
+procedure TfrNoteFrame.stNotebooksFocusChanged(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex);
+begin
+  case FTreeVisualizer.GetItemType(Node) of
+    itNone:
+      begin
+        pcNote.Visible := false;
+      end;
+    itNotebookItem:
+      begin
+        pcNote.Visible := false;
+      end;
+    itNoteItem:
+      begin
+        pcNote.Visible := true;
+        LoadNote(CurrentNote);
+      end;
+  end;
+
+  UpdateNoteActions(FTreeVisualizer.GetItemType(Node));
+end;
+
+procedure TfrNoteFrame.stNotebooksFocusChanging(Sender: TBaseVirtualTree;
+  OldNode, NewNode: PVirtualNode; OldColumn, NewColumn: TColumnIndex;
+  var Allowed: Boolean);
+begin
+  case FTreeVisualizer.GetItemType(OldNode) of
+    itNone:
+      begin
+      end;
+    itNotebookItem:
+      begin
+      end;
+    itNoteItem:
+      begin
+        SaveNote(CurrentNote);
+      end;
+  end;
+end;
+
+procedure TfrNoteFrame.UpdateLinkActions;
+var
+  IsItemSelected: Boolean;
+begin
+  IsItemSelected := FLinkVisualizer.GetSelectedItem <> nil;
+  acEditLink.Enabled := IsItemSelected;
+  acDeleteLink.Enabled := IsItemSelected;
+end;
+
+procedure TfrNoteFrame.UpdateNoteActions(
+  const ASelectedItemType: TNotesTreeItemType);
+var
+  IsItemSelected: Boolean;
+begin
+  IsItemSelected := ASelectedItemType in [itNotebookItem, itNoteItem];
+  acDeleteItem.Enabled := IsItemSelected;
+  acNewNote.Enabled := IsItemSelected;
+  acNewBookmark.Enabled := IsItemSelected;
+  acNewFavorite.Enabled := IsItemSelected;
 end;
 
 procedure TfrNoteFrame.UpdatePreview;

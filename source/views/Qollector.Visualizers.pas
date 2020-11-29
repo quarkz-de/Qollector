@@ -488,7 +488,6 @@ var
   Data: PLinkListItem;
 begin
   Data := Sender.GetNodeData(Node);
-//  GlobalEventBus.Post(TLinkItemEditEvent.Create(Data.Item), '', TEventMM.mmAutomatic);
 end;
 
 procedure TLinkListVisualizer.Editing(Sender: TBaseVirtualTree;
@@ -509,8 +508,23 @@ end;
 procedure TLinkListVisualizer.GetImageIndex(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex;
   var Ghosted: Boolean; var ImageIndex: TImageIndex);
+var
+  Data: PLinkListItem;
 begin
-
+  if (Kind in [ikNormal, ikSelected]) and (Column = colLinkName) then
+    begin
+      Data := FTree.GetNodeData(Node);
+      case Data.Item.ItemType of
+        litUnknown:
+          ImageIndex := -1;
+        litBookmark:
+          ImageIndex := 3;
+        litFavoriteFile:
+          ImageIndex := 2;
+      end;
+    end
+  else
+    ImageIndex := -1;
 end;
 
 function TLinkListVisualizer.GetItem(const Node: PVirtualNode): TLinkItem;
@@ -521,7 +535,9 @@ begin
     begin
       Data := FTree.GetNodeData(Node);
       Result := Data.Item;
-    end;
+    end
+  else
+    Result := nil;
 end;
 
 procedure TLinkListVisualizer.GetNodeDataSize(Sender: TBaseVirtualTree;

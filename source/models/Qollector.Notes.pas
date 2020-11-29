@@ -3,7 +3,7 @@ unit Qollector.Notes;
 interface
 
 uses
-  System.SysUtils, System.Generics.Collections,
+  System.SysUtils, System.Generics.Collections, System.IOUtils,
   Spring, Spring.Collections, Spring.Persistence.Mapping.Attributes;
 
 type
@@ -46,6 +46,8 @@ type
     function ToString: String; override;
   end;
 
+  TLinkItemType = (litUnknown, litBookmark, litFavoriteFile);
+
   [Entity]
   [Table('LINKS')]
   TLinkItem = class
@@ -56,6 +58,7 @@ type
     FName: String;
     FFilename: String;
     FNote: TNoteItem;
+    function GetItemType: TLinkItemType;
   public
     destructor Destroy; override;
 
@@ -73,6 +76,8 @@ type
 
     [ManyToOne(False, [ckCascadeAll], 'NoteId')]
     property Note: TNoteItem read FNote write FNote;
+
+    property ItemType: TLinkItemType read GetItemType;
 
     function ToString: String; override;
   end;
@@ -99,6 +104,9 @@ type
   end;
 
 implementation
+
+uses
+  Qollector.Execute;
 
 { TNoteItem }
 
@@ -150,6 +158,16 @@ begin
       FNote.Free;
     end;
   inherited;
+end;
+
+function TLinkItem.GetItemType: TLinkItemType;
+begin
+  if TShellExecute.IsUrl(Filename) then
+    Result := litBookmark
+  else if TFile.Exists(Filename) then
+    Result := litFavoriteFile
+  else
+    Result := litUnknown;
 end;
 
 function TLinkItem.ToString: String;

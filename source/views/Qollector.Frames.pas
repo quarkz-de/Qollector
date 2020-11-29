@@ -43,6 +43,7 @@ end;
 
 destructor TQollectorFrameList.Destroy;
 begin
+  NoteFrame.SaveChanges;
   FFrames.Free;
   inherited;
 end;
