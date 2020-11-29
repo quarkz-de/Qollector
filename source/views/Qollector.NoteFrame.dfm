@@ -99,6 +99,7 @@ object frNoteFrame: TfrNoteFrame
         PopupMenu = pmLinks
         TabOrder = 0
         TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
+        TreeOptions.SelectionOptions = [toRightClickSelect]
         OnDblClick = stLinksDblClick
         OnDragOver = stLinksDragOver
         OnDragDrop = stLinksDragDrop
@@ -211,6 +212,7 @@ object frNoteFrame: TfrNoteFrame
       Images = dmCommon.vilIcons
       PopupMenu = pmNotes
       TabOrder = 1
+      TreeOptions.SelectionOptions = [toRightClickSelect]
       OnFocusChanged = stNotebooksFocusChanged
       OnFocusChanging = stNotebooksFocusChanging
       Columns = <>
