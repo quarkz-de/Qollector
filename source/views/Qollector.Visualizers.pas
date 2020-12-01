@@ -473,6 +473,7 @@ begin
       Database.GetSession.Delete(Data.Item);
 
       FTree.DeleteNode(Node);
+      FLinks.Delete(FLinks.IndexOf(Data.Item));
 
       if NextNode <> nil then
         begin
