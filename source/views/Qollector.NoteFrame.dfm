@@ -26,6 +26,10 @@ object frNoteFrame: TfrNoteFrame
     OnChange = pcNoteChange
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object edText: TSynEdit
         Left = 0
         Top = 0
@@ -55,6 +59,10 @@ object frNoteFrame: TfrNoteFrame
     object tsView: TTabSheet
       Caption = 'Anzeige'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object hvText: THtmlViewer
         Left = 0
         Top = 0
@@ -135,6 +143,7 @@ object frNoteFrame: TfrNoteFrame
           Left = 23
           Top = 0
           Action = acNewFavorite
+          ImageName = '002_Link'
         end
         object btEditLink: TToolButton
           Left = 46
@@ -313,6 +322,7 @@ object frNoteFrame: TfrNoteFrame
     end
     object miNewFavorite: TMenuItem
       Action = acNewFavorite
+      ImageName = '002_Link'
     end
     object miEditLink: TMenuItem
       Action = acEditLink

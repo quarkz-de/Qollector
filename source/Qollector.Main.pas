@@ -32,8 +32,12 @@ type
     sbStart: TSpeedButton;
     sbNotes: TSpeedButton;
     txVersion: TLabel;
+    acSectionWelcome: TAction;
+    acSectionNotes: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
+    procedure acSectionNotesExecute(Sender: TObject);
+    procedure acSectionWelcomeExecute(Sender: TObject);
     procedure acSettingsExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure imBurgerButtonClick(Sender: TObject);
@@ -68,6 +72,16 @@ begin
   TwAbout.ExecuteDialog;
 end;
 
+procedure TwMain.acSectionNotesExecute(Sender: TObject);
+begin
+  FFrames.ShowFrame(qftNotes);
+end;
+
+procedure TwMain.acSectionWelcomeExecute(Sender: TObject);
+begin
+  FFrames.ShowFrame(qftWelcome);
+end;
+
 procedure TwMain.acSettingsExecute(Sender: TObject);
 begin
   TwSettingsDialog.ExecuteDialog;
@@ -76,6 +90,7 @@ end;
 procedure TwMain.FormCreate(Sender: TObject);
 begin
   FFrames := TQollectorFrameList.Create(self);
+  acSectionWelcome.Execute;
   GlobalEventBus.RegisterSubscriberForEvents(Self);
   dmCommon.MainFormCreated;
   dmCommon.LoadDatabase('');
@@ -109,7 +124,8 @@ end;
 procedure TwMain.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
 begin
 //  Caption := 'Qollector - ' + ExtractFilename(AEvent.Filename);
-  Frames.ShowFrame(Frames.NoteFrame);
+  acSectionNotes.Execute;
+  sbNotes.Down := true;
 end;
 
 procedure TwMain.OnThemeChange(AEvent: TThemeChangeEvent);

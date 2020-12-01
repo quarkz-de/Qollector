@@ -75,9 +75,6 @@ object wMain: TwMain
     OpenedWidth = 200
     Placement = svpLeft
     TabOrder = 1
-    ExplicitLeft = 360
-    ExplicitTop = 280
-    ExplicitHeight = 41
     object pnHeader: TPanel
       Left = 0
       Top = 0
@@ -125,17 +122,15 @@ object wMain: TwMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 44
       object sbStart: TSpeedButton
         Left = 0
         Top = 0
         Width = 200
         Height = 38
+        Action = acSectionWelcome
         Align = alTop
         GroupIndex = 1
-        Caption = 'Startseite'
-        ImageIndex = 7
-        ImageName = '007_Home'
+        Down = True
         Images = dmCommon.vilLargeIcons
         Margin = 14
         ExplicitTop = -6
@@ -145,12 +140,9 @@ object wMain: TwMain
         Top = 38
         Width = 200
         Height = 38
+        Action = acSectionNotes
         Align = alTop
         GroupIndex = 1
-        Down = True
-        Caption = 'Notizen'
-        ImageIndex = 0
-        ImageName = '000_Notebook'
         Images = dmCommon.vilLargeIcons
         Margin = 14
         ExplicitTop = 4
@@ -216,6 +208,24 @@ object wMain: TwMain
       Category = 'Hilfe'
       Caption = '&'#220'ber...'
       OnExecute = acHelpAboutExecute
+    end
+    object acSectionWelcome: TAction
+      Category = 'Bereich'
+      AutoCheck = True
+      Caption = 'Startseite'
+      GroupIndex = 1
+      ImageIndex = 7
+      ImageName = '007_Home'
+      OnExecute = acSectionWelcomeExecute
+    end
+    object acSectionNotes: TAction
+      Category = 'Bereich'
+      AutoCheck = True
+      Caption = 'Notizen'
+      GroupIndex = 1
+      ImageIndex = 0
+      ImageName = '000_Notebook'
+      OnExecute = acSectionNotesExecute
     end
   end
 end

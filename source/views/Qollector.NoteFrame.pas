@@ -8,15 +8,17 @@ uses
   System.Win.ComObj, System.Actions,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls, Vcl.StdActns, Vcl.ActnList, Vcl.Buttons, Vcl.ExtCtrls,
-  Vcl.ToolWin, Vcl.Clipbrd,
+  Vcl.ToolWin, Vcl.Clipbrd, Vcl.Menus,
   VirtualTrees,
   Eventbus,
   SynEdit, SynEditTypes, SynEditKeyCmds,
   HTMLUn2, HtmlView, UrlConn,
   Qodelib.Themes,
-  Qollector.Notes, Qollector.Events, Qollector.Visualizers, Vcl.Menus;
+  Qollector.Notes, Qollector.Events, Qollector.Visualizers, Qollector.Frames;
 
 type
+  TFrame = TQollectorFrame;
+
   TfrNoteFrame = class(TFrame)
     pcNote: TPageControl;
     tsEdit: TTabSheet;
@@ -100,6 +102,7 @@ type
     property CurrentNote: TNoteItem read GetCurrentNote;
   public
     constructor Create(Owner: TComponent); override;
+    destructor Destroy; override;
     [Subscribe(TThreadMode.Main)]
     procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
     procedure SaveChanges;
@@ -129,6 +132,12 @@ begin
 
   FTreeVisualizer := GlobalContainer.Resolve<INotesTreeVisualizer>;
   FTreeVisualizer.SetVirtualTree(stNotebooks);
+end;
+
+destructor TfrNoteFrame.Destroy;
+begin
+  SaveChanges;
+  inherited Destroy;
 end;
 
 procedure TfrNoteFrame.acDeleteItemExecute(Sender: TObject);

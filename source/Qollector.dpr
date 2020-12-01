@@ -25,7 +25,8 @@ uses
   Qollector.Execute in 'core\Qollector.Execute.pas',
   Qollector.Migrations in 'models\Qollector.Migrations.pas',
   Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas',
-  Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor};
+  Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor},
+  Qollector.WelcomeFrame in 'views\Qollector.WelcomeFrame.pas' {frWelcomeFrame: TFrame};
 
 {$R *.res}
 

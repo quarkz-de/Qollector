@@ -4,26 +4,33 @@ interface
 
 uses
   System.Generics.Collections, System.Generics.Defaults,
-  Vcl.Forms, Vcl.Controls,
-  Qollector.NoteFrame;
+  Vcl.Forms, Vcl.Controls;
 
 type
+  TQollectorFrame = class(TFrame)
+  public
+    procedure Activate; virtual;
+    procedure Deactivate; virtual;
+  end;
+
+  TQollectorFrameType = (qftWelcome, qftNotes);
+
   TQollectorFrameList = class(TObject)
   private
     FParent: TWinControl;
-    FFrames: TObjectList<TFrame>;
-    function GetActiveFrame: TFrame;
-    function CreateNoteFrame: TFrame;
-    function GetNoteFrame: TfrNoteFrame;
+    FFrames: array[TQollectorFrameType] of TQollectorFrame;
+    function GetActiveFrame: TQollectorFrame;
+    procedure CreateFrames;
   public
     constructor Create(const AParent: TWinControl);
-    destructor Destroy; override;
-    procedure ShowFrame(const AFrame: TFrame);
-    property ActiveFrame: TFrame read GetActiveFrame;
-    property NoteFrame: TfrNoteFrame read GetNoteFrame;
+    procedure ShowFrame(const AFrame: TQollectorFrameType);
+    property ActiveFrame: TQollectorFrame read GetActiveFrame;
   end;
 
 implementation
+
+uses
+  Qollector.WelcomeFrame, Qollector.NoteFrame;
 
 { TQollectorFrameList }
 
@@ -31,26 +38,18 @@ constructor TQollectorFrameList.Create(const AParent: TWinControl);
 begin
   inherited Create;
   FParent := AParent;
-  FFrames := TObjectList<TFrame>.Create;
-  FFrames.Add(CreateNoteFrame);
+  CreateFrames;
 end;
 
-function TQollectorFrameList.CreateNoteFrame: TFrame;
+procedure TQollectorFrameList.CreateFrames;
 begin
-  Result := TfrNoteFrame.Create(nil);
-  Result.Visible := false;
+  FFrames[qftWelcome] := TfrWelcomeFrame.Create(FParent);
+  FFrames[qftNotes] := TfrNoteFrame.Create(FParent);
 end;
 
-destructor TQollectorFrameList.Destroy;
-begin
-  NoteFrame.SaveChanges;
-  FFrames.Free;
-  inherited;
-end;
-
-function TQollectorFrameList.GetActiveFrame: TFrame;
+function TQollectorFrameList.GetActiveFrame: TQollectorFrame;
 var
-  Frame: TFrame;
+  Frame: TQollectorFrame;
 begin
   Result := nil;
   for Frame in FFrames do
@@ -61,40 +60,40 @@ begin
       end;
 end;
 
-function TQollectorFrameList.GetNoteFrame: TfrNoteFrame;
+procedure TQollectorFrameList.ShowFrame(const AFrame: TQollectorFrameType);
 var
-  Frame: TFrame;
+  Frame: TQollectorFrame;
+  FrameType: TQollectorFrameType;
 begin
-  Result := nil;
-  for Frame in FFrames do
-    if Frame is TfrNoteFrame then
-      begin
-        Result := TfrNoteFrame(Frame);
-        Break;
-      end;
-end;
-
-procedure TQollectorFrameList.ShowFrame(const AFrame: TFrame);
-var
-  Frame: TFrame;
-begin
-  for Frame in FFrames do
+  for FrameType := Low(TQollectorFrameType) to High(TQollectorFrameType) do
     begin
-      if (Frame = AFrame) then
+      Frame := FFrames[FrameType];
+      if (FrameType = AFrame) then
         begin
           Frame.Parent := FParent;
           Frame.Align := alClient;
           Frame.Visible := true;
+          Frame.Activate;
         end
       else
         begin
+          Frame.Deactivate;
           Frame.Visible := false;
           Frame.Parent := nil;
         end;
     end;
 end;
 
+{ TQollectorFrame }
 
-//    TfrNoteFrame(Result).Note := ANote;
+procedure TQollectorFrame.Activate;
+begin
+
+end;
+
+procedure TQollectorFrame.Deactivate;
+begin
+
+end;
 
 end.
