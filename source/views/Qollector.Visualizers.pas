@@ -22,6 +22,7 @@ type
     function GetSelectedItemType: TNotesTreeItemType;
     function GetSelectedNote: TNoteItem;
     function GetSelectedNotebook: TNotebookItem;
+    function GetSelectedItemName: String;
     function GetItemType(const Node: PVirtualNode): TNotesTreeItemType;
     function GetNote(const Node: PVirtualNode): TNoteItem;
     function GetNotebook(const Node: PVirtualNode): TNotebookItem;
@@ -38,6 +39,7 @@ type
       const AFilename: String): TLinkItem;
     function DeleteSelectedItem: Boolean;
     function GetSelectedItem: TLinkItem;
+    function GetSelectedItemName: String;
     function GetItem(const Node: PVirtualNode): TLinkItem;
   end;
 
@@ -77,6 +79,7 @@ type
     function GetSelectedItemType: TNotesTreeItemType;
     function GetSelectedNote: TNoteItem;
     function GetSelectedNotebook: TNotebookItem;
+    function GetSelectedItemName: String;
     function GetItemType(const Node: PVirtualNode): TNotesTreeItemType;
     function GetNote(const Node: PVirtualNode): TNoteItem;
     function GetNotebook(const Node: PVirtualNode): TNotebookItem;
@@ -119,6 +122,7 @@ type
       const AFilename: String): TLinkItem;
     function DeleteSelectedItem: Boolean;
     function GetSelectedItem: TLinkItem;
+    function GetSelectedItemName: String;
     function GetItem(const Node: PVirtualNode): TLinkItem;
   end;
 
@@ -278,6 +282,23 @@ begin
       Data := FTree.GetNodeData(Node);
       Result := Data.Notebook;
     end;
+end;
+
+function TNotesTreeVisualizer.GetSelectedItemName: String;
+var
+  Data: PNotesTreeItem;
+begin
+  Result := '';
+  if FTree.FocusedNode = nil then
+    Exit;
+  Data := FTree.GetNodeData(FTree.FocusedNode);
+
+  case Data.ItemType of
+    itNotebookItem:
+      Result := Data.Notebook.Name;
+    itNoteItem:
+      Result := Data.Note.Name;
+  end;
 end;
 
 function TNotesTreeVisualizer.GetSelectedItemType: TNotesTreeItemType;
@@ -550,6 +571,17 @@ end;
 function TLinkListVisualizer.GetSelectedItem: TLinkItem;
 begin
   Result := GetItem(FTree.FocusedNode);
+end;
+
+function TLinkListVisualizer.GetSelectedItemName: String;
+var
+  Data: PLinkListItem;
+begin
+  Result := '';
+  if FTree.FocusedNode = nil then
+    Exit;
+  Data := FTree.GetNodeData(FTree.FocusedNode);
+  Result := Data.Item.Name;
 end;
 
 procedure TLinkListVisualizer.GetText(Sender: TBaseVirtualTree;

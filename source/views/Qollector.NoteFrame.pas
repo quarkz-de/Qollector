@@ -142,12 +142,16 @@ end;
 
 procedure TfrNoteFrame.acDeleteItemExecute(Sender: TObject);
 begin
-  FTreeVisualizer.DeleteSelectedItem;
+  if MessageDlg(Format('"%s" wirklich löschen?', [FTreeVisualizer.GetSelectedItemName]),
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    FTreeVisualizer.DeleteSelectedItem;
 end;
 
 procedure TfrNoteFrame.acDeleteLinkExecute(Sender: TObject);
 begin
-  FLinkVisualizer.DeleteSelectedItem;
+  if MessageDlg(Format('"%s" wirklich löschen?', [FLinkVisualizer.GetSelectedItemName]),
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    FLinkVisualizer.DeleteSelectedItem;
 end;
 
 procedure TfrNoteFrame.acEditLinkExecute(Sender: TObject);
