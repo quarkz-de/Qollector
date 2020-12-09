@@ -17,8 +17,8 @@ uses
   Qollector.Notes in 'models\Qollector.Notes.pas',
   Qollector.Visualizers in 'views\Qollector.Visualizers.pas',
   Qollector.Events in 'core\Qollector.Events.pas',
-  Qollector.NoteFrame in 'views\Qollector.NoteFrame.pas' {frNoteFrame: TFrame},
-  Qollector.Frames in 'views\Qollector.Frames.pas',
+  Qollector.NoteForm in 'views\Qollector.NoteForm.pas' {wNoteForm},
+  Qollector.Forms in 'views\Qollector.Forms.pas',
   Qollector.About in 'views\Qollector.About.pas' {wAbout},
   Qollector.Settings in 'core\Qollector.Settings.pas',
   Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog},
@@ -26,7 +26,7 @@ uses
   Qollector.Migrations in 'models\Qollector.Migrations.pas',
   Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas',
   Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor},
-  Qollector.WelcomeFrame in 'views\Qollector.WelcomeFrame.pas' {frWelcomeFrame: TFrame};
+  Qollector.WelcomeForm in 'views\Qollector.WelcomeForm.pas' {wWelcomeForm};
 
 {$R *.res}
 

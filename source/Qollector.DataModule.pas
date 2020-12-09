@@ -14,16 +14,13 @@ uses
 type
   TdmCommon = class(TDataModule)
     icDarkIcons: TImageCollection;
-    vilIcons: TVirtualImageList;
     icLightIcons: TImageCollection;
-    vilLargeIcons: TVirtualImageList;
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
   private
     FDatabase: IQollectorDatabase;
     procedure ThemeChangeEvent(Sender: TObject);
     procedure ThemeChanged;
-    procedure UpdateIcons;
   public
     property Database: IQollectorDatabase read FDatabase;
     procedure LoadDatabase(const AFilename: String);
@@ -83,14 +80,7 @@ end;
 
 procedure TdmCommon.ThemeChangeEvent(Sender: TObject);
 begin
-  UpdateIcons;
   ThemeChanged;
-end;
-
-procedure TdmCommon.UpdateIcons;
-begin
-  vilIcons.ImageCollection := GetImageCollection;
-  vilLargeIcons.ImageCollection := GetImageCollection;
 end;
 
 procedure TdmCommon.DataModuleCreate(Sender: TObject);
@@ -100,7 +90,6 @@ begin
 
   QuarkzThemeManager.OnChange := ThemeChangeEvent;
   QollectorSettings.LoadSettings;
-  UpdateIcons;
   ThemeChanged;
 
 //  if (ParamCount > 0) and FileExists(ParamStr(1)) then

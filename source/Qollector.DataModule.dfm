@@ -1003,63 +1003,6 @@ object dmCommon: TdmCommon
     Left = 160
     Top = 16
   end
-  object vilIcons: TVirtualImageList
-    AutoFill = True
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
-    Images = <
-      item
-        CollectionIndex = 0
-        CollectionName = '000_Notebook'
-        Disabled = False
-        Name = '000_Notebook'
-      end
-      item
-        CollectionIndex = 1
-        CollectionName = '001_Note'
-        Disabled = False
-        Name = '001_Note'
-      end
-      item
-        CollectionIndex = 2
-        CollectionName = '002_Link'
-        Disabled = False
-        Name = '002_Link'
-      end
-      item
-        CollectionIndex = 3
-        CollectionName = '003_Bookmark'
-        Disabled = False
-        Name = '003_Bookmark'
-      end
-      item
-        CollectionIndex = 4
-        CollectionName = '004_Delete'
-        Disabled = False
-        Name = '004_Delete'
-      end
-      item
-        CollectionIndex = 5
-        CollectionName = '005_Edit'
-        Disabled = False
-        Name = '005_Edit'
-      end
-      item
-        CollectionIndex = 6
-        CollectionName = '006_Menu'
-        Disabled = False
-        Name = '006_Menu'
-      end
-      item
-        CollectionIndex = 7
-        CollectionName = '007_Home'
-        Disabled = False
-        Name = '007_Home'
-      end>
-    ImageCollection = icDarkIcons
-    Left = 28
-    Top = 16
-  end
   object icLightIcons: TImageCollection
     Images = <
       item
@@ -2090,64 +2033,5 @@ object dmCommon: TdmCommon
       end>
     Left = 92
     Top = 16
-  end
-  object vilLargeIcons: TVirtualImageList
-    AutoFill = True
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
-    Images = <
-      item
-        CollectionIndex = 0
-        CollectionName = '000_Notebook'
-        Disabled = False
-        Name = '000_Notebook'
-      end
-      item
-        CollectionIndex = 1
-        CollectionName = '001_Note'
-        Disabled = False
-        Name = '001_Note'
-      end
-      item
-        CollectionIndex = 2
-        CollectionName = '002_Link'
-        Disabled = False
-        Name = '002_Link'
-      end
-      item
-        CollectionIndex = 3
-        CollectionName = '003_Bookmark'
-        Disabled = False
-        Name = '003_Bookmark'
-      end
-      item
-        CollectionIndex = 4
-        CollectionName = '004_Delete'
-        Disabled = False
-        Name = '004_Delete'
-      end
-      item
-        CollectionIndex = 5
-        CollectionName = '005_Edit'
-        Disabled = False
-        Name = '005_Edit'
-      end
-      item
-        CollectionIndex = 6
-        CollectionName = '006_Menu'
-        Disabled = False
-        Name = '006_Menu'
-      end
-      item
-        CollectionIndex = 7
-        CollectionName = '007_Home'
-        Disabled = False
-        Name = '007_Home'
-      end>
-    ImageCollection = icDarkIcons
-    Width = 32
-    Height = 32
-    Left = 24
-    Top = 84
   end
 end

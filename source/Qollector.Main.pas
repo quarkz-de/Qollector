@@ -12,8 +12,8 @@ uses
   Vcl.ActnMenus, Vcl.TitleBarCtrls,
   VirtualTrees,
   Eventbus,
-  Qollector.Visualizers, Qollector.Events, Qollector.Frames, Vcl.VirtualImage,
-  Vcl.StdCtrls, Vcl.Buttons;
+  Qollector.Visualizers, Qollector.Events, Qollector.Forms, Vcl.VirtualImage,
+  Vcl.StdCtrls, Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList;
 
 type
   TwMain = class(TForm)
@@ -34,6 +34,8 @@ type
     txVersion: TLabel;
     acSectionWelcome: TAction;
     acSectionNotes: TAction;
+    vilIcons: TVirtualImageList;
+    vilLargeIcons: TVirtualImageList;
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acSectionNotesExecute(Sender: TObject);
@@ -43,11 +45,11 @@ type
     procedure imBurgerButtonClick(Sender: TObject);
     procedure mbMainPaint(Sender: TObject);
   private
-    FFrames: TQollectorFrameList;
+    FForms: TQollectorFormList;
     procedure WMActivate(var Message: TWMActivate); message WM_ACTIVATE;
     procedure WmSize(var Message: TWMSize); message WM_SIZE;
   protected
-    property Frames: TQollectorFrameList read FFrames;
+    property Forms: TQollectorFormList read FForms;
   public
     [Subscribe(TThreadMode.Main)]
     procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
@@ -74,12 +76,12 @@ end;
 
 procedure TwMain.acSectionNotesExecute(Sender: TObject);
 begin
-  FFrames.ShowFrame(qftNotes);
+  FForms.ShowForm(qftNotes);
 end;
 
 procedure TwMain.acSectionWelcomeExecute(Sender: TObject);
 begin
-  FFrames.ShowFrame(qftWelcome);
+  FForms.ShowForm(qftWelcome);
 end;
 
 procedure TwMain.acSettingsExecute(Sender: TObject);
@@ -89,7 +91,7 @@ end;
 
 procedure TwMain.FormCreate(Sender: TObject);
 begin
-  FFrames := TQollectorFrameList.Create(self);
+  FForms := TQollectorFormList.Create(self);
   acSectionWelcome.Execute;
   GlobalEventBus.RegisterSubscriberForEvents(Self);
   dmCommon.MainFormCreated;
@@ -98,7 +100,7 @@ end;
 
 procedure TwMain.FormDestroy(Sender: TObject);
 begin
-  FFrames.Free;
+  FForms.Free;
 end;
 
 procedure TwMain.imBurgerButtonClick(Sender: TObject);
@@ -133,6 +135,8 @@ begin
   CustomTitleBar.SystemColors := AEvent.ThemeName = 'Windows';
   mbMain.Invalidate;
   imBurgerButton.ImageCollection := dmCommon.GetImageCollection;
+  vilIcons.ImageCollection := dmCommon.GetImageCollection;
+  vilLargeIcons.ImageCollection := dmCommon.GetImageCollection;
 end;
 
 procedure TwMain.WMActivate(var Message: TWMActivate);

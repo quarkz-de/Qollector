@@ -1,4 +1,4 @@
-unit Qollector.WelcomeFrame;
+unit Qollector.WelcomeForm;
 
 interface
 
@@ -6,12 +6,11 @@ uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Qollector.Frames, Vcl.Imaging.pngimage, Vcl.ExtCtrls;
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls,
+  Qollector.Forms;
 
 type
-  TFrame = TQollectorFrame;
-
-  TfrWelcomeFrame = class(TFrame)
+  TwWelcomeForm = class(TQollectorForm)
     imIcon: TImage;
     imLogo: TImage;
   private

@@ -3,22 +3,22 @@ object wMain: TwMain
   Top = 0
   Caption = 'Qollector'
   ClientHeight = 557
-  ClientWidth = 903
+  ClientWidth = 1032
   Color = clBtnFace
   CustomTitleBar.Control = tbpTitleBar
   CustomTitleBar.Enabled = True
   CustomTitleBar.Height = 31
   CustomTitleBar.ShowCaption = False
-  CustomTitleBar.BackgroundColor = 14123008
+  CustomTitleBar.BackgroundColor = 11625216
   CustomTitleBar.ForegroundColor = clWhite
   CustomTitleBar.InactiveBackgroundColor = clWhite
   CustomTitleBar.InactiveForegroundColor = 10066329
   CustomTitleBar.ButtonForegroundColor = clWhite
-  CustomTitleBar.ButtonBackgroundColor = 14123008
+  CustomTitleBar.ButtonBackgroundColor = 11625216
   CustomTitleBar.ButtonHoverForegroundColor = clWhite
-  CustomTitleBar.ButtonHoverBackgroundColor = 11364608
+  CustomTitleBar.ButtonHoverBackgroundColor = 8801024
   CustomTitleBar.ButtonPressedForegroundColor = clWhite
-  CustomTitleBar.ButtonPressedBackgroundColor = 7160320
+  CustomTitleBar.ButtonPressedBackgroundColor = 4663296
   CustomTitleBar.ButtonInactiveForegroundColor = 10066329
   CustomTitleBar.ButtonInactiveBackgroundColor = clWhite
   Constraints.MinHeight = 300
@@ -40,15 +40,15 @@ object wMain: TwMain
   object tbpTitleBar: TTitleBarPanel
     Left = 0
     Top = 0
-    Width = 903
+    Width = 1032
     Height = 30
     CustomButtons = <>
+    ExplicitWidth = 903
     object mbMain: TActionMainMenuBar
       Left = 32
       Top = 0
       Width = 257
       Height = 24
-      UseSystemFont = False
       ActionManager = amActions
       Align = alNone
       Caption = 'mbMain'
@@ -58,7 +58,7 @@ object wMain: TwMain
       ColorMap.BtnSelectedFont = clBlack
       ColorMap.UnusedColor = clWhite
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
@@ -131,7 +131,7 @@ object wMain: TwMain
         Align = alTop
         GroupIndex = 1
         Down = True
-        Images = dmCommon.vilLargeIcons
+        Images = vilLargeIcons
         Margin = 14
         ExplicitTop = -6
       end
@@ -143,7 +143,7 @@ object wMain: TwMain
         Action = acSectionNotes
         Align = alTop
         GroupIndex = 1
-        Images = dmCommon.vilLargeIcons
+        Images = vilLargeIcons
         Margin = 14
         ExplicitTop = 4
       end
@@ -182,7 +182,7 @@ object wMain: TwMain
           end>
         ActionBar = mbMain
       end>
-    Images = dmCommon.vilIcons
+    Images = vilIcons
     Left = 416
     Top = 36
     StyleName = 'Platform Default'
@@ -227,5 +227,121 @@ object wMain: TwMain
       ImageName = '000_Notebook'
       OnExecute = acSectionNotesExecute
     end
+  end
+  object vilIcons: TVirtualImageList
+    AutoFill = True
+    DisabledGrayscale = False
+    DisabledSuffix = '_Disabled'
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = '000_Notebook'
+        Disabled = False
+        Name = '000_Notebook'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = '001_Note'
+        Disabled = False
+        Name = '001_Note'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = '002_Link'
+        Disabled = False
+        Name = '002_Link'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = '003_Bookmark'
+        Disabled = False
+        Name = '003_Bookmark'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = '004_Delete'
+        Disabled = False
+        Name = '004_Delete'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = '005_Edit'
+        Disabled = False
+        Name = '005_Edit'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = '006_Menu'
+        Disabled = False
+        Name = '006_Menu'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = '007_Home'
+        Disabled = False
+        Name = '007_Home'
+      end>
+    ImageCollection = dmCommon.icDarkIcons
+    Left = 484
+    Top = 40
+  end
+  object vilLargeIcons: TVirtualImageList
+    AutoFill = True
+    DisabledGrayscale = False
+    DisabledSuffix = '_Disabled'
+    Images = <
+      item
+        CollectionIndex = 0
+        CollectionName = '000_Notebook'
+        Disabled = False
+        Name = '000_Notebook'
+      end
+      item
+        CollectionIndex = 1
+        CollectionName = '001_Note'
+        Disabled = False
+        Name = '001_Note'
+      end
+      item
+        CollectionIndex = 2
+        CollectionName = '002_Link'
+        Disabled = False
+        Name = '002_Link'
+      end
+      item
+        CollectionIndex = 3
+        CollectionName = '003_Bookmark'
+        Disabled = False
+        Name = '003_Bookmark'
+      end
+      item
+        CollectionIndex = 4
+        CollectionName = '004_Delete'
+        Disabled = False
+        Name = '004_Delete'
+      end
+      item
+        CollectionIndex = 5
+        CollectionName = '005_Edit'
+        Disabled = False
+        Name = '005_Edit'
+      end
+      item
+        CollectionIndex = 6
+        CollectionName = '006_Menu'
+        Disabled = False
+        Name = '006_Menu'
+      end
+      item
+        CollectionIndex = 7
+        CollectionName = '007_Home'
+        Disabled = False
+        Name = '007_Home'
+      end>
+    ImageCollection = dmCommon.icDarkIcons
+    Width = 32
+    Height = 32
+    Left = 544
+    Top = 44
   end
 end
