@@ -36,6 +36,7 @@ type
     acSectionNotes: TAction;
     vilIcons: TVirtualImageList;
     vilLargeIcons: TVirtualImageList;
+    tiTrayIcon: TTrayIcon;
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acSectionNotesExecute(Sender: TObject);
@@ -44,10 +45,17 @@ type
     procedure FormCreate(Sender: TObject);
     procedure imBurgerButtonClick(Sender: TObject);
     procedure mbMainPaint(Sender: TObject);
+    procedure tiTrayIconClick(Sender: TObject);
+    procedure tiTrayIconDblClick(Sender: TObject);
   private
     FForms: TQollectorFormList;
+    HotKeyID: ATOM;
     procedure WMActivate(var Message: TWMActivate); message WM_ACTIVATE;
-    procedure WmSize(var Message: TWMSize); message WM_SIZE;
+    procedure WMSize(var Message: TWMSize); message WM_SIZE;
+    procedure WMHotKey(var Msg: TWMHotKey); message WM_HOTKEY;
+    procedure RegisterHotkeys;
+    procedure UnRegisterHotkeys;
+    procedure Restore;
   protected
     property Forms: TQollectorFormList read FForms;
   public
@@ -96,6 +104,7 @@ begin
   GlobalEventBus.RegisterSubscriberForEvents(Self);
   dmCommon.MainFormCreated;
   dmCommon.LoadDatabase('');
+  RegisterHotkeys;
 end;
 
 procedure TwMain.FormDestroy(Sender: TObject);
@@ -139,6 +148,39 @@ begin
   vilLargeIcons.ImageCollection := dmCommon.GetImageCollection;
 end;
 
+procedure TwMain.RegisterHotkeys;
+const
+  VK_Q = $51;
+begin
+  HotKeyID := GlobalAddAtom('QollectorHotKey');
+//  RegisterHotKey(Handle, HotKeyID, MOD_WIN + MOD_SHIFT, VK_Q);
+  RegisterHotKey(Handle, HotKeyID, MOD_WIN, VK_NUMPAD0);
+end;
+
+procedure TwMain.Restore;
+begin
+  Show;
+  WindowState := wsNormal;
+  Application.BringToFront;
+end;
+
+procedure TwMain.tiTrayIconClick(Sender: TObject);
+begin
+  Restore;
+end;
+
+procedure TwMain.tiTrayIconDblClick(Sender: TObject);
+begin
+  Restore;
+end;
+
+procedure TwMain.UnRegisterHotkeys;
+begin
+  UnRegisterHotKey(Handle, HotKeyID);
+  GlobalDeleteAtom(HotKeyID);
+  HotKeyID := 0;
+end;
+
 procedure TwMain.WMActivate(var Message: TWMActivate);
 begin
   inherited;
@@ -146,7 +188,13 @@ begin
     mbMain.Invalidate;
 end;
 
-procedure TwMain.WmSize(var Message: TWMSize);
+procedure TwMain.WMHotKey(var Msg: TWMHotKey);
+begin
+  if Msg.HotKey = HotKeyID then
+    Restore;
+end;
+
+procedure TwMain.WMSize(var Message: TWMSize);
 begin
   inherited;
   if Assigned(mbMain) then

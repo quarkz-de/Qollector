@@ -43,12 +43,12 @@ object wMain: TwMain
     Width = 1032
     Height = 30
     CustomButtons = <>
-    ExplicitWidth = 903
     object mbMain: TActionMainMenuBar
       Left = 32
       Top = 0
       Width = 257
       Height = 24
+      UseSystemFont = False
       ActionManager = amActions
       Align = alNone
       Caption = 'mbMain'
@@ -58,7 +58,7 @@ object wMain: TwMain
       ColorMap.BtnSelectedFont = clBlack
       ColorMap.UnusedColor = clWhite
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
@@ -343,5 +343,13 @@ object wMain: TwMain
     Height = 32
     Left = 544
     Top = 44
+  end
+  object tiTrayIcon: TTrayIcon
+    Animate = True
+    Visible = True
+    OnClick = tiTrayIconClick
+    OnDblClick = tiTrayIconDblClick
+    Left = 608
+    Top = 40
   end
 end
