@@ -13,7 +13,8 @@ uses
   VirtualTrees,
   Eventbus,
   Qollector.Visualizers, Qollector.Events, Qollector.Forms, Vcl.VirtualImage,
-  Vcl.StdCtrls, Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList;
+  Vcl.StdCtrls, Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList,
+  Vcl.AppEvnts;
 
 type
   TwMain = class(TForm)
@@ -37,11 +38,13 @@ type
     vilIcons: TVirtualImageList;
     vilLargeIcons: TVirtualImageList;
     tiTrayIcon: TTrayIcon;
+    aeApplicationEvents: TApplicationEvents;
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acSectionNotesExecute(Sender: TObject);
     procedure acSectionWelcomeExecute(Sender: TObject);
     procedure acSettingsExecute(Sender: TObject);
+    procedure aeApplicationEventsMinimize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure imBurgerButtonClick(Sender: TObject);
     procedure mbMainPaint(Sender: TObject);
@@ -56,6 +59,7 @@ type
     procedure RegisterHotkeys;
     procedure UnRegisterHotkeys;
     procedure Restore;
+    procedure Minimize;
   protected
     property Forms: TQollectorFormList read FForms;
   public
@@ -97,6 +101,11 @@ begin
   TwSettingsDialog.ExecuteDialog;
 end;
 
+procedure TwMain.aeApplicationEventsMinimize(Sender: TObject);
+begin
+  Minimize;
+end;
+
 procedure TwMain.FormCreate(Sender: TObject);
 begin
   FForms := TQollectorFormList.Create(self);
@@ -132,9 +141,15 @@ begin
     end;
 end;
 
+procedure TwMain.Minimize;
+begin
+  Hide;
+  WindowState := wsMinimized;
+  tiTrayIcon.Visible := true;
+end;
+
 procedure TwMain.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
 begin
-//  Caption := 'Qollector - ' + ExtractFilename(AEvent.Filename);
   acSectionNotes.Execute;
   sbNotes.Down := true;
 end;
@@ -159,6 +174,7 @@ end;
 
 procedure TwMain.Restore;
 begin
+  tiTrayIcon.Visible := false;
   Show;
   WindowState := wsNormal;
   Application.BringToFront;
@@ -191,7 +207,12 @@ end;
 procedure TwMain.WMHotKey(var Msg: TWMHotKey);
 begin
   if Msg.HotKey = HotKeyID then
-    Restore;
+    begin
+      if Application.Active then
+        Minimize
+      else
+        Restore;
+    end;
 end;
 
 procedure TwMain.WMSize(var Message: TWMSize);

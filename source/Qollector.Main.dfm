@@ -9,16 +9,16 @@ object wMain: TwMain
   CustomTitleBar.Enabled = True
   CustomTitleBar.Height = 31
   CustomTitleBar.ShowCaption = False
-  CustomTitleBar.BackgroundColor = 11625216
+  CustomTitleBar.BackgroundColor = 14123008
   CustomTitleBar.ForegroundColor = clWhite
   CustomTitleBar.InactiveBackgroundColor = clWhite
   CustomTitleBar.InactiveForegroundColor = 10066329
   CustomTitleBar.ButtonForegroundColor = clWhite
-  CustomTitleBar.ButtonBackgroundColor = 11625216
+  CustomTitleBar.ButtonBackgroundColor = 14123008
   CustomTitleBar.ButtonHoverForegroundColor = clWhite
-  CustomTitleBar.ButtonHoverBackgroundColor = 8801024
+  CustomTitleBar.ButtonHoverBackgroundColor = 11364608
   CustomTitleBar.ButtonPressedForegroundColor = clWhite
-  CustomTitleBar.ButtonPressedBackgroundColor = 4663296
+  CustomTitleBar.ButtonPressedBackgroundColor = 7160320
   CustomTitleBar.ButtonInactiveForegroundColor = 10066329
   CustomTitleBar.ButtonInactiveBackgroundColor = clWhite
   Constraints.MinHeight = 300
@@ -346,10 +346,14 @@ object wMain: TwMain
   end
   object tiTrayIcon: TTrayIcon
     Animate = True
-    Visible = True
     OnClick = tiTrayIconClick
     OnDblClick = tiTrayIconDblClick
     Left = 608
     Top = 40
+  end
+  object aeApplicationEvents: TApplicationEvents
+    OnMinimize = aeApplicationEventsMinimize
+    Left = 696
+    Top = 36
   end
 end
