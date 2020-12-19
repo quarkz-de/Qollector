@@ -3,21 +3,47 @@ unit Qollector.Settings;
 interface
 
 uses
-  System.SysUtils, System.Classes;
+  System.SysUtils, System.Classes,
+  Vcl.Forms;
 
 type
+  TQollectorFormPosition = class(TPersistent)
+  private
+    FWindowState: TWindowState;
+    FTop: Integer;
+    FLeft: Integer;
+    FHeight: Integer;
+    FWidth: Integer;
+  public
+    procedure Assign(const AValue: TQollectorFormPosition);
+    procedure LoadPosition(const AForm: TForm);
+    procedure SavePosition(const AForm: TForm);
+  published
+    property WindowState: TWindowState read FWindowState write FWindowState;
+    property Top: Integer read FTop write FTop;
+    property Left: Integer read FLeft write FLeft;
+    property Height: Integer read FHeight write FHeight;
+    property Width: Integer read FWidth write FWidth;
+  end;
+
   TQollectorSettings = class
   private
+    FDrawerOpened: Boolean;
+    FFormPosition: TQollectorFormPosition;
     procedure SetTheme(const AValue: String);
     function GetTheme: String;
     function GetSettingsFilename: String;
     function GetSettingsFoldername: String;
+    procedure SetFormPositon(const Value: TQollectorFormPosition);
   public
     constructor Create;
+    destructor Destroy; override;
     procedure LoadSettings;
     procedure SaveSettings;
   published
     property Theme: String read GetTheme write SetTheme;
+    property DrawerOpened: Boolean read FDrawerOpened write FDrawerOpened;
+    property FormPosition: TQollectorFormPosition read FFormPosition write SetFormPositon;
   end;
 
 var
@@ -35,6 +61,14 @@ uses
 constructor TQollectorSettings.Create;
 begin
   inherited Create;
+  FFormPosition := TQollectorFormPosition.Create;
+  FDrawerOpened := true;
+end;
+
+destructor TQollectorSettings.Destroy;
+begin
+  FormPosition.Free;
+  inherited;
 end;
 
 function TQollectorSettings.GetSettingsFilename: String;
@@ -81,9 +115,47 @@ begin
   JSON.Free;
 end;
 
+procedure TQollectorSettings.SetFormPositon(
+  const Value: TQollectorFormPosition);
+begin
+  FFormPosition.Assign(Value);
+end;
+
 procedure TQollectorSettings.SetTheme(const AValue: String);
 begin
   QuarkzThemeManager.ThemeName := AValue;
+end;
+
+{ TQollectorFormPosition }
+
+procedure TQollectorFormPosition.Assign(const AValue: TQollectorFormPosition);
+begin
+  WindowState := AValue.WindowState;
+  Top := AValue.Top;
+  Left := AValue.Left;
+  Height := AValue.Height;
+  Width := AValue.Width;
+end;
+
+procedure TQollectorFormPosition.SavePosition(const AForm: TForm);
+begin
+  WindowState := AForm.WindowState;
+  Top := AForm.Top;
+  Left := AForm.Left;
+  Height := AForm.Height;
+  Width := AForm.Width;
+end;
+
+procedure TQollectorFormPosition.LoadPosition(const AForm: TForm);
+begin
+  if (Width > 0) and (Height > 0) then
+    begin
+      AForm.WindowState := WindowState;
+      AForm.Top := Top;
+      AForm.Left := Left;
+      AForm.Height := Height;
+      AForm.Width := Width;
+    end;
 end;
 
 initialization

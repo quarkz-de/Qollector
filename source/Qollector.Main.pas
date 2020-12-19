@@ -49,6 +49,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure imBurgerButtonClick(Sender: TObject);
     procedure mbMainPaint(Sender: TObject);
+    procedure svSplitViewClosed(Sender: TObject);
+    procedure svSplitViewOpened(Sender: TObject);
     procedure tiTrayIconClick(Sender: TObject);
     procedure tiTrayIconDblClick(Sender: TObject);
   private
@@ -61,6 +63,7 @@ type
     procedure UnRegisterHotkeys;
     procedure Restore;
     procedure Minimize;
+    procedure InitSettings;
   protected
     property Forms: TQollectorFormList read FForms;
   public
@@ -80,7 +83,7 @@ implementation
 uses
   Spring.Container, Spring.Collections,
   Qollector.DataModule, Qollector.Notes, Qollector.About,
-  Qollector.Execute;
+  Qollector.Execute, Qollector.Settings;
 
 procedure TwMain.acHelpAboutExecute(Sender: TObject);
 begin
@@ -115,16 +118,24 @@ begin
   dmCommon.MainFormCreated;
   dmCommon.LoadDatabase('');
   RegisterHotkeys;
+  InitSettings;
 end;
 
 procedure TwMain.FormDestroy(Sender: TObject);
 begin
+  QollectorSettings.FormPosition.SavePosition(self);
   FForms.Free;
 end;
 
 procedure TwMain.imBurgerButtonClick(Sender: TObject);
 begin
   svSplitView.Opened := not svSplitView.Opened;
+end;
+
+procedure TwMain.InitSettings;
+begin
+  QollectorSettings.FormPosition.LoadPosition(self);
+  svSplitView.Opened := QollectorSettings.DrawerOpened;
 end;
 
 procedure TwMain.mbMainPaint(Sender: TObject);
@@ -179,6 +190,16 @@ begin
   Show;
   WindowState := wsNormal;
   Application.BringToFront;
+end;
+
+procedure TwMain.svSplitViewClosed(Sender: TObject);
+begin
+  QollectorSettings.DrawerOpened := false;
+end;
+
+procedure TwMain.svSplitViewOpened(Sender: TObject);
+begin
+  QollectorSettings.DrawerOpened := true;
 end;
 
 procedure TwMain.tiTrayIconClick(Sender: TObject);

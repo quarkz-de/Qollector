@@ -76,6 +76,8 @@ object wMain: TwMain
     OpenedWidth = 170
     Placement = svpLeft
     TabOrder = 1
+    OnClosed = svSplitViewClosed
+    OnOpened = svSplitViewOpened
     object pnHeader: TPanel
       Left = 0
       Top = 0
