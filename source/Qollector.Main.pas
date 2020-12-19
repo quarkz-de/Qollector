@@ -22,7 +22,6 @@ type
     acHelpAbout: TAction;
     acFileExit: TFileExit;
     acFileOpen: TFileOpen;
-    acSettings: TAction;
     tbpTitleBar: TTitleBarPanel;
     mbMain: TActionMainMenuBar;
     svSplitView: TSplitView;
@@ -39,11 +38,13 @@ type
     vilLargeIcons: TVirtualImageList;
     tiTrayIcon: TTrayIcon;
     aeApplicationEvents: TApplicationEvents;
+    sbSettings: TSpeedButton;
+    acSectionSettings: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acSectionNotesExecute(Sender: TObject);
+    procedure acSectionSettingsExecute(Sender: TObject);
     procedure acSectionWelcomeExecute(Sender: TObject);
-    procedure acSettingsExecute(Sender: TObject);
     procedure aeApplicationEventsMinimize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure imBurgerButtonClick(Sender: TObject);
@@ -79,7 +80,7 @@ implementation
 uses
   Spring.Container, Spring.Collections,
   Qollector.DataModule, Qollector.Notes, Qollector.About,
-  Qollector.SettingsDialog, Qollector.Execute;
+  Qollector.Execute;
 
 procedure TwMain.acHelpAboutExecute(Sender: TObject);
 begin
@@ -91,14 +92,14 @@ begin
   FForms.ShowForm(qftNotes);
 end;
 
+procedure TwMain.acSectionSettingsExecute(Sender: TObject);
+begin
+  FForms.ShowForm(qftSettings);
+end;
+
 procedure TwMain.acSectionWelcomeExecute(Sender: TObject);
 begin
   FForms.ShowForm(qftWelcome);
-end;
-
-procedure TwMain.acSettingsExecute(Sender: TObject);
-begin
-  TwSettingsDialog.ExecuteDialog;
 end;
 
 procedure TwMain.aeApplicationEventsMinimize(Sender: TObject);

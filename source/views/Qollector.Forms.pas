@@ -9,7 +9,7 @@ uses
 type
   TQollectorForm = class(TForm);
 
-  TQollectorFormType = (qftWelcome, qftNotes);
+  TQollectorFormType = (qftWelcome, qftNotes, qftSettings);
 
   TQollectorFormList = class(TObject)
   private
@@ -26,7 +26,7 @@ type
 implementation
 
 uses
-  Qollector.WelcomeForm, Qollector.NoteForm;
+  Qollector.WelcomeForm, Qollector.NoteForm, Qollector.SettingsForm;
 
 { TQollectorFormList }
 
@@ -43,6 +43,7 @@ var
 begin
   FForms[qftWelcome] := TwWelcomeForm.Create(FParent);
   FForms[qftNotes] := TwNoteForm.Create(FParent);
+  FForms[qftSettings] := TwSettingsForm.Create(FParent);
 
   for Form in FForms do
     Form.Font := FParent.Font;

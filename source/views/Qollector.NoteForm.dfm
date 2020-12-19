@@ -94,9 +94,9 @@ object wNoteForm: TwNoteForm
       ImageIndex = 2
       object stLinks: TVirtualStringTree
         Left = 0
-        Top = 23
+        Top = 26
         Width = 633
-        Height = 474
+        Height = 471
         Align = alClient
         BorderStyle = bsNone
         DefaultNodeHeight = 19
@@ -128,7 +128,7 @@ object wNoteForm: TwNoteForm
         Left = 0
         Top = 0
         Width = 633
-        Height = 23
+        Height = 26
         ActionManager = amActions
         Color = clMenuBar
         ColorMap.DisabledFontColor = 7171437
@@ -441,6 +441,12 @@ object wNoteForm: TwNoteForm
         CollectionName = '007_Home'
         Disabled = False
         Name = '007_Home'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = '008_Settings'
+        Disabled = False
+        Name = '008_Settings'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Left = 404

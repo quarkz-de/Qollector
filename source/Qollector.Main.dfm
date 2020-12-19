@@ -5,10 +5,10 @@ object wMain: TwMain
   ClientHeight = 557
   ClientWidth = 1032
   Color = clBtnFace
+  CustomTitleBar.CaptionAlignment = taCenter
   CustomTitleBar.Control = tbpTitleBar
   CustomTitleBar.Enabled = True
   CustomTitleBar.Height = 31
-  CustomTitleBar.ShowCaption = False
   CustomTitleBar.BackgroundColor = 14123008
   CustomTitleBar.ForegroundColor = clWhite
   CustomTitleBar.InactiveBackgroundColor = clWhite
@@ -69,22 +69,24 @@ object wMain: TwMain
   object svSplitView: TSplitView
     Left = 0
     Top = 30
-    Width = 200
+    Width = 170
     Height = 527
     CloseStyle = svcCompact
-    OpenedWidth = 200
+    CompactWidth = 42
+    OpenedWidth = 170
     Placement = svpLeft
     TabOrder = 1
     object pnHeader: TPanel
       Left = 0
       Top = 0
-      Width = 200
+      Width = 170
       Height = 45
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitWidth = 200
       object imBurgerButton: TVirtualImage
-        Left = 8
+        Left = 6
         Top = 6
         Width = 32
         Height = 32
@@ -117,35 +119,53 @@ object wMain: TwMain
     object pnNavigation: TPanel
       Left = 0
       Top = 45
-      Width = 200
+      Width = 170
       Height = 482
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitWidth = 200
       object sbStart: TSpeedButton
         Left = 0
         Top = 0
-        Width = 200
+        Width = 170
         Height = 38
         Action = acSectionWelcome
         Align = alTop
         GroupIndex = 1
-        Down = True
         Images = vilLargeIcons
-        Margin = 14
+        Flat = True
+        Margin = 6
         ExplicitTop = -6
+        ExplicitWidth = 200
       end
       object sbNotes: TSpeedButton
         Left = 0
         Top = 38
-        Width = 200
+        Width = 170
         Height = 38
         Action = acSectionNotes
         Align = alTop
         GroupIndex = 1
         Images = vilLargeIcons
-        Margin = 14
+        Flat = True
+        Margin = 6
         ExplicitTop = 4
+        ExplicitWidth = 200
+      end
+      object sbSettings: TSpeedButton
+        Left = 0
+        Top = 444
+        Width = 170
+        Height = 38
+        Action = acSectionSettings
+        Align = alBottom
+        GroupIndex = 1
+        Images = vilLargeIcons
+        Flat = True
+        Margin = 6
+        ExplicitTop = 4
+        ExplicitWidth = 200
       end
     end
   end
@@ -158,12 +178,6 @@ object wMain: TwMain
               item
                 Action = acFileOpen
                 ShortCut = 16463
-              end
-              item
-                Caption = '-'
-              end
-              item
-                Action = acSettings
               end
               item
                 Caption = '-'
@@ -199,11 +213,6 @@ object wMain: TwMain
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
       ShortCut = 16463
     end
-    object acSettings: TAction
-      Category = 'Datei'
-      Caption = '&Einstellungen...'
-      OnExecute = acSettingsExecute
-    end
     object acHelpAbout: TAction
       Category = 'Hilfe'
       Caption = '&'#220'ber...'
@@ -226,6 +235,14 @@ object wMain: TwMain
       ImageIndex = 0
       ImageName = '000_Notebook'
       OnExecute = acSectionNotesExecute
+    end
+    object acSectionSettings: TAction
+      Category = 'Bereich'
+      Caption = 'Einstellungen'
+      GroupIndex = 1
+      ImageIndex = 8
+      ImageName = '008_Settings'
+      OnExecute = acSectionSettingsExecute
     end
   end
   object vilIcons: TVirtualImageList
@@ -280,6 +297,12 @@ object wMain: TwMain
         CollectionName = '007_Home'
         Disabled = False
         Name = '007_Home'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = '008_Settings'
+        Disabled = False
+        Name = '008_Settings'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Left = 484
@@ -337,6 +360,12 @@ object wMain: TwMain
         CollectionName = '007_Home'
         Disabled = False
         Name = '007_Home'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = '008_Settings'
+        Disabled = False
+        Name = '008_Settings'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Width = 32

@@ -21,12 +21,12 @@ uses
   Qollector.Forms in 'views\Qollector.Forms.pas',
   Qollector.About in 'views\Qollector.About.pas' {wAbout},
   Qollector.Settings in 'core\Qollector.Settings.pas',
-  Qollector.SettingsDialog in 'views\Qollector.SettingsDialog.pas' {wSettingsDialog},
   Qollector.Execute in 'core\Qollector.Execute.pas',
   Qollector.Migrations in 'models\Qollector.Migrations.pas',
   Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas',
   Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor},
-  Qollector.WelcomeForm in 'views\Qollector.WelcomeForm.pas' {wWelcomeForm};
+  Qollector.WelcomeForm in 'views\Qollector.WelcomeForm.pas' {wWelcomeForm},
+  Qollector.SettingsForm in 'views\Qollector.SettingsForm.pas' {wSettingsForm};
 
 {$R *.res}
 
@@ -37,6 +37,5 @@ begin
   Application.Title := 'Qollector';
   Application.CreateForm(TdmCommon, dmCommon);
   Application.CreateForm(TwMain, wMain);
-  Application.CreateForm(TwLinkEditor, wLinkEditor);
   Application.Run;
 end.

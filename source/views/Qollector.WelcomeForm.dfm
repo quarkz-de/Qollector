@@ -220,8 +220,8 @@ object wWelcomeForm: TwWelcomeForm
   object txFilename: TLabel
     Left = 80
     Top = 92
-    Width = 52
+    Width = 129
     Height = 13
-    Caption = 'txFilename'
+    Caption = '(keine Sammlung ge'#246'ffnet)'
   end
 end
