@@ -11,6 +11,7 @@ object wWelcomeForm: TwWelcomeForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = True
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object imIcon: TImage
@@ -215,5 +216,12 @@ object wWelcomeForm: TwWelcomeForm
       E8F304B1602195B00862C1820E2C8258B0A0038B20162CE8C02288050B3AB008
       62C1820E2C8258B0A0038B20162CE8C02288050B3AB00862C1820E2C8258B0A0
       83FF037F5D6BD87F306F6B0000000049454E44AE426082}
+  end
+  object txFilename: TLabel
+    Left = 80
+    Top = 92
+    Width = 52
+    Height = 13
+    Caption = 'txFilename'
   end
 end
