@@ -24,7 +24,7 @@ object wNoteForm: TwNoteForm
     Top = 3
     Width = 641
     Height = 537
-    ActivePage = tsLinks
+    ActivePage = tsEdit
     Align = alClient
     TabHeight = 30
     TabOrder = 0

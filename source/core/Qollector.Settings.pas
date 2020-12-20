@@ -26,8 +26,11 @@ type
     property Width: Integer read FWidth write FWidth;
   end;
 
+  TQollectorSettingValue = (svEditorFont);
+
   TQollectorSettings = class
   private
+    FEditorFont: String;
     FDrawerOpened: Boolean;
     FFormPosition: TQollectorFormPosition;
     procedure SetTheme(const AValue: String);
@@ -35,6 +38,8 @@ type
     function GetSettingsFilename: String;
     function GetSettingsFoldername: String;
     procedure SetFormPositon(const Value: TQollectorFormPosition);
+    procedure ChangeEvent(const AValue: TQollectorSettingValue);
+    procedure SetEditorFont(const AValue: String);
   public
     constructor Create;
     destructor Destroy; override;
@@ -42,6 +47,7 @@ type
     procedure SaveSettings;
   published
     property Theme: String read GetTheme write SetTheme;
+    property EditorFont: String read FEditorFont write SetEditorFont;
     property DrawerOpened: Boolean read FDrawerOpened write FDrawerOpened;
     property FormPosition: TQollectorFormPosition read FFormPosition write SetFormPositon;
   end;
@@ -54,13 +60,22 @@ implementation
 uses
   System.IOUtils, System.JSON,
   Neon.Core.Persistence, Neon.Core.Persistence.JSON,
+  EventBus,
+  Qollector.Events,
   Qodelib.Themes, Qodelib.IOUtils;
 
 { TQollectorSettings }
 
+procedure TQollectorSettings.ChangeEvent(const AValue: TQollectorSettingValue);
+begin
+  GlobalEventBus.Post(TSettingChangeEvent.Create(AValue), '',
+    TEventMM.mmAutomatic);
+end;
+
 constructor TQollectorSettings.Create;
 begin
   inherited Create;
+  FEditorFont := 'Courier New';
   FFormPosition := TQollectorFormPosition.Create;
   FDrawerOpened := true;
 end;
@@ -113,6 +128,12 @@ begin
   TNeon.PrintToStream(JSON, Stream, true);
   Stream.Free;
   JSON.Free;
+end;
+
+procedure TQollectorSettings.SetEditorFont(const AValue: String);
+begin
+  FEditorFont := AValue;
+  ChangeEvent(svEditorFont);
 end;
 
 procedure TQollectorSettings.SetFormPositon(

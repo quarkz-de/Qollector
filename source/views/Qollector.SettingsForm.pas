@@ -14,6 +14,9 @@ type
   TwSettingsForm = class(TQollectorForm)
     txTheme: TLabel;
     cbTheme: TComboBox;
+    cbEditorFont: TComboBox;
+    txEditorFont: TLabel;
+    procedure cbEditorFontChange(Sender: TObject);
     procedure cbThemeChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -26,8 +29,14 @@ implementation
 {$R *.dfm}
 
 uses
-  Qodelib.Themes,
+  Qodelib.Themes, QodeLib.Fonts,
   Qollector.Settings;
+
+procedure TwSettingsForm.cbEditorFontChange(Sender: TObject);
+begin
+  if cbEditorFont.ItemIndex > -1 then
+    QollectorSettings.EditorFont := cbEditorFont.Items[cbEditorFont.ItemIndex];
+end;
 
 { TwWelcomeForm }
 
@@ -46,6 +55,9 @@ procedure TwSettingsForm.LoadValues;
 begin
   QuarkzThemeManager.AssignThemeNames(cbTheme.Items);
   cbTheme.ItemIndex := cbTheme.Items.IndexOf(QollectorSettings.Theme);
+
+  TFontNames.GetFixedPitchFonts(cbEditorFont.Items);
+  cbEditorFont.ItemIndex := cbEditorFont.Items.IndexOf(QollectorSettings.EditorFont);
 end;
 
 end.

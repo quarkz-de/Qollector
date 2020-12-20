@@ -4,7 +4,7 @@ interface
 
 uses
   EventBus,
-  Qollector.Notes, Qollector.Visualizers;
+  Qollector.Notes, Qollector.Visualizers, Qollector.Settings;
 
 type
   TDatabaseLoadEvent = class(TObject)
@@ -48,6 +48,14 @@ type
     constructor Create(const AThemeName: String; const AIsDark: Boolean);
     property ThemeName: String read FThemeName;
     property IsDark: Boolean read FIsDark;
+  end;
+
+  TSettingChangeEvent = class(TObject)
+  private
+    FValue: TQollectorSettingValue;
+  public
+    constructor Create(const AValue: TQollectorSettingValue);
+    property Value: TQollectorSettingValue read FValue;
   end;
 
 implementation
@@ -97,6 +105,14 @@ begin
   inherited Create;
   FThemeName := AThemeName;
   FIsDark := AIsDark;
+end;
+
+{ TSettingChangeEvent }
+
+constructor TSettingChangeEvent.Create(const AValue: TQollectorSettingValue);
+begin
+  inherited Create;
+  FValue := AValue;
 end;
 
 end.

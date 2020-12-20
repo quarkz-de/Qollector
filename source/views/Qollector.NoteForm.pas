@@ -104,6 +104,8 @@ type
     procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
     [Subscribe(TThreadMode.Main)]
     procedure OnThemeChange(AEvent: TThemeChangeEvent);
+    [Subscribe(TThreadMode.Main)]
+    procedure OnSettingChange(AEvent: TSettingChangeEvent);
     procedure SaveChanges;
   end;
 
@@ -115,13 +117,15 @@ uses
   Spring.Container, Spring.Collections,
   MarkdownProcessor,
   Qollector.Database, Qollector.Execute, Qollector.DataModule,
-  Qollector.EditLink;
+  Qollector.EditLink, Qollector.Settings;
 
 { TwNoteForm }
 
 procedure TwNoteForm.FormCreate(Sender: TObject);
 begin
   GlobalEventBus.RegisterSubscriberForEvents(Self);
+
+  edText.Font.Name := QollectorSettings.EditorFont;
 
   pcNote.ActivePage := tsEdit;
 
@@ -261,6 +265,14 @@ begin
   FTreeVisualizer.SetNotebookItems(Notebooks);
   FTreeVisualizer.UpdateContent;
   UpdateNoteActions(itNone);
+end;
+
+procedure TwNoteForm.OnSettingChange(AEvent: TSettingChangeEvent);
+begin
+  case AEVent.Value of
+    svEditorFont:
+      edText.Font.Name := QollectorSettings.EditorFont;
+  end;
 end;
 
 procedure TwNoteForm.OnThemeChange(AEvent: TThemeChangeEvent);

@@ -21,13 +21,29 @@ object wSettingsForm: TwSettingsForm
     Height = 13
     Caption = 'Thema'
   end
+  object txEditorFont: TLabel
+    Left = 20
+    Top = 59
+    Width = 72
+    Height = 13
+    Caption = 'Editorschriftart'
+  end
   object cbTheme: TComboBox
-    Left = 88
+    Left = 124
     Top = 21
     Width = 145
     Height = 21
     Style = csDropDownList
     TabOrder = 0
     OnChange = cbThemeChange
+  end
+  object cbEditorFont: TComboBox
+    Left = 124
+    Top = 56
+    Width = 249
+    Height = 21
+    Style = csDropDownList
+    TabOrder = 1
+    OnChange = cbEditorFontChange
   end
 end
