@@ -46,4 +46,12 @@ object wSettingsForm: TwSettingsForm
     TabOrder = 1
     OnChange = cbEditorFontChange
   end
+  object cbEditorFontSize: TComboBox
+    Left = 388
+    Top = 56
+    Width = 73
+    Height = 21
+    TabOrder = 2
+    OnChange = cbEditorFontSizeChange
+  end
 end

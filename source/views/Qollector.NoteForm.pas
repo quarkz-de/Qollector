@@ -13,6 +13,7 @@ uses
   Vcl.ImgList, Vcl.VirtualImageList,
   VirtualTrees,
   Eventbus,
+  MarkdownProcessor,
   SynEdit, SynEditTypes, SynEditKeyCmds,
   HTMLUn2, HtmlView, UrlConn,
   Qodelib.Themes,
@@ -89,6 +90,7 @@ type
   private
     FLinkVisualizer: ILinkListVisualizer;
     FTreeVisualizer: INotesTreeVisualizer;
+    MarkdownProcessor: TMarkdownProcessor;
     function IsModified: Boolean;
     procedure UpdatePreview;
     procedure UpdateNoteActions(const ASelectedItemType: TNotesTreeItemType);
@@ -115,7 +117,6 @@ implementation
 
 uses
   Spring.Container, Spring.Collections,
-  MarkdownProcessor,
   Qollector.Database, Qollector.Execute, Qollector.DataModule,
   Qollector.EditLink, Qollector.Settings;
 
@@ -123,6 +124,7 @@ uses
 
 procedure TwNoteForm.FormCreate(Sender: TObject);
 begin
+  MarkdownProcessor := TMarkdownProcessor.CreateDialect(mdCommonMark);
   GlobalEventBus.RegisterSubscriberForEvents(Self);
 
   edText.Font.Name := QollectorSettings.EditorFont;
@@ -139,6 +141,7 @@ end;
 procedure TwNoteForm.FormDestroy(Sender: TObject);
 begin
   SaveChanges;
+  MarkdownProcessor.Free;
 end;
 
 procedure TwNoteForm.acDeleteItemExecute(Sender: TObject);
@@ -271,7 +274,10 @@ procedure TwNoteForm.OnSettingChange(AEvent: TSettingChangeEvent);
 begin
   case AEVent.Value of
     svEditorFont:
-      edText.Font.Name := QollectorSettings.EditorFont;
+      begin
+        edText.Font.Name := QollectorSettings.EditorFont;
+        edText.Font.Size := QollectorSettings.EditorFontSize;
+      end;
   end;
 end;
 
@@ -471,19 +477,13 @@ begin
 end;
 
 procedure TwNoteForm.UpdatePreview;
+const
+  Template = '<html><head><link rel="StyleSheet" type="text/css" href="res:///%s.css"></head><body>%s</body></html>';
 var
-  Markdown: TMarkdownProcessor;
   Html: String;
 begin
-  Markdown := TMarkdownProcessor.CreateDialect(mdCommonMark);
-  Html := '<html><head>' + #13#10 +
-    '<link rel="StyleSheet" type="text/css" href="res:///' +
-    QuarkzThemeManager.StyleResource + '.css">' + #13#10 +
-    '</head><body>' + #13#10 +
-    Markdown.Process(edText.Text) + #13#10 +
-    '</body></html>';
+  Html := Format(Template, [QuarkzThemeManager.StyleResource, MarkdownProcessor.Process(edText.Text)]);
   hvText.LoadFromString(Html);
-  Markdown.Free;
 end;
 
 end.

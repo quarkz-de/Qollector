@@ -16,11 +16,14 @@ type
     cbTheme: TComboBox;
     cbEditorFont: TComboBox;
     txEditorFont: TLabel;
+    cbEditorFontSize: TComboBox;
     procedure cbEditorFontChange(Sender: TObject);
+    procedure cbEditorFontSizeChange(Sender: TObject);
     procedure cbThemeChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     procedure LoadValues;
+    procedure InitControls;
   public
   end;
 
@@ -38,6 +41,15 @@ begin
     QollectorSettings.EditorFont := cbEditorFont.Items[cbEditorFont.ItemIndex];
 end;
 
+procedure TwSettingsForm.cbEditorFontSizeChange(Sender: TObject);
+var
+  Size: Integer;
+begin
+  Size := String(cbEditorFontSize.Text).ToInteger;
+  if Size > 5 then
+    QollectorSettings.EditorFontSize := Size;
+end;
+
 { TwWelcomeForm }
 
 procedure TwSettingsForm.cbThemeChange(Sender: TObject);
@@ -48,7 +60,17 @@ end;
 procedure TwSettingsForm.FormCreate(Sender: TObject);
 begin
 //  GlobalEventBus.RegisterSubscriberForEvents(Self);
+  InitControls;
   LoadValues;
+end;
+
+procedure TwSettingsForm.InitControls;
+var
+  I: Integer;
+begin
+  cbEditorFontSize.Items.Clear;
+  for I := 6 to 30 do
+    cbEditorFontSize.Items.Add(I.ToString);
 end;
 
 procedure TwSettingsForm.LoadValues;
@@ -58,6 +80,7 @@ begin
 
   TFontNames.GetFixedPitchFonts(cbEditorFont.Items);
   cbEditorFont.ItemIndex := cbEditorFont.Items.IndexOf(QollectorSettings.EditorFont);
+  cbEditorFontSize.Text := QollectorSettings.EditorFontSize.ToString;
 end;
 
 end.

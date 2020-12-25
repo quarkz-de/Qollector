@@ -31,6 +31,7 @@ type
   TQollectorSettings = class
   private
     FEditorFont: String;
+    FEditorFontSize: Integer;
     FDrawerOpened: Boolean;
     FFormPosition: TQollectorFormPosition;
     procedure SetTheme(const AValue: String);
@@ -40,6 +41,7 @@ type
     procedure SetFormPositon(const Value: TQollectorFormPosition);
     procedure ChangeEvent(const AValue: TQollectorSettingValue);
     procedure SetEditorFont(const AValue: String);
+    procedure SetEditorFontSize(const AValue: Integer);
   public
     constructor Create;
     destructor Destroy; override;
@@ -48,6 +50,7 @@ type
   published
     property Theme: String read GetTheme write SetTheme;
     property EditorFont: String read FEditorFont write SetEditorFont;
+    property EditorFontSize: Integer read FEditorFontSize write SetEditorFontSize;
     property DrawerOpened: Boolean read FDrawerOpened write FDrawerOpened;
     property FormPosition: TQollectorFormPosition read FFormPosition write SetFormPositon;
   end;
@@ -76,6 +79,7 @@ constructor TQollectorSettings.Create;
 begin
   inherited Create;
   FEditorFont := 'Courier New';
+  FEditorFontSize := 10;
   FFormPosition := TQollectorFormPosition.Create;
   FDrawerOpened := true;
 end;
@@ -133,6 +137,12 @@ end;
 procedure TQollectorSettings.SetEditorFont(const AValue: String);
 begin
   FEditorFont := AValue;
+  ChangeEvent(svEditorFont);
+end;
+
+procedure TQollectorSettings.SetEditorFontSize(const AValue: Integer);
+begin
+  FEditorFontSize := AValue;
   ChangeEvent(svEditorFont);
 end;
 

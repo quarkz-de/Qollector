@@ -33,6 +33,10 @@ object wNoteForm: TwNoteForm
     OnChange = pcNoteChange
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object edText: TSynEdit
         Left = 0
         Top = 0
@@ -62,6 +66,10 @@ object wNoteForm: TwNoteForm
     object tsView: TTabSheet
       Caption = 'Anzeige'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object hvText: THtmlViewer
         Left = 0
         Top = 0
@@ -94,9 +102,9 @@ object wNoteForm: TwNoteForm
       ImageIndex = 2
       object stLinks: TVirtualStringTree
         Left = 0
-        Top = 26
+        Top = 23
         Width = 633
-        Height = 471
+        Height = 474
         Align = alClient
         BorderStyle = bsNone
         DefaultNodeHeight = 19
@@ -112,6 +120,8 @@ object wNoteForm: TwNoteForm
         OnDragDrop = stLinksDragDrop
         OnFocusChanged = stLinksFocusChanged
         OnKeyDown = stLinksKeyDown
+        ExplicitTop = 26
+        ExplicitHeight = 471
         Columns = <
           item
             Position = 0
@@ -128,7 +138,7 @@ object wNoteForm: TwNoteForm
         Left = 0
         Top = 0
         Width = 633
-        Height = 26
+        Height = 23
         ActionManager = amActions
         Color = clMenuBar
         ColorMap.DisabledFontColor = 7171437
