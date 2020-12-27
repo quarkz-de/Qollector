@@ -125,6 +125,7 @@ procedure TwMain.FormDestroy(Sender: TObject);
 begin
   QollectorSettings.FormPosition.SavePosition(self);
   FForms.Free;
+  UnRegisterHotkeys;
 end;
 
 procedure TwMain.imBurgerButtonClick(Sender: TObject);

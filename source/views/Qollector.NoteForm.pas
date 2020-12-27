@@ -95,6 +95,7 @@ type
     procedure UpdatePreview;
     procedure UpdateNoteActions(const ASelectedItemType: TNotesTreeItemType);
     procedure UpdateLinkActions;
+    procedure UpdateEditorSettings;
     procedure NewFavoriteItem(const AFilename: TFilename);
     function GetCurrentNote: TNoteItem;
   protected
@@ -127,7 +128,7 @@ begin
   MarkdownProcessor := TMarkdownProcessor.CreateDialect(mdCommonMark);
   GlobalEventBus.RegisterSubscriberForEvents(Self);
 
-  edText.Font.Name := QollectorSettings.EditorFont;
+  UpdateEditorSettings;
 
   pcNote.ActivePage := tsEdit;
 
@@ -274,10 +275,7 @@ procedure TwNoteForm.OnSettingChange(AEvent: TSettingChangeEvent);
 begin
   case AEVent.Value of
     svEditorFont:
-      begin
-        edText.Font.Name := QollectorSettings.EditorFont;
-        edText.Font.Size := QollectorSettings.EditorFontSize;
-      end;
+      UpdateEditorSettings;
   end;
 end;
 
@@ -453,6 +451,12 @@ begin
         SaveNote(CurrentNote);
       end;
   end;
+end;
+
+procedure TwNoteForm.UpdateEditorSettings;
+begin
+  edText.Font.Name := QollectorSettings.EditorFont;
+  edText.Font.Size := QollectorSettings.EditorFontSize;
 end;
 
 procedure TwNoteForm.UpdateLinkActions;

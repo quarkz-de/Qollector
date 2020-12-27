@@ -15,7 +15,7 @@ type
     FHeight: Integer;
     FWidth: Integer;
   public
-    procedure Assign(const AValue: TQollectorFormPosition);
+    procedure Assign(Source: TPersistent); override;
     procedure LoadPosition(const AForm: TForm);
     procedure SavePosition(const AForm: TForm);
   published
@@ -28,7 +28,7 @@ type
 
   TQollectorSettingValue = (svEditorFont);
 
-  TQollectorSettings = class
+  TQollectorSettings = class(TPersistent)
   private
     FEditorFont: String;
     FEditorFontSize: Integer;
@@ -159,13 +159,18 @@ end;
 
 { TQollectorFormPosition }
 
-procedure TQollectorFormPosition.Assign(const AValue: TQollectorFormPosition);
+procedure TQollectorFormPosition.Assign(Source: TPersistent);
 begin
-  WindowState := AValue.WindowState;
-  Top := AValue.Top;
-  Left := AValue.Left;
-  Height := AValue.Height;
-  Width := AValue.Width;
+  if Source is TQollectorFormPosition then
+    begin
+      WindowState := TQollectorFormPosition(Source).WindowState;
+      Top := TQollectorFormPosition(Source).Top;
+      Left := TQollectorFormPosition(Source).Left;
+      Height := TQollectorFormPosition(Source).Height;
+      Width := TQollectorFormPosition(Source).Width;
+    end
+  else
+    inherited Assign(Source);
 end;
 
 procedure TQollectorFormPosition.SavePosition(const AForm: TForm);

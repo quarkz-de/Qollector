@@ -33,10 +33,6 @@ object wNoteForm: TwNoteForm
     OnChange = pcNoteChange
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object edText: TSynEdit
         Left = 0
         Top = 0
