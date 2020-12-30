@@ -62,10 +62,6 @@ object wNoteForm: TwNoteForm
     object tsView: TTabSheet
       Caption = 'Anzeige'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object hvText: THtmlViewer
         Left = 0
         Top = 0
@@ -98,9 +94,9 @@ object wNoteForm: TwNoteForm
       ImageIndex = 2
       object stLinks: TVirtualStringTree
         Left = 0
-        Top = 23
+        Top = 26
         Width = 633
-        Height = 474
+        Height = 471
         Align = alClient
         BorderStyle = bsNone
         DefaultNodeHeight = 19
@@ -116,8 +112,6 @@ object wNoteForm: TwNoteForm
         OnDragDrop = stLinksDragDrop
         OnFocusChanged = stLinksFocusChanged
         OnKeyDown = stLinksKeyDown
-        ExplicitTop = 26
-        ExplicitHeight = 471
         Columns = <
           item
             Position = 0
@@ -134,7 +128,7 @@ object wNoteForm: TwNoteForm
         Left = 0
         Top = 0
         Width = 633
-        Height = 23
+        Height = 26
         ActionManager = amActions
         Color = clMenuBar
         ColorMap.DisabledFontColor = 7171437
@@ -239,25 +233,13 @@ object wNoteForm: TwNoteForm
     Left = 408
     Top = 212
     object miNewNotebook: TMenuItem
-      Caption = 'Neues Notiz&buch'
-      Hint = 'Neues Notizbuch'
-      ImageIndex = 0
-      ImageName = '000_Notebook'
-      OnClick = acNewNotebookExecute
+      Action = acNewNotebook
     end
     object miNewNote: TMenuItem
-      Caption = '&Neue Notiz'
-      Hint = 'Neue Notiz'
-      ImageIndex = 1
-      ImageName = '001_Note'
-      OnClick = acNewNoteExecute
+      Action = acNewNote
     end
     object miDeleteItem: TMenuItem
-      Caption = '&L'#246'schen'
-      Hint = 'Element l'#246'schen'
-      ImageIndex = 4
-      ImageName = '004_Delete'
-      OnClick = acDeleteItemExecute
+      Action = acDeleteItem
     end
   end
   object pmLinks: TPopupMenu
@@ -265,31 +247,16 @@ object wNoteForm: TwNoteForm
     Left = 480
     Top = 212
     object miNewBookmark: TMenuItem
-      Caption = 'Neues &Lesezeichen'
-      Hint = 'Neues Lesezeichen'
-      ImageIndex = 3
-      ImageName = '003_Bookmark'
-      OnClick = acNewBookmarkExecute
+      Action = acNewBookmark
     end
     object miNewFavorite: TMenuItem
-      Caption = 'Neue &Datei anheften...'
-      Hint = 'Neue Datei anheften'
-      ImageIndex = 2
-      ImageName = '002_Link'
+      Action = acNewFavorite
     end
     object miEditLink: TMenuItem
-      Caption = '&Bearbeiten'
-      Hint = 'Lesezeichen bearbeiten'
-      ImageIndex = 5
-      ImageName = '005_Edit'
-      OnClick = acEditLinkExecute
+      Action = acEditLink
     end
     object miDeleteLink: TMenuItem
-      Caption = '&L'#246'schen'
-      Hint = 'Lesezeichen l'#246'schen'
-      ImageIndex = 4
-      ImageName = '004_Delete'
-      OnClick = acDeleteLinkExecute
+      Action = acDeleteLink
     end
   end
   object amActions: TActionManager
