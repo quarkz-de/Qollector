@@ -31,6 +31,7 @@ uses
 {$R *.res}
 
 begin
+  ReportMemoryLeaksOnShutdown := True;
   GlobalContainer.Build;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;

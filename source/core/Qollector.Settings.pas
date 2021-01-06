@@ -34,6 +34,7 @@ type
     FEditorFontSize: Integer;
     FDrawerOpened: Boolean;
     FFormPosition: TQollectorFormPosition;
+    FRecentFilenames: TStringList;
     procedure SetTheme(const AValue: String);
     function GetTheme: String;
     function GetSettingsFilename: String;
@@ -42,17 +43,23 @@ type
     procedure ChangeEvent(const AValue: TQollectorSettingValue);
     procedure SetEditorFont(const AValue: String);
     procedure SetEditorFontSize(const AValue: Integer);
+    procedure SetRecentFilenames(const Value: TStringList);
   public
     constructor Create;
     destructor Destroy; override;
     procedure LoadSettings;
     procedure SaveSettings;
+    procedure AddRecentFilename(const AFilename: String);
   published
     property Theme: String read GetTheme write SetTheme;
     property EditorFont: String read FEditorFont write SetEditorFont;
-    property EditorFontSize: Integer read FEditorFontSize write SetEditorFontSize;
+    property EditorFontSize: Integer read FEditorFontSize
+      write SetEditorFontSize;
     property DrawerOpened: Boolean read FDrawerOpened write FDrawerOpened;
-    property FormPosition: TQollectorFormPosition read FFormPosition write SetFormPositon;
+    property FormPosition: TQollectorFormPosition read FFormPosition
+      write SetFormPositon;
+    property RecentFilenames: TStringList read FRecentFilenames
+      write SetRecentFilenames;
   end;
 
 var
@@ -69,6 +76,19 @@ uses
 
 { TQollectorSettings }
 
+procedure TQollectorSettings.AddRecentFilename(const AFilename: String);
+var
+  Index: Integer;
+begin
+  Index := FRecentFilenames.IndexOf(AFilename);
+  if Index < 0 then
+    FRecentFilenames.Insert(0, AFilename)
+  else
+    FRecentFilenames.Move(Index, 0);
+  while FRecentFilenames.Count > 10 do
+    FRecentFilenames.Delete(FRecentFilenames.Count - 1);
+end;
+
 procedure TQollectorSettings.ChangeEvent(const AValue: TQollectorSettingValue);
 begin
   GlobalEventBus.Post(TSettingChangeEvent.Create(AValue), '',
@@ -82,10 +102,12 @@ begin
   FEditorFontSize := 10;
   FFormPosition := TQollectorFormPosition.Create;
   FDrawerOpened := true;
+  FRecentFilenames := TStringList.Create;
 end;
 
 destructor TQollectorSettings.Destroy;
 begin
+  FRecentFilenames.Free;
   FormPosition.Free;
   inherited;
 end;
@@ -111,14 +133,14 @@ var
   Strings: TStringList;
 begin
   if FileExists(GetSettingsFilename) then
-    begin
-      Strings := TStringList.Create;
-      Strings.LoadFromFile(GetSettingsFilename);
-      JSON := TJSONObject.ParseJSONValue(Strings.Text);
-      TNeon.JSONToObject(self, JSON, TNeonConfiguration.Default);
-      JSON.Free;
-      Strings.Free;
-    end;
+  begin
+    Strings := TStringList.Create;
+    Strings.LoadFromFile(GetSettingsFilename);
+    JSON := TJSONObject.ParseJSONValue(Strings.Text);
+    TNeon.JSONToObject(self, JSON, TNeonConfiguration.Default);
+    JSON.Free;
+    Strings.Free;
+  end;
 end;
 
 procedure TQollectorSettings.SaveSettings;
@@ -146,10 +168,19 @@ begin
   ChangeEvent(svEditorFont);
 end;
 
-procedure TQollectorSettings.SetFormPositon(
-  const Value: TQollectorFormPosition);
+procedure TQollectorSettings.SetFormPositon(const Value
+  : TQollectorFormPosition);
 begin
   FFormPosition.Assign(Value);
+end;
+
+procedure TQollectorSettings.SetRecentFilenames(const Value: TStringList);
+begin
+  if Value <> FRecentFilenames then
+    begin
+      FRecentFilenames.Free;
+      FRecentFilenames := Value;
+    end;
 end;
 
 procedure TQollectorSettings.SetTheme(const AValue: String);
@@ -162,13 +193,13 @@ end;
 procedure TQollectorFormPosition.Assign(Source: TPersistent);
 begin
   if Source is TQollectorFormPosition then
-    begin
-      WindowState := TQollectorFormPosition(Source).WindowState;
-      Top := TQollectorFormPosition(Source).Top;
-      Left := TQollectorFormPosition(Source).Left;
-      Height := TQollectorFormPosition(Source).Height;
-      Width := TQollectorFormPosition(Source).Width;
-    end
+  begin
+    WindowState := TQollectorFormPosition(Source).WindowState;
+    Top := TQollectorFormPosition(Source).Top;
+    Left := TQollectorFormPosition(Source).Left;
+    Height := TQollectorFormPosition(Source).Height;
+    Width := TQollectorFormPosition(Source).Width;
+  end
   else
     inherited Assign(Source);
 end;
@@ -185,19 +216,21 @@ end;
 procedure TQollectorFormPosition.LoadPosition(const AForm: TForm);
 begin
   if (Width > 0) and (Height > 0) then
-    begin
-      AForm.WindowState := WindowState;
-      AForm.Top := Top;
-      AForm.Left := Left;
-      AForm.Height := Height;
-      AForm.Width := Width;
-    end;
+  begin
+    AForm.WindowState := WindowState;
+    AForm.Top := Top;
+    AForm.Left := Left;
+    AForm.Height := Height;
+    AForm.Width := Width;
+  end;
 end;
 
 initialization
-  QollectorSettings := TQollectorSettings.Create;
+
+QollectorSettings := TQollectorSettings.Create;
 
 finalization
-  FreeAndNil(QollectorSettings);
+
+FreeAndNil(QollectorSettings);
 
 end.

@@ -40,6 +40,7 @@ type
     aeApplicationEvents: TApplicationEvents;
     sbSettings: TSpeedButton;
     acSectionSettings: TAction;
+    procedure acFileOpenAccept(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
     procedure acSectionNotesExecute(Sender: TObject);
@@ -85,6 +86,11 @@ uses
   Qollector.DataModule, Qollector.Notes, Qollector.About,
   Qollector.Execute, Qollector.Settings;
 
+procedure TwMain.acFileOpenAccept(Sender: TObject);
+begin
+  dmCommon.LoadDatabase(TFileOpen(Sender).Dialog.Filename);
+end;
+
 procedure TwMain.acHelpAboutExecute(Sender: TObject);
 begin
   TwAbout.ExecuteDialog;
@@ -111,12 +117,18 @@ begin
 end;
 
 procedure TwMain.FormCreate(Sender: TObject);
+var
+  Filename: String;
 begin
   FForms := TQollectorFormList.Create(self);
   acSectionWelcome.Execute;
   GlobalEventBus.RegisterSubscriberForEvents(Self);
   dmCommon.MainFormCreated;
-  dmCommon.LoadDatabase('');
+  if (ParamCount > 0) then
+    Filename := ParamStr(1)
+  else
+    Filename := '';
+  dmCommon.LoadDatabase(Filename);
   RegisterHotkeys;
   InitSettings;
 end;

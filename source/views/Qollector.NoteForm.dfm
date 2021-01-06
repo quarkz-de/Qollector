@@ -62,12 +62,17 @@ object wNoteForm: TwNoteForm
     object tsView: TTabSheet
       Caption = 'Anzeige'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object hvText: THtmlViewer
         Left = 0
         Top = 0
         Width = 633
         Height = 497
         BorderStyle = htNone
+        DefBackground = clWindow
         DefFontName = 'Segoe UI'
         DefFontSize = 10
         DefHotSpotColor = clHighlight
@@ -202,6 +207,7 @@ object wNoteForm: TwNoteForm
       Width = 221
       Height = 512
       Align = alClient
+      BorderStyle = bsNone
       DefaultNodeHeight = 19
       Header.AutoSizeIndex = 0
       Header.MainColumn = -1
@@ -215,23 +221,23 @@ object wNoteForm: TwNoteForm
     end
   end
   object Connectors: ThtConnectionManager
-    Left = 328
-    Top = 56
+    Left = 184
+    Top = 228
   end
   object FileConnector: ThtFileConnector
     ConnectionManager = Connectors
-    Left = 328
-    Top = 108
+    Left = 184
+    Top = 276
   end
   object ResourceConnector: ThtResourceConnector
     ConnectionManager = Connectors
-    Left = 325
-    Top = 156
+    Left = 185
+    Top = 324
   end
   object pmNotes: TPopupMenu
     Images = vilIcons
-    Left = 408
-    Top = 212
+    Left = 184
+    Top = 132
     object miNewNotebook: TMenuItem
       Action = acNewNotebook
     end
@@ -244,8 +250,8 @@ object wNoteForm: TwNoteForm
   end
   object pmLinks: TPopupMenu
     Images = vilIcons
-    Left = 480
-    Top = 212
+    Left = 184
+    Top = 176
     object miNewBookmark: TMenuItem
       Action = acNewBookmark
     end
@@ -305,8 +311,8 @@ object wNoteForm: TwNoteForm
           end>
       end>
     Images = vilIcons
-    Left = 321
-    Top = 280
+    Left = 185
+    Top = 40
     StyleName = 'Platform Default'
     object acNewNotebook: TAction
       Caption = 'Neues Notiz&buch'
@@ -420,9 +426,15 @@ object wNoteForm: TwNoteForm
         CollectionName = '008_Settings'
         Disabled = False
         Name = '008_Settings'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = '009_Collection'
+        Disabled = False
+        Name = '009_Collection'
       end>
     ImageCollection = dmCommon.icDarkIcons
-    Left = 404
-    Top = 272
+    Left = 184
+    Top = 84
   end
 end

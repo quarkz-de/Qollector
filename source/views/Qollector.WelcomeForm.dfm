@@ -1,9 +1,10 @@
 object wWelcomeForm: TwWelcomeForm
   Left = 0
   Top = 0
+  ActiveControl = btOpen
   BorderStyle = bsNone
-  ClientHeight = 468
-  ClientWidth = 777
+  ClientHeight = 479
+  ClientWidth = 761
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,6 +13,10 @@ object wWelcomeForm: TwWelcomeForm
   Font.Style = []
   OldCreateOrder = True
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  DesignSize = (
+    761
+    479)
   PixelsPerInch = 96
   TextHeight = 13
   object imIcon: TImage
@@ -223,5 +228,36 @@ object wWelcomeForm: TwWelcomeForm
     Width = 129
     Height = 13
     Caption = '(keine Sammlung ge'#246'ffnet)'
+  end
+  object txRecentFiles: TLabel
+    Left = 448
+    Top = 16
+    Width = 92
+    Height = 13
+    Anchors = [akTop, akRight]
+    Caption = 'Zuletzt verwendet:'
+    ExplicitLeft = 464
+  end
+  object btOpen: TButton
+    Left = 80
+    Top = 116
+    Width = 301
+    Height = 72
+    Action = wMain.acFileOpen
+    CommandLinkHint = 'Bestehende Sammlung '#246'ffnen oder neue Sammlung anlegen'
+    Images = wMain.vilLargeIcons
+    Style = bsCommandLink
+    TabOrder = 0
+  end
+  object sbRecentFiles: TScrollBox
+    Left = 448
+    Top = 40
+    Width = 293
+    Height = 420
+    Anchors = [akTop, akRight, akBottom]
+    BorderStyle = bsNone
+    TabOrder = 1
+    ExplicitLeft = 464
+    ExplicitHeight = 409
   end
 end

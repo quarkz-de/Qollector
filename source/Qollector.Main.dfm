@@ -86,7 +86,6 @@ object wMain: TwMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitWidth = 200
       object imBurgerButton: TVirtualImage
         Left = 6
         Top = 6
@@ -126,7 +125,6 @@ object wMain: TwMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 200
       object sbStart: TSpeedButton
         Left = 0
         Top = 0
@@ -199,8 +197,8 @@ object wMain: TwMain
         ActionBar = mbMain
       end>
     Images = vilIcons
-    Left = 416
-    Top = 36
+    Left = 424
+    Top = 40
     StyleName = 'Platform Default'
     object acFileExit: TFileExit
       Category = 'Datei'
@@ -213,7 +211,9 @@ object wMain: TwMain
       Dialog.DefaultExt = 'qollection'
       Dialog.Filter = 'Sammlungen (*.qollection)|*.qollection'
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
+      ImageIndex = 9
       ShortCut = 16463
+      OnAccept = acFileOpenAccept
     end
     object acHelpAbout: TAction
       Category = 'Hilfe'
@@ -305,9 +305,15 @@ object wMain: TwMain
         CollectionName = '008_Settings'
         Disabled = False
         Name = '008_Settings'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = '009_Collection'
+        Disabled = False
+        Name = '009_Collection'
       end>
     ImageCollection = dmCommon.icDarkIcons
-    Left = 484
+    Left = 476
     Top = 40
   end
   object vilLargeIcons: TVirtualImageList
@@ -368,23 +374,29 @@ object wMain: TwMain
         CollectionName = '008_Settings'
         Disabled = False
         Name = '008_Settings'
+      end
+      item
+        CollectionIndex = 9
+        CollectionName = '009_Collection'
+        Disabled = False
+        Name = '009_Collection'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Width = 32
     Height = 32
-    Left = 544
-    Top = 44
+    Left = 524
+    Top = 40
   end
   object tiTrayIcon: TTrayIcon
     Animate = True
     OnClick = tiTrayIconClick
     OnDblClick = tiTrayIconDblClick
-    Left = 608
+    Left = 580
     Top = 40
   end
   object aeApplicationEvents: TApplicationEvents
     OnMinimize = aeApplicationEventsMinimize
-    Left = 696
-    Top = 36
+    Left = 640
+    Top = 40
   end
 end

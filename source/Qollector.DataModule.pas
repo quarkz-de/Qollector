@@ -4,9 +4,9 @@ interface
 
 uses
   Winapi.Windows,
-  System.SysUtils, System.Classes, System.ImageList,
+  System.SysUtils, System.Classes, System.ImageList, System.UITypes,
   Vcl.ImgList, Vcl.VirtualImageList, Vcl.BaseImageCollection,
-  Vcl.ImageCollection, Vcl.Themes, Vcl.StdCtrls,
+  Vcl.ImageCollection, Vcl.Themes, Vcl.StdCtrls, Vcl.Dialogs,
   EventBus,
   Qodelib.Themes,
   Qollector.Database;
@@ -58,11 +58,20 @@ end;
 
 procedure TdmCommon.LoadDatabase(const AFilename: String);
 begin
+  if (AFilename <> '') and not FileExists(AFilename) then
+    begin
+      if MessageDlg(Format('Die Datei "%s" existiert nicht. Möchten Sie eine neue Sammlung anlegen?', [AFilename]),
+        mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+        Exit;
+    end;
+
   FDatabase := GlobalContainer.Resolve<IQollectorDatabase>;
   if AFilename = '' then
     Database.Load
   else
     Database.Load(AFilename);
+
+  QollectorSettings.AddRecentFilename(Database.Filename);
 
   GlobalEventBus.Post(TDatabaseLoadEvent.Create(Database.Filename), '', TEventMM.mmAutomatic);
 end;
