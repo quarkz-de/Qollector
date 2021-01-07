@@ -79,8 +79,9 @@ begin
       Button.ImageIndex := 9;
       Button.Height := 72;
       Button.Align := alTop;
-      Button.Parent := sbRecentFiles;
       Button.OnClick := RecentFileButtonClick;
+
+      THighDpiScaling.ScaleToParent(Button, sbRecentFiles);
 
       RecentFileButtons.Add(Button);
     end;
