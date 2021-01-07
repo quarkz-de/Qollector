@@ -68,10 +68,10 @@ type
   protected
     property Forms: TQollectorFormList read FForms;
   public
-    [Subscribe(TThreadMode.Main)]
-    procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
-    [Subscribe(TThreadMode.Main)]
-    procedure OnThemeChange(AEvent: TThemeChangeEvent);
+    [Subscribe]
+    procedure OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
+    [Subscribe]
+    procedure OnThemeChange(AEvent: IThemeChangeEvent);
   end;
 
 var
@@ -173,13 +173,13 @@ begin
   tiTrayIcon.Visible := true;
 end;
 
-procedure TwMain.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+procedure TwMain.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
 begin
   acSectionNotes.Execute;
   sbNotes.Down := true;
 end;
 
-procedure TwMain.OnThemeChange(AEvent: TThemeChangeEvent);
+procedure TwMain.OnThemeChange(AEvent: IThemeChangeEvent);
 begin
   CustomTitleBar.SystemColors := AEvent.ThemeName = 'Windows';
   mbMain.Invalidate;

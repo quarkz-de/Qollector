@@ -257,7 +257,5 @@ object wWelcomeForm: TwWelcomeForm
     Anchors = [akTop, akRight, akBottom]
     BorderStyle = bsNone
     TabOrder = 1
-    ExplicitLeft = 464
-    ExplicitHeight = 409
   end
 end

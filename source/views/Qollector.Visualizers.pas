@@ -186,9 +186,9 @@ begin
   Data := FTree.GetNodeData(Node);
   case Data.ItemType of
     itNotebookItem:
-      GlobalEventBus.Post(TNotebookEditEvent.Create(Data.Notebook), '', TEventMM.mmAutomatic);
+      GlobalEventBus.Post(TEventFactory.NewNotebookEditEvent(Data.Notebook));
     itNoteItem:
-      GlobalEventBus.Post(TNoteEditEvent.Create(Data.Note), '', TEventMM.mmAutomatic);
+      GlobalEventBus.Post(TEventFactory.NewNoteEditEvent(Data.Note));
   end;
 end;
 

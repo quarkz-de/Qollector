@@ -26,8 +26,8 @@ type
     procedure UpdateRecentFileList;
     procedure RecentFileButtonClick(Sender: TObject);
   public
-    [Subscribe(TThreadMode.Main)]
-    procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+    [Subscribe]
+    procedure OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
   end;
 
 implementation
@@ -35,6 +35,7 @@ implementation
 {$R *.dfm}
 
 uses
+  Qodelib.HighDpi,
   Qollector.Settings, Qollector.Main, Qollector.DataModule;
 
 { TwWelcomeForm }
@@ -50,7 +51,7 @@ begin
   GlobalEventBus.RegisterSubscriberForEvents(Self);
 end;
 
-procedure TwWelcomeForm.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+procedure TwWelcomeForm.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
 begin
   txFilename.Caption := AEvent.Filename;
   UpdateRecentFileList;

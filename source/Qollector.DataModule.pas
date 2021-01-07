@@ -73,7 +73,7 @@ begin
 
   QollectorSettings.AddRecentFilename(Database.Filename);
 
-  GlobalEventBus.Post(TDatabaseLoadEvent.Create(Database.Filename), '', TEventMM.mmAutomatic);
+  GlobalEventBus.Post(TEventFactory.NewDatabaseLoadEvent(Database.Filename));
 end;
 
 procedure TdmCommon.MainFormCreated;
@@ -83,8 +83,8 @@ end;
 
 procedure TdmCommon.ThemeChanged;
 begin
-  GlobalEventBus.Post(TThemeChangeEvent.Create(QuarkzThemeManager.ThemeName,
-    QuarkzThemeManager.IsDark), '', TEventMM.mmAutomatic);
+  GlobalEventBus.Post(TEventFactory.NewThemeChangeEvent(
+    QuarkzThemeManager.ThemeName, QuarkzThemeManager.IsDark));
 end;
 
 procedure TdmCommon.ThemeChangeEvent(Sender: TObject);

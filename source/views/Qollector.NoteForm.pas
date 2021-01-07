@@ -103,12 +103,12 @@ type
     procedure SaveNote(const ANote: TNoteItem);
     property CurrentNote: TNoteItem read GetCurrentNote;
   public
-    [Subscribe(TThreadMode.Main)]
-    procedure OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
-    [Subscribe(TThreadMode.Main)]
-    procedure OnThemeChange(AEvent: TThemeChangeEvent);
-    [Subscribe(TThreadMode.Main)]
-    procedure OnSettingChange(AEvent: TSettingChangeEvent);
+    [Subscribe]
+    procedure OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
+    [Subscribe]
+    procedure OnThemeChange(AEvent: IThemeChangeEvent);
+    [Subscribe]
+    procedure OnSettingChange(AEvent: ISettingChangeEvent);
     procedure SaveChanges;
   end;
 
@@ -261,7 +261,7 @@ begin
   FLinkVisualizer.NewFavoriteItem(CurrentNote, AFilename);
 end;
 
-procedure TwNoteForm.OnDatabaseLoad(AEvent: TDatabaseLoadEvent);
+procedure TwNoteForm.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
 var
   Notebooks: IList<TNotebookItem>;
 begin
@@ -271,7 +271,7 @@ begin
   UpdateNoteActions(itNone);
 end;
 
-procedure TwNoteForm.OnSettingChange(AEvent: TSettingChangeEvent);
+procedure TwNoteForm.OnSettingChange(AEvent: ISettingChangeEvent);
 begin
   case AEVent.Value of
     svEditorFont:
@@ -279,7 +279,7 @@ begin
   end;
 end;
 
-procedure TwNoteForm.OnThemeChange(AEvent: TThemeChangeEvent);
+procedure TwNoteForm.OnThemeChange(AEvent: IThemeChangeEvent);
 begin
   vilIcons.ImageCollection := dmCommon.GetImageCollection;
 end;

@@ -91,8 +91,7 @@ end;
 
 procedure TQollectorSettings.ChangeEvent(const AValue: TQollectorSettingValue);
 begin
-  GlobalEventBus.Post(TSettingChangeEvent.Create(AValue), '',
-    TEventMM.mmAutomatic);
+  GlobalEventBus.Post(TEventFactory.NewSettingChangeEvent(AValue));
 end;
 
 constructor TQollectorSettings.Create;
