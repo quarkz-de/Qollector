@@ -16,12 +16,13 @@ type
     ['{8DEC4252-2E6E-4641-9246-10BC7A8D24B1}']
     { Property Accessors }
     function GetSession: TSession;
+    function GetConnection: IDBConnection;
     function GetFilename: String;
-
     function Load: Boolean; overload;
     function Load(const AFilename: String): Boolean; overload;
     procedure Close;
     property Session: TSession read GetSession;
+    property Connection: IDBConnection read GetConnection;
     property Filename: String read GetFilename;
   end;
 
@@ -44,6 +45,7 @@ type
     procedure BuildDatabase;
   protected
     function GetSession: TSession;
+    function GetConnection: IDBConnection;
     function GetFilename: String;
   public
     constructor Create;
@@ -53,6 +55,7 @@ type
     procedure Close;
     function IsLoaded: Boolean;
     property Session: TSession read GetSession;
+    property Connection: IDBConnection read GetConnection;
     property Filename: String read GetFilename;
   end;
 
@@ -83,6 +86,11 @@ destructor TQollectorDatabase.Destroy;
 begin
   Close;
   inherited;
+end;
+
+function TQollectorDatabase.GetConnection: IDBConnection;
+begin
+  Result := FConnection;
 end;
 
 function TQollectorDatabase.GetFilename: String;

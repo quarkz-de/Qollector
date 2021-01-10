@@ -5,16 +5,16 @@ interface
 uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, System.Actions,
+  System.ImageList,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus,
   Vcl.CategoryButtons, Vcl.ExtCtrls, Vcl.WinXCtrls, Vcl.ActnList,
-  Vcl.StdActns, Vcl.Clipbrd,
-  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls,
-  Vcl.ActnMenus, Vcl.TitleBarCtrls,
+  Vcl.StdActns, Vcl.Clipbrd, Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls, Vcl.ActnMenus, Vcl.TitleBarCtrls,
+  Vcl.VirtualImage, Vcl.StdCtrls, Vcl.Buttons, Vcl.ImgList,
+  Vcl.VirtualImageList, Vcl.AppEvnts,
   VirtualTrees,
   Eventbus,
-  Qollector.Visualizers, Qollector.Events, Qollector.Forms, Vcl.VirtualImage,
-  Vcl.StdCtrls, Vcl.Buttons, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList,
-  Vcl.AppEvnts;
+  Qollector.Visualizers, Qollector.Events, Qollector.Forms;
 
 type
   TwMain = class(TForm)

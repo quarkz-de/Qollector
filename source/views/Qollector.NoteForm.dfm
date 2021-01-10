@@ -205,6 +205,8 @@ object wNoteForm: TwNoteForm
       Align = alClient
       BorderStyle = bsNone
       DefaultNodeHeight = 19
+      DragOperations = [doMove]
+      DragType = dtVCL
       Header.AutoSizeIndex = 0
       Header.MainColumn = -1
       Images = vilIcons

@@ -20,13 +20,8 @@ uses
   Spring.Persistence.Core.Session,
   Spring.Persistence.SQL.Commands.CreateTable,
   Qollector.Notes,
-  Qollector.Migrations;
-
-const
-  MigrationPending = 0;
-  MigrationSuccessful = 1;
-
-  MigrationCreateMigrationTable = 1;
+  Qollector.Migrations,
+  Qollector.DatabaseMigrations;
 
 type
   TDatabaseMigrator = class(TInterfacedObject, IDatabaseMigrator)
@@ -83,6 +78,9 @@ function TDatabaseMigrator.ExecuteMigrations: Boolean;
 var
   MigrationList: IList<TMigration>;
   Migration: TMigration;
+  DatabaseMigrationList: IList<IDatabaseMigration>;
+  DatabaseMigration: IDatabaseMigration;
+  Predicate: Spring.TPredicate<TMigration>;
 begin
   Result := true;
 
@@ -91,11 +89,25 @@ begin
       CreateMigrationTable;
       Migration := TMigration.Create;
       Migration.Migration := MigrationCreateMigrationTable;
-      Migration.Status := MigrationSuccessful;
+      Migration.Status := migSuccessful;
       Session.Save(Migration);
     end;
 
   MigrationList := Session.FindAll<TMigration>();
+
+  DatabaseMigrationList := TMigrationFactory.Build;
+  for DatabaseMigration in  DatabaseMigrationList do
+    begin
+      Predicate := function(const Migration: TMigration): Boolean
+        begin
+          Result :=  Migration.Migration  = DatabaseMigration.ID;
+        end;
+      Migration := MigrationList.FirstOrDefault(Predicate, nil);
+      if (Migration = nil) or (Migration.Status <> migSuccessful) then
+        begin
+          DatabaseMigration.Execute(Migration);
+        end;
+    end;
 end;
 
 initialization

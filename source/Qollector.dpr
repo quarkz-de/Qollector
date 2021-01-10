@@ -26,7 +26,8 @@ uses
   Qollector.DatabaseMigrator in 'core\Qollector.DatabaseMigrator.pas',
   Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor},
   Qollector.WelcomeForm in 'views\Qollector.WelcomeForm.pas' {wWelcomeForm},
-  Qollector.SettingsForm in 'views\Qollector.SettingsForm.pas' {wSettingsForm};
+  Qollector.SettingsForm in 'views\Qollector.SettingsForm.pas' {wSettingsForm},
+  Qollector.DatabaseMigrations in 'core\Qollector.DatabaseMigrations.pas';
 
 {$R *.res}
 

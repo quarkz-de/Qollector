@@ -3,7 +3,9 @@ unit Qollector.Visualizers;
 interface
 
 uses
-  System.SysUtils, System.Generics.Collections, System.Classes,
+  System.SysUtils, System.Generics.Collections, System.Classes, System.Math,
+  System.Types, System.UITypes,
+  Winapi.ActiveX,
   Spring.Collections, Spring.Container,
   VirtualTrees,
   Qollector.Notes, Qollector.Database;
@@ -68,7 +70,18 @@ type
       PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
     procedure NewText(Sender: TBaseVirtualTree; Node:
       PVirtualNode; Column: TColumnIndex; NewText: string);
+    procedure CompareNodes(Sender: TBaseVirtualTree; Node1,
+      Node2: PVirtualNode; Column: TColumnIndex; var Result: Integer);
+    procedure DragAllowed(Sender: TBaseVirtualTree; Node:
+      PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
+    procedure DragDrop(Sender: TBaseVirtualTree; Source:
+      TObject; DataObject: IDataObject; Formats: TFormatArray; Shift:
+      TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
+    procedure DragOver(Sender: TBaseVirtualTree; Source:
+      TObject; Shift: TShiftState; State: TDragState; Pt: TPoint; Mode:
+      TDropMode; var Effect: Integer; var Accept: Boolean);
     function NotebookNodeOfFocusedNode: PVirtualNode;
+    procedure UpdatePositions(const ARootNode: PVirtualNode);
   public
     procedure SetVirtualTree(const ATree: TVirtualStringTree);
     procedure SetNotebookItems(const AList: IList<TNotebookItem>);
@@ -137,6 +150,22 @@ const
 
 { TNotesTreeVisualizer }
 
+procedure TNotesTreeVisualizer.CompareNodes(Sender: TBaseVirtualTree; Node1,
+  Node2: PVirtualNode; Column: TColumnIndex; var Result: Integer);
+var
+  Data1, Data2: PNotesTreeItem;
+begin
+  Data1 := FTree.GetNodeData(Node1);
+  Data2 := FTree.GetNodeData(Node2);
+
+  case Data1.ItemType of
+    itNotebookItem:
+      Result := CompareValue(Data1.Notebook.Position, Data2.Notebook.Position);
+    itNoteItem:
+      Result := CompareValue(Data1.Note.Position, Data2.Note.Position);
+  end;
+end;
+
 function TNotesTreeVisualizer.DeleteSelectedItem: Boolean;
 var
   Data: PNotesTreeItem;
@@ -175,6 +204,77 @@ begin
           FTree.FocusedNode := NextNode;
           FTree.Selected[NextNode] := true;
         end;
+    end;
+end;
+
+procedure TNotesTreeVisualizer.DragAllowed(Sender: TBaseVirtualTree;
+  Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
+var
+  Data: PNotesTreeItem;
+begin
+  Data := Sender.GetNodeData(Node);
+  Allowed := Data.ItemType = itNoteItem;
+end;
+
+procedure TNotesTreeVisualizer.DragDrop(Sender: TBaseVirtualTree;
+  Source: TObject; DataObject: IDataObject; Formats: TFormatArray;
+  Shift: TShiftState; Pt: TPoint; var Effect: Integer; Mode: TDropMode);
+var
+  SourceNode, TargetNode: PVirtualNode;
+  AttachMode: TVTNodeAttachMode;
+  Data: PNotesTreeItem;
+begin
+  SourceNode := Sender.FocusedNode;
+  TargetNode := Sender.DropTargetNode;
+
+  if TargetNode <> nil then
+    begin
+      Data := Sender.GetNodeData(TargetNode);
+      case Data.ItemType of
+        itNotebookItem:
+          begin
+            AttachMode := amAddChildLast;
+          end;
+        itNoteItem:
+          begin
+            case Mode of
+              dmNowhere:
+                AttachMode := amNoWhere;
+              dmOnNode, dmAbove:
+                AttachMode := amInsertBefore;
+              dmBelow:
+                AttachMode := amInsertAfter;
+              else
+                AttachMode := amNoWhere;
+            end;
+          end;
+        else
+          begin
+            AttachMode := amNoWhere;
+          end;
+      end;
+
+      if AttachMode <> amNoWhere then
+        begin
+          Sender.MoveTo(SourceNode, TargetNode, AttachMode, false);
+          UpdatePositions(TargetNode.Parent);
+        end;
+    end;
+end;
+
+procedure TNotesTreeVisualizer.DragOver(Sender: TBaseVirtualTree;
+  Source: TObject; Shift: TShiftState; State: TDragState; Pt: TPoint;
+  Mode: TDropMode; var Effect: Integer; var Accept: Boolean);
+var
+  SourceNode, TargetNode: PVirtualNode;
+begin
+  Accept := false;
+  if (Source = Sender) then
+    begin
+      SourceNode := Sender.FocusedNode;
+      TargetNode := Sender.DropTargetNode;
+      if (SourceNode <> nil) and (TargetNode <> nil) then
+        Accept := (SourceNode.Parent = TargetNode.Parent);
     end;
 end;
 
@@ -433,6 +533,10 @@ begin
   FTree.OnEdited := Edited;
   FTree.OnEditing := Editing;
   FTree.OnNewText := NewText;
+  FTree.OnCompareNodes := CompareNodes;
+  FTree.OnDragAllowed := DragAllowed;
+  FTree.OnDragDrop := DragDrop;
+  FTree.OnDragOver := DragOver;
 end;
 
 procedure TNotesTreeVisualizer.UpdateContent;
@@ -466,8 +570,29 @@ begin
         end;
     end;
 
+  FTree.SortTree(0, sdAscending);
   FTree.EndUpdate;
   FTree.FullExpand;
+end;
+
+procedure TNotesTreeVisualizer.UpdatePositions(const ARootNode: PVirtualNode);
+var
+  Node: PVirtualNode;
+  Data: PNotesTreeItem;
+  Position: Integer;
+  Database: IQollectorDatabase;
+begin
+  Node := FTree.GetFirstChild(ARootNode);
+  Position := 1;
+  Database := GlobalContainer.Resolve<IQollectorDatabase>;
+  while Node <> nil do
+    begin
+      Data := FTree.GetNodeData(Node);
+      Data.Note.Position := Position;
+      Database.GetSession.Save(Data.Note);
+      Node := Node.NextSibling;
+      Inc(Position);
+    end;
 end;
 
 { TLinkListVisualizer }
@@ -480,7 +605,6 @@ var
 begin
   Result := false;
   Node := FTree.FocusedNode;
-  NextNode := nil;
   if Node <> nil then
     begin
       NextNode := Node.PrevSibling;
