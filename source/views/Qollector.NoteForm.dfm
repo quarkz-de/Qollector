@@ -24,7 +24,7 @@ object wNoteForm: TwNoteForm
     Top = 3
     Width = 641
     Height = 537
-    ActivePage = tsEdit
+    ActivePage = tsView
     Align = alClient
     TabHeight = 30
     TabOrder = 0
@@ -68,7 +68,6 @@ object wNoteForm: TwNoteForm
         Width = 633
         Height = 497
         BorderStyle = htNone
-        DefBackground = clWindow
         DefFontName = 'Segoe UI'
         DefFontSize = 10
         DefHotSpotColor = clHighlight
@@ -88,6 +87,7 @@ object wNoteForm: TwNoteForm
         TabOrder = 0
         Touch.InteractiveGestures = [igPan]
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
+        ExplicitHeight = 393
       end
     end
     object tsLinks: TTabSheet
