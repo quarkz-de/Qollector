@@ -196,13 +196,55 @@ object wWelcomeForm: TwWelcomeForm
     Style = bsCommandLink
     TabOrder = 0
   end
-  object sbRecentFiles: TScrollBox
+  object clRecentFiles: TControlList
     Left = 448
-    Top = 40
+    Top = 35
     Width = 293
-    Height = 420
+    Height = 422
     Anchors = [akTop, akRight, akBottom]
     BorderStyle = bsNone
+    Color = clBtnFace
+    ItemHeight = 48
+    ItemMargins.Left = 0
+    ItemMargins.Top = 0
+    ItemMargins.Right = 0
+    ItemMargins.Bottom = 0
+    ParentColor = False
     TabOrder = 1
+    OnBeforeDrawItem = clRecentFilesBeforeDrawItem
+    OnItemClick = clRecentFilesItemClick
+    object txItemName: TLabel
+      Left = 40
+      Top = 4
+      Width = 246
+      Height = 18
+      Anchors = [akLeft, akTop, akRight]
+      AutoSize = False
+      Caption = 'txItemName'
+      EllipsisPosition = epEndEllipsis
+      ExplicitWidth = 242
+    end
+    object txItemFilename: TLabel
+      Left = 40
+      Top = 23
+      Width = 246
+      Height = 18
+      Anchors = [akLeft, akTop, akRight]
+      AutoSize = False
+      Caption = 'txItemFilename'
+      EllipsisPosition = epPathEllipsis
+      ExplicitWidth = 242
+    end
+    object imItem: TVirtualImage
+      Left = 4
+      Top = 4
+      Width = 24
+      Height = 24
+      ImageCollection = dmCommon.icDarkIcons
+      ImageWidth = 24
+      ImageHeight = 24
+      ImageIndex = 9
+      ImageName = '009_Collection'
+    end
   end
 end

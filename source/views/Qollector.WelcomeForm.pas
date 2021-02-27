@@ -9,7 +9,7 @@ uses
   Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls,
   Generics.Collections,
   Eventbus,
-  Qollector.Forms, Qollector.Events;
+  Qollector.Forms, Qollector.Events, Vcl.VirtualImage, Vcl.ControlList;
 
 type
   TwWelcomeForm = class(TQollectorForm)
@@ -17,17 +17,24 @@ type
     imLogo: TImage;
     txFilename: TLabel;
     btOpen: TButton;
-    sbRecentFiles: TScrollBox;
     txRecentFiles: TLabel;
+    clRecentFiles: TControlList;
+    txItemName: TLabel;
+    txItemFilename: TLabel;
+    imItem: TVirtualImage;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure clRecentFilesBeforeDrawItem(AIndex: Integer; ACanvas: TCanvas;
+      ARect: TRect; AState: TOwnerDrawState);
+    procedure clRecentFilesItemClick(Sender: TObject);
   private
     RecentFileButtons: TObjectList<TButton>;
     procedure UpdateRecentFileList;
-    procedure RecentFileButtonClick(Sender: TObject);
   public
     [Subscribe]
     procedure OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
+    [Subscribe]
+    procedure OnThemeChange(AEvent: IThemeChangeEvent);
   end;
 
 implementation
@@ -45,10 +52,28 @@ begin
   RecentFileButtons.Free;
 end;
 
+procedure TwWelcomeForm.clRecentFilesBeforeDrawItem(AIndex: Integer;
+  ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
+var
+  Filename: String;
+begin
+  Filename := QollectorSettings.RecentFilenames[AIndex];
+  txItemName.Caption := ChangeFileExt(ExtractFilename(Filename), '');
+  txItemFilename.Caption := Filename;
+end;
+
+procedure TwWelcomeForm.clRecentFilesItemClick(Sender: TObject);
+begin
+  dmCommon.LoadDatabase(QollectorSettings.RecentFilenames[clRecentFiles.ItemIndex]);
+  clRecentFiles.ItemIndex := -1;
+end;
+
 procedure TwWelcomeForm.FormCreate(Sender: TObject);
 begin
   RecentFileButtons := TObjectList<TButton>.Create(true);
   GlobalEventBus.RegisterSubscriberForEvents(Self);
+  txItemName.Font.Style := [fsBold];
+  txItemName.Font.Size := txItemName.Font.Size + 2;
 end;
 
 procedure TwWelcomeForm.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
@@ -57,34 +82,14 @@ begin
   UpdateRecentFileList;
 end;
 
-procedure TwWelcomeForm.RecentFileButtonClick(Sender: TObject);
+procedure TwWelcomeForm.OnThemeChange(AEvent: IThemeChangeEvent);
 begin
-  dmCommon.LoadDatabase(TButton(Sender).CommandLinkHint);
+  imItem.ImageCollection := dmCommon.GetImageCollection;
 end;
 
 procedure TwWelcomeForm.UpdateRecentFileList;
-var
-  Filename: String;
-  Button: TButton;
 begin
-  RecentFileButtons.Clear;
-
-  for Filename in QollectorSettings.RecentFilenames do
-    begin
-      Button := TButton.Create(nil);
-      Button.Style := bsCommandLink;
-      Button.Caption := ChangeFileExt(ExtractFilename(Filename), '');
-      Button.CommandLinkHint := Filename;
-      Button.Images := wMain.vilLargeIcons;
-      Button.ImageIndex := 9;
-      Button.Height := 72;
-      Button.Align := alTop;
-      Button.OnClick := RecentFileButtonClick;
-
-      THighDpiScaling.ScaleToParent(Button, sbRecentFiles);
-
-      RecentFileButtons.Add(Button);
-    end;
+  clRecentFiles.ItemCount := QollectorSettings.RecentFilenames.Count;
 end;
 
 end.
