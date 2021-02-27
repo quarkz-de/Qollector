@@ -27,6 +27,7 @@ type
     procedure clRecentFilesBeforeDrawItem(AIndex: Integer; ACanvas: TCanvas;
       ARect: TRect; AState: TOwnerDrawState);
     procedure clRecentFilesItemClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     RecentFileButtons: TObjectList<TButton>;
     procedure UpdateRecentFileList;
@@ -47,11 +48,6 @@ uses
 
 { TwWelcomeForm }
 
-procedure TwWelcomeForm.FormDestroy(Sender: TObject);
-begin
-  RecentFileButtons.Free;
-end;
-
 procedure TwWelcomeForm.clRecentFilesBeforeDrawItem(AIndex: Integer;
   ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
 var
@@ -68,12 +64,22 @@ begin
   clRecentFiles.ItemIndex := -1;
 end;
 
+procedure TwWelcomeForm.FormActivate(Sender: TObject);
+begin
+  txItemName.Font.Size := Font.Size + 2;
+  if Font.Size > 8 then
+    txItemFileName.Font.Size := Font.Size - 2;
+end;
+
 procedure TwWelcomeForm.FormCreate(Sender: TObject);
 begin
   RecentFileButtons := TObjectList<TButton>.Create(true);
   GlobalEventBus.RegisterSubscriberForEvents(Self);
-  txItemName.Font.Style := [fsBold];
-  txItemName.Font.Size := txItemName.Font.Size + 2;
+end;
+
+procedure TwWelcomeForm.FormDestroy(Sender: TObject);
+begin
+  RecentFileButtons.Free;
 end;
 
 procedure TwWelcomeForm.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);

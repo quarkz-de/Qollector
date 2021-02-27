@@ -12,6 +12,7 @@ object wWelcomeForm: TwWelcomeForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = True
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignSize = (
@@ -217,23 +218,21 @@ object wWelcomeForm: TwWelcomeForm
       Left = 40
       Top = 4
       Width = 246
-      Height = 18
+      Height = 22
       Anchors = [akLeft, akTop, akRight]
       AutoSize = False
       Caption = 'txItemName'
       EllipsisPosition = epEndEllipsis
-      ExplicitWidth = 242
     end
     object txItemFilename: TLabel
       Left = 40
-      Top = 23
+      Top = 27
       Width = 246
-      Height = 18
+      Height = 22
       Anchors = [akLeft, akTop, akRight]
       AutoSize = False
       Caption = 'txItemFilename'
       EllipsisPosition = epPathEllipsis
-      ExplicitWidth = 242
     end
     object imItem: TVirtualImage
       Left = 4
