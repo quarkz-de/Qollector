@@ -200,6 +200,7 @@ end;
 
 procedure TwNoteForm.edTextCommandProcessed(Sender: TObject; var Command:
   TSynEditorCommand; var AChar: Char; Data: Pointer);
+
   procedure CopyLastLinePrefix(const APrefix: String);
   var
     LineIndex: Integer;
@@ -213,6 +214,7 @@ procedure TwNoteForm.edTextCommandProcessed(Sender: TObject; var Command:
           edText.SelText := APrefix;
       end;
   end;
+
 begin
   case Command of
     ecLineBreak:
@@ -291,6 +293,7 @@ procedure TwNoteForm.SaveChanges;
 begin
   SaveNote(CurrentNote);
 end;
+
 procedure TwNoteForm.SaveNote(const ANote: TNoteItem);
 var
   Database: IQollectorDatabase;

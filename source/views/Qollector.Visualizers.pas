@@ -56,7 +56,6 @@ type
   private
     FTree: TVirtualStringTree;
     FNotebooks: IList<TNotebookItem>;
-    procedure FreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
     procedure GetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize:
       Integer);
     procedure GetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
@@ -109,7 +108,6 @@ type
   private
     FTree: TVirtualStringTree;
     FLinks: IList<TLinkItem>;
-    procedure FreeNode(Sender: TBaseVirtualTree; Node: PVirtualNode);
     procedure GetNodeDataSize(Sender: TBaseVirtualTree; var NodeDataSize:
       Integer);
     procedure GetText(Sender: TBaseVirtualTree; Node: PVirtualNode;
@@ -117,8 +115,6 @@ type
     procedure GetImageIndex(Sender: TBaseVirtualTree; Node:
       PVirtualNode; Kind: TVTImageKind; Column: TColumnIndex; var Ghosted:
       Boolean; var ImageIndex: TImageIndex);
-    procedure Edited(Sender: TBaseVirtualTree; Node:
-      PVirtualNode; Column: TColumnIndex);
     procedure Editing(Sender: TBaseVirtualTree; Node:
       PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
     procedure NewText(Sender: TBaseVirtualTree; Node:
@@ -174,7 +170,6 @@ var
 begin
   Result := false;
   Node := FTree.FocusedNode;
-  NextNode := nil;
   if Node <> nil then
     begin
       NextNode := Node.PrevSibling;
@@ -296,15 +291,6 @@ procedure TNotesTreeVisualizer.Editing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 begin
   Allowed := true;
-end;
-
-procedure TNotesTreeVisualizer.FreeNode(Sender: TBaseVirtualTree;
-  Node: PVirtualNode);
-var
-  Data: PNotesTreeItem;
-begin
-  Data := Sender.GetNodeData(Node);
-  Finalize(Data^);
 end;
 
 procedure TNotesTreeVisualizer.GetImageIndex(Sender: TBaseVirtualTree;
@@ -448,6 +434,7 @@ begin
   Result := TNoteItem.Create;
   Result.Name := 'unbenannt';
   Result.NotebookId := ParentData.Notebook.Id;
+  ParentData.Notebook.Notes.Value.Add(Result);
 
   Node := FTree.AddChild(ParentNode);
   Data := FTree.GetNodeData(Node);
@@ -471,6 +458,7 @@ begin
 
   Result := TNotebookItem.Create;
   Result.Name := 'unbenannt';
+  FNotebooks.Add(Result);
 
   Node := FTree.AddChild(nil);
   Data := FTree.GetNodeData(Node);
@@ -526,7 +514,6 @@ end;
 procedure TNotesTreeVisualizer.SetVirtualTree(const ATree: TVirtualStringTree);
 begin
   FTree := ATree;
-  FTree.OnFreeNode := FreeNode;
   FTree.OnGetNodeDataSize := GetNodeDataSize;
   FTree.OnGetText := GetText;
   FTree.OnGetImageIndex := GetImageIndex;
@@ -628,27 +615,10 @@ begin
     end;
 end;
 
-procedure TLinkListVisualizer.Edited(Sender: TBaseVirtualTree;
-  Node: PVirtualNode; Column: TColumnIndex);
-var
-  Data: PLinkListItem;
-begin
-  Data := Sender.GetNodeData(Node);
-end;
-
 procedure TLinkListVisualizer.Editing(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; var Allowed: Boolean);
 begin
   Allowed := true; //Column = colLinkName;
-end;
-
-procedure TLinkListVisualizer.FreeNode(Sender: TBaseVirtualTree;
-  Node: PVirtualNode);
-var
-  Data: PLinkListItem;
-begin
-  Data := Sender.GetNodeData(Node);
-  Finalize(Data^);
 end;
 
 procedure TLinkListVisualizer.GetImageIndex(Sender: TBaseVirtualTree;
@@ -797,11 +767,9 @@ end;
 procedure TLinkListVisualizer.SetVirtualTree(const ATree: TVirtualStringTree);
 begin
   FTree := ATree;
-  FTree.OnFreeNode := FreeNode;
   FTree.OnGetNodeDataSize := GetNodeDataSize;
   FTree.OnGetText := GetText;
   FTree.OnGetImageIndex := GetImageIndex;
-  FTree.OnEdited := Edited;
   FTree.OnEditing := Editing;
   FTree.OnNewText := NewText;
 end;
