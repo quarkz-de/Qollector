@@ -238,7 +238,6 @@ begin
   if CustomTitleBar.Enabled and Assigned(mbMain) then
     mbMain.Invalidate;
 end;
-
 procedure TwMain.WMHotKey(var Msg: TWMHotKey);
 begin
   if Msg.HotKey = HotKeyID then

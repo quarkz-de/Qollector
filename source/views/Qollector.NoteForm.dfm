@@ -87,7 +87,6 @@ object wNoteForm: TwNoteForm
         TabOrder = 0
         Touch.InteractiveGestures = [igPan]
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
-        ExplicitHeight = 393
       end
     end
     object tsLinks: TTabSheet
@@ -95,9 +94,9 @@ object wNoteForm: TwNoteForm
       ImageIndex = 2
       object stLinks: TVirtualStringTree
         Left = 0
-        Top = 26
+        Top = 23
         Width = 633
-        Height = 471
+        Height = 474
         Align = alClient
         BorderStyle = bsNone
         DefaultNodeHeight = 19
@@ -113,6 +112,8 @@ object wNoteForm: TwNoteForm
         OnDragDrop = stLinksDragDrop
         OnFocusChanged = stLinksFocusChanged
         OnKeyDown = stLinksKeyDown
+        ExplicitTop = 26
+        ExplicitHeight = 471
         Columns = <
           item
             Position = 0
@@ -129,7 +130,7 @@ object wNoteForm: TwNoteForm
         Left = 0
         Top = 0
         Width = 633
-        Height = 26
+        Height = 23
         ActionManager = amActions
         Color = clMenuBar
         ColorMap.DisabledFontColor = 7171437

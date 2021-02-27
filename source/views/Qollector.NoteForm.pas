@@ -111,7 +111,6 @@ type
     procedure OnSettingChange(AEvent: ISettingChangeEvent);
     procedure SaveChanges;
   end;
-
 implementation
 
 {$R *.dfm}
@@ -131,10 +130,8 @@ begin
   UpdateEditorSettings;
 
   pcNote.ActivePage := tsEdit;
-
   FLinkVisualizer := GlobalContainer.Resolve<ILinkListVisualizer>;
   FLinkVisualizer.SetVirtualTree(stLinks);
-
   FTreeVisualizer := GlobalContainer.Resolve<INotesTreeVisualizer>;
   FTreeVisualizer.SetVirtualTree(stNotebooks);
 end;
@@ -180,7 +177,6 @@ begin
     Url := Clipboard.AsText
   else
     Url := '';
-
   if TShellExecute.IsUrl(Url) then
     NewFavoriteItem(Url)
   else
@@ -204,7 +200,6 @@ end;
 
 procedure TwNoteForm.edTextCommandProcessed(Sender: TObject; var Command:
   TSynEditorCommand; var AChar: Char; Data: Pointer);
-
   procedure CopyLastLinePrefix(const APrefix: String);
   var
     LineIndex: Integer;
@@ -218,7 +213,6 @@ procedure TwNoteForm.edTextCommandProcessed(Sender: TObject; var Command:
           edText.SelText := APrefix;
       end;
   end;
-
 begin
   case Command of
     ecLineBreak:
@@ -297,7 +291,6 @@ procedure TwNoteForm.SaveChanges;
 begin
   SaveNote(CurrentNote);
 end;
-
 procedure TwNoteForm.SaveNote(const ANote: TNoteItem);
 var
   Database: IQollectorDatabase;
@@ -306,7 +299,6 @@ begin
     begin
       ANote.Text := edText.Lines.Text;
       edText.Modified := false;
-
       Database := GlobalContainer.Resolve<IQollectorDatabase>;
       Database.GetSession.Save(ANote);
     end;
@@ -431,7 +423,6 @@ begin
         LoadNote(CurrentNote);
       end;
   end;
-
   UpdateNoteActions(FTreeVisualizer.GetItemType(Node));
 end;
 

@@ -32,7 +32,9 @@ uses
 {$R *.res}
 
 begin
+{$ifdef DEBUG}
   ReportMemoryLeaksOnShutdown := True;
+{$endif}
   GlobalContainer.Build;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
