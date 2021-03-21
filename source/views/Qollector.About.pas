@@ -3,9 +3,10 @@ unit Qollector.About;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls;
+  Winapi.Windows, Winapi.Messages, Winapi.ShellAPI,
+  System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls;
 
 type
   TwAbout = class(TForm)
@@ -13,6 +14,9 @@ type
     btOk: TButton;
     imIcon: TImage;
     Label1: TLabel;
+    txHomepage: TLinkLabel;
+    procedure txHomepageLinkClick(Sender: TObject; const Link: string;
+      LinkType: TSysLinkType);
   private
     { Private-Deklarationen }
   public
@@ -45,6 +49,13 @@ begin
   finally
     Dialog.Free;
   end;
+end;
+
+procedure TwAbout.txHomepageLinkClick(Sender: TObject; const Link: string;
+  LinkType: TSysLinkType);
+begin
+  if LinkType = sltURL then
+    ShellExecute(0, 'open', PChar(Link), nil, nil, SW_SHOWNORMAL);
 end;
 
 end.
