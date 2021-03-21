@@ -35,6 +35,8 @@ uses
   Qodelib.Themes, QodeLib.Fonts,
   Qollector.Settings;
 
+{ TwSettingsForm }
+
 procedure TwSettingsForm.cbEditorFontChange(Sender: TObject);
 begin
   if cbEditorFont.ItemIndex > -1 then
@@ -49,8 +51,6 @@ begin
   if Size > 5 then
     QollectorSettings.EditorFontSize := Size;
 end;
-
-{ TwWelcomeForm }
 
 procedure TwSettingsForm.cbThemeChange(Sender: TObject);
 begin
