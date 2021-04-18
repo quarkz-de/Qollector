@@ -11,6 +11,7 @@ uses
   Vcl.Styles.Utils.Forms,
   Vcl.Styles.Utils.ComCtrls,
   Vcl.Styles.Utils.ScreenTips,
+  Qodelib.Instance,
   Qollector.Main in 'Qollector.Main.pas' {wMain},
   Qollector.DataModule in 'Qollector.DataModule.pas' {dmCommon: TDataModule},
   Qollector.Database in 'core\Qollector.Database.pas',
@@ -35,6 +36,8 @@ begin
 {$ifdef DEBUG}
   ReportMemoryLeaksOnShutdown := True;
 {$endif}
+  if not CheckSingleInstance('{9B80F682-3B8C-4F55-9F40-5F1B5253415F}') then
+    Exit;
   GlobalContainer.Build;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
