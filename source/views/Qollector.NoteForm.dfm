@@ -94,9 +94,9 @@ object wNoteForm: TwNoteForm
       ImageIndex = 2
       object stLinks: TVirtualStringTree
         Left = 0
-        Top = 26
+        Top = 23
         Width = 633
-        Height = 471
+        Height = 474
         Align = alClient
         BorderStyle = bsNone
         DefaultNodeHeight = 19
@@ -112,6 +112,8 @@ object wNoteForm: TwNoteForm
         OnDragDrop = stLinksDragDrop
         OnFocusChanged = stLinksFocusChanged
         OnKeyDown = stLinksKeyDown
+        ExplicitTop = 26
+        ExplicitHeight = 471
         Columns = <
           item
             Position = 0
@@ -128,7 +130,7 @@ object wNoteForm: TwNoteForm
         Left = 0
         Top = 0
         Width = 633
-        Height = 26
+        Height = 23
         ActionManager = amActions
         Color = clMenuBar
         ColorMap.DisabledFontColor = 7171437
@@ -142,6 +144,7 @@ object wNoteForm: TwNoteForm
         Font.Style = []
         ParentFont = False
         Spacing = 0
+        ExplicitHeight = 26
       end
     end
   end
@@ -273,8 +276,6 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acNewFavorite
-            ImageIndex = 2
-            ImageName = '002_Link'
           end
           item
             Action = acEditLink
@@ -347,7 +348,6 @@ object wNoteForm: TwNoteForm
       Dialog.Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
       Dialog.Title = 'Datei ausw'#228'hlen'
       Hint = 'Neue Datei anheften'
-      ImageIndex = 2
       OnAccept = acNewFavoriteAccept
     end
     object acDeleteLink: TAction
