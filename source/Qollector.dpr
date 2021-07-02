@@ -12,7 +12,7 @@ uses
   Vcl.Styles.Utils.ComCtrls,
   Vcl.Styles.Utils.ScreenTips,
   Qodelib.Instance,
-  Qollector.Main in 'Qollector.Main.pas' {wMain},
+  Qollector.Main in 'Qollector.Main.pas' {wQollectorMain},
   Qollector.DataModule in 'Qollector.DataModule.pas' {dmCommon: TDataModule},
   Qollector.Database in 'core\Qollector.Database.pas',
   Qollector.Notes in 'models\Qollector.Notes.pas',
@@ -28,7 +28,8 @@ uses
   Qollector.EditLink in 'views\Qollector.EditLink.pas' {wLinkEditor},
   Qollector.WelcomeForm in 'views\Qollector.WelcomeForm.pas' {wWelcomeForm},
   Qollector.SettingsForm in 'views\Qollector.SettingsForm.pas' {wSettingsForm},
-  Qollector.DatabaseMigrations in 'core\Qollector.DatabaseMigrations.pas';
+  Qollector.DatabaseMigrations in 'core\Qollector.DatabaseMigrations.pas',
+  Qollector.Parameters in 'core\Qollector.Parameters.pas';
 
 {$R *.res}
 
@@ -37,12 +38,16 @@ begin
   ReportMemoryLeaksOnShutdown := True;
 {$endif}
   if not CheckSingleInstance('{9B80F682-3B8C-4F55-9F40-5F1B5253415F}') then
-    Exit;
+    begin
+      TParameterSender.Send;
+      Halt(0);
+    end;
   GlobalContainer.Build;
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
   Application.Title := 'Qollector';
+  Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmCommon, dmCommon);
-  Application.CreateForm(TwMain, wMain);
+  Application.CreateForm(TwQollectorMain, wQollectorMain);
+  TParameterSender.Process;
   Application.Run;
 end.

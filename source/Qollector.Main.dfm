@@ -1,4 +1,4 @@
-object wMain: TwMain
+object wQollectorMain: TwQollectorMain
   Left = 0
   Top = 0
   Caption = 'Qollector'

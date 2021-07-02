@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, System.Actions,
-  System.ImageList,
+  System.ImageList, System.IOUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus,
   Vcl.CategoryButtons, Vcl.ExtCtrls, Vcl.WinXCtrls, Vcl.ActnList,
   Vcl.StdActns, Vcl.Clipbrd, Vcl.PlatformDefaultStyleActnCtrls,
@@ -14,10 +14,11 @@ uses
   Vcl.VirtualImageList, Vcl.AppEvnts,
   VirtualTrees,
   Eventbus,
-  Qollector.Visualizers, Qollector.Events, Qollector.Forms;
+  Qollector.Visualizers, Qollector.Events, Qollector.Forms,
+  Qollector.Parameters;
 
 type
-  TwMain = class(TForm)
+  TwQollectorMain = class(TForm)
     amActions: TActionManager;
     acHelpAbout: TAction;
     acFileExit: TFileExit;
@@ -60,6 +61,7 @@ type
     procedure WMActivate(var Message: TWMActivate); message WM_ACTIVATE;
     procedure WMSize(var Message: TWMSize); message WM_SIZE;
     procedure WMHotKey(var Msg: TWMHotKey); message WM_HOTKEY;
+    procedure WMProcessParameters(var Msg: TMessage); message WM_PROCESSPARAMETERS;
     procedure RegisterHotkeys;
     procedure UnRegisterHotkeys;
     procedure Restore;
@@ -68,6 +70,7 @@ type
   protected
     property Forms: TQollectorFormList read FForms;
   public
+    procedure ProcessParameters(const AParameters: TStrings);
     [Subscribe]
     procedure OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
     [Subscribe]
@@ -75,7 +78,7 @@ type
   end;
 
 var
-  wMain: TwMain;
+  wQollectorMain: TwQollectorMain;
 
 implementation
 
@@ -86,37 +89,37 @@ uses
   Qollector.DataModule, Qollector.Notes, Qollector.About,
   Qollector.Execute, Qollector.Settings;
 
-procedure TwMain.acFileOpenAccept(Sender: TObject);
+procedure TwQollectorMain.acFileOpenAccept(Sender: TObject);
 begin
   dmCommon.LoadDatabase(TFileOpen(Sender).Dialog.Filename);
 end;
 
-procedure TwMain.acHelpAboutExecute(Sender: TObject);
+procedure TwQollectorMain.acHelpAboutExecute(Sender: TObject);
 begin
   TwAbout.ExecuteDialog;
 end;
 
-procedure TwMain.acSectionNotesExecute(Sender: TObject);
+procedure TwQollectorMain.acSectionNotesExecute(Sender: TObject);
 begin
   FForms.ShowForm(qftNotes);
 end;
 
-procedure TwMain.acSectionSettingsExecute(Sender: TObject);
+procedure TwQollectorMain.acSectionSettingsExecute(Sender: TObject);
 begin
   FForms.ShowForm(qftSettings);
 end;
 
-procedure TwMain.acSectionWelcomeExecute(Sender: TObject);
+procedure TwQollectorMain.acSectionWelcomeExecute(Sender: TObject);
 begin
   FForms.ShowForm(qftWelcome);
 end;
 
-procedure TwMain.aeApplicationEventsMinimize(Sender: TObject);
+procedure TwQollectorMain.aeApplicationEventsMinimize(Sender: TObject);
 begin
   Minimize;
 end;
 
-procedure TwMain.FormCreate(Sender: TObject);
+procedure TwQollectorMain.FormCreate(Sender: TObject);
 var
   Filename: String;
 begin
@@ -124,34 +127,37 @@ begin
   acSectionWelcome.Execute;
   GlobalEventBus.RegisterSubscriberForEvents(Self);
   dmCommon.MainFormCreated;
+{
   if (ParamCount > 0) then
     Filename := ParamStr(1)
   else
     Filename := '';
   dmCommon.LoadDatabase(Filename);
+}
+  dmCommon.LoadDatabase('');
   RegisterHotkeys;
   InitSettings;
 end;
 
-procedure TwMain.FormDestroy(Sender: TObject);
+procedure TwQollectorMain.FormDestroy(Sender: TObject);
 begin
   QollectorSettings.FormPosition.SavePosition(self);
   FForms.Free;
   UnRegisterHotkeys;
 end;
 
-procedure TwMain.imBurgerButtonClick(Sender: TObject);
+procedure TwQollectorMain.imBurgerButtonClick(Sender: TObject);
 begin
   svSplitView.Opened := not svSplitView.Opened;
 end;
 
-procedure TwMain.InitSettings;
+procedure TwQollectorMain.InitSettings;
 begin
   QollectorSettings.FormPosition.LoadPosition(self);
   svSplitView.Opened := QollectorSettings.DrawerOpened;
 end;
 
-procedure TwMain.mbMainPaint(Sender: TObject);
+procedure TwQollectorMain.mbMainPaint(Sender: TObject);
 var
   Color: TColor;
 begin
@@ -166,20 +172,20 @@ begin
     end;
 end;
 
-procedure TwMain.Minimize;
+procedure TwQollectorMain.Minimize;
 begin
   Hide;
   WindowState := wsMinimized;
   tiTrayIcon.Visible := true;
 end;
 
-procedure TwMain.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
+procedure TwQollectorMain.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
 begin
   acSectionNotes.Execute;
   sbNotes.Down := true;
 end;
 
-procedure TwMain.OnThemeChange(AEvent: IThemeChangeEvent);
+procedure TwQollectorMain.OnThemeChange(AEvent: IThemeChangeEvent);
 begin
   CustomTitleBar.SystemColors := AEvent.ThemeName = 'Windows';
   mbMain.Invalidate;
@@ -188,7 +194,40 @@ begin
   vilLargeIcons.ImageCollection := dmCommon.GetImageCollection;
 end;
 
-procedure TwMain.RegisterHotkeys;
+procedure TwQollectorMain.ProcessParameters(const AParameters: TStrings);
+const
+  fptText = 0;
+  fptCollection = 1;
+var
+  Param: String;
+  FileParamType: Integer;
+begin
+  FileParamType := fptText;
+
+  for Param in AParameters do
+    begin
+      if SameText(Param, '/C') then
+        FileParamType := fptCollection
+      else if TFile.Exists(Param) then
+        begin
+          case FileParamType of
+            fptText:
+              begin
+                // todo
+              end;
+            fptCollection:
+              begin
+                dmCommon.LoadDatabase(Param);
+              end;
+          end;
+          FileParamType := fptText;
+        end
+      else
+        FileParamType := fptText;
+    end;
+end;
+
+procedure TwQollectorMain.RegisterHotkeys;
 const
   VK_Q = $51;
 begin
@@ -197,7 +236,7 @@ begin
   RegisterHotKey(Handle, HotKeyID, MOD_WIN, VK_NUMPAD0);
 end;
 
-procedure TwMain.Restore;
+procedure TwQollectorMain.Restore;
 begin
   tiTrayIcon.Visible := false;
   Show;
@@ -205,40 +244,41 @@ begin
   Application.BringToFront;
 end;
 
-procedure TwMain.svSplitViewClosed(Sender: TObject);
+procedure TwQollectorMain.svSplitViewClosed(Sender: TObject);
 begin
   QollectorSettings.DrawerOpened := false;
 end;
 
-procedure TwMain.svSplitViewOpened(Sender: TObject);
+procedure TwQollectorMain.svSplitViewOpened(Sender: TObject);
 begin
   QollectorSettings.DrawerOpened := true;
 end;
 
-procedure TwMain.tiTrayIconClick(Sender: TObject);
+procedure TwQollectorMain.tiTrayIconClick(Sender: TObject);
 begin
   Restore;
 end;
 
-procedure TwMain.tiTrayIconDblClick(Sender: TObject);
+procedure TwQollectorMain.tiTrayIconDblClick(Sender: TObject);
 begin
   Restore;
 end;
 
-procedure TwMain.UnRegisterHotkeys;
+procedure TwQollectorMain.UnRegisterHotkeys;
 begin
   UnRegisterHotKey(Handle, HotKeyID);
   GlobalDeleteAtom(HotKeyID);
   HotKeyID := 0;
 end;
 
-procedure TwMain.WMActivate(var Message: TWMActivate);
+procedure TwQollectorMain.WMActivate(var Message: TWMActivate);
 begin
   inherited;
   if CustomTitleBar.Enabled and Assigned(mbMain) then
     mbMain.Invalidate;
 end;
-procedure TwMain.WMHotKey(var Msg: TWMHotKey);
+
+procedure TwQollectorMain.WMHotKey(var Msg: TWMHotKey);
 begin
   if Msg.HotKey = HotKeyID then
     begin
@@ -249,7 +289,24 @@ begin
     end;
 end;
 
-procedure TwMain.WMSize(var Message: TWMSize);
+procedure TwQollectorMain.WMProcessParameters(var Msg: TMessage);
+var
+  Buffer: PChar;
+  Parameters: TStringList;
+begin
+  Parameters := TStringList.Create;
+  try
+    Buffer := StrAlloc(Msg.wParam + 1);
+    GlobalGetAtomName(Msg.lParam, Buffer, Msg.wParam + 1);
+    Parameters.Text := StrPas(Buffer);
+    ProcessParameters(Parameters);
+  finally
+    StrDispose(Buffer);
+    Parameters.Free;
+  end;
+end;
+
+procedure TwQollectorMain.WMSize(var Message: TWMSize);
 begin
   inherited;
   if Assigned(mbMain) then
