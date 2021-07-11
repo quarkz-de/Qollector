@@ -275,9 +275,9 @@ object wWelcomeForm: TwWelcomeForm
     Top = 116
     Width = 301
     Height = 72
-    Action = wMain.acFileOpen
+    Action = wQollectorMain.acFileOpen
     CommandLinkHint = 'Bestehende Sammlung '#246'ffnen oder neue Sammlung anlegen'
-    Images = wMain.vilLargeIcons
+    Images = wQollectorMain.vilLargeIcons
     Style = bsCommandLink
     TabOrder = 0
   end

@@ -44,7 +44,7 @@ object wQollectorMain: TwQollectorMain
     Height = 30
     CustomButtons = <>
     object mbMain: TActionMainMenuBar
-      Left = 32
+      Left = 36
       Top = 0
       Width = 257
       Height = 24
@@ -177,6 +177,8 @@ object wQollectorMain: TwQollectorMain
             Items = <
               item
                 Action = acFileOpen
+                ImageIndex = 9
+                ImageName = '009_Collection'
                 ShortCut = 16463
               end
               item
