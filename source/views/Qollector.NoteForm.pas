@@ -17,7 +17,8 @@ uses
   SynEdit, SynEditTypes, SynEditKeyCmds,
   HTMLUn2, HtmlView, UrlConn,
   Qodelib.Themes,
-  Qollector.Notes, Qollector.Events, Qollector.Visualizers, Qollector.Forms;
+  Qollector.Notes, Qollector.Events, Qollector.Visualizers, Qollector.Forms,
+  Qollector.Markdown;
 
 type
   TwNoteForm = class(TQollectorForm)
@@ -68,8 +69,6 @@ type
     procedure acNewFavoriteAccept(Sender: TObject);
     procedure acNewNotebookExecute(Sender: TObject);
     procedure acNewNoteExecute(Sender: TObject);
-    procedure edTextCommandProcessed(Sender: TObject; var Command:
-      TSynEditorCommand; var AChar: Char; Data: Pointer);
     procedure hvTextHotSpotClick(Sender: TObject; const SRC: string; var Handled:
         Boolean);
     procedure pcNoteChange(Sender: TObject);
@@ -91,6 +90,7 @@ type
     FLinkVisualizer: ILinkListVisualizer;
     FTreeVisualizer: INotesTreeVisualizer;
     MarkdownProcessor: TMarkdownProcessor;
+    MarkdownEditHelper: TMarkdownEditHelper;
     function IsModified: Boolean;
     procedure UpdatePreview;
     procedure UpdateNoteActions(const ASelectedItemType: TNotesTreeItemType);
@@ -134,12 +134,15 @@ begin
   FLinkVisualizer.SetVirtualTree(stLinks);
   FTreeVisualizer := GlobalContainer.Resolve<INotesTreeVisualizer>;
   FTreeVisualizer.SetVirtualTree(stNotebooks);
+
+  MarkdownEditHelper := TMarkdownEditHelper.Create(edText);
 end;
 
 procedure TwNoteForm.FormDestroy(Sender: TObject);
 begin
   SaveChanges;
   MarkdownProcessor.Free;
+  MarkdownEditHelper.Free;
 end;
 
 procedure TwNoteForm.acDeleteItemExecute(Sender: TObject);
@@ -198,41 +201,13 @@ begin
   FTreeVisualizer.NewNote;
 end;
 
-procedure TwNoteForm.edTextCommandProcessed(Sender: TObject; var Command:
-  TSynEditorCommand; var AChar: Char; Data: Pointer);
-
-  procedure CopyLastLinePrefix(const APrefix: String);
-  var
-    LineIndex: Integer;
-  begin
-    LineIndex := edText.CaretY - 2;
-    if LineIndex >= 0 then
-      begin
-        if (APrefix = edText.Lines[LineIndex]) then
-          edText.Lines[LineIndex] := ''
-        else if StartsText(APrefix, edText.Lines[LineIndex]) then
-          edText.SelText := APrefix;
-      end;
-  end;
-
-begin
-  case Command of
-    ecLineBreak:
-      begin
-        CopyLastLinePrefix('* ');
-        CopyLastLinePrefix('- ');
-        CopyLastLinePrefix('> ');
-      end;
-  end;
-end;
-
 function TwNoteForm.GetCurrentNote: TNoteItem;
 begin
   Result := FTreeVisualizer.GetSelectedNote;
 end;
 
 procedure TwNoteForm.hvTextHotSpotClick(Sender: TObject; const SRC: string;
-    var Handled: Boolean);
+  var Handled: Boolean);
 begin
   TShellExecute.Open(SRC);
 end;

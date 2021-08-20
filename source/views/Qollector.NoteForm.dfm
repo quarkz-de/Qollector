@@ -24,7 +24,7 @@ object wNoteForm: TwNoteForm
     Top = 3
     Width = 641
     Height = 537
-    ActivePage = tsView
+    ActivePage = tsEdit
     Align = alClient
     TabHeight = 30
     TabOrder = 0
@@ -56,7 +56,6 @@ object wNoteForm: TwNoteForm
         Gutter.Font.Style = []
         Gutter.ShowLineNumbers = True
         RightEdge = 0
-        OnCommandProcessed = edTextCommandProcessed
       end
     end
     object tsView: TTabSheet
@@ -94,9 +93,9 @@ object wNoteForm: TwNoteForm
       ImageIndex = 2
       object stLinks: TVirtualStringTree
         Left = 0
-        Top = 23
+        Top = 26
         Width = 633
-        Height = 474
+        Height = 471
         Align = alClient
         BorderStyle = bsNone
         DefaultNodeHeight = 19
@@ -112,8 +111,8 @@ object wNoteForm: TwNoteForm
         OnDragDrop = stLinksDragDrop
         OnFocusChanged = stLinksFocusChanged
         OnKeyDown = stLinksKeyDown
-        ExplicitTop = 26
-        ExplicitHeight = 471
+        Touch.InteractiveGestures = [igPan, igPressAndTap]
+        Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
         Columns = <
           item
             Position = 0
@@ -130,7 +129,7 @@ object wNoteForm: TwNoteForm
         Left = 0
         Top = 0
         Width = 633
-        Height = 23
+        Height = 26
         ActionManager = amActions
         Color = clMenuBar
         ColorMap.DisabledFontColor = 7171437
@@ -144,7 +143,6 @@ object wNoteForm: TwNoteForm
         Font.Style = []
         ParentFont = False
         Spacing = 0
-        ExplicitHeight = 26
       end
     end
   end
@@ -217,6 +215,8 @@ object wNoteForm: TwNoteForm
       TreeOptions.SelectionOptions = [toRightClickSelect]
       OnFocusChanged = stNotebooksFocusChanged
       OnFocusChanging = stNotebooksFocusChanging
+      Touch.InteractiveGestures = [igPan, igPressAndTap]
+      Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
       Columns = <>
     end
   end

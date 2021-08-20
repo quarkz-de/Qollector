@@ -29,7 +29,8 @@ uses
   Qollector.WelcomeForm in 'views\Qollector.WelcomeForm.pas' {wWelcomeForm},
   Qollector.SettingsForm in 'views\Qollector.SettingsForm.pas' {wSettingsForm},
   Qollector.DatabaseMigrations in 'core\Qollector.DatabaseMigrations.pas',
-  Qollector.Parameters in 'core\Qollector.Parameters.pas';
+  Qollector.Parameters in 'core\Qollector.Parameters.pas',
+  Qollector.Markdown in 'views\Qollector.Markdown.pas';
 
 {$R *.res}
 

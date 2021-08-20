@@ -120,8 +120,8 @@ begin
 end;
 
 procedure TwQollectorMain.FormCreate(Sender: TObject);
-var
-  Filename: String;
+//var
+//  Filename: String;
 begin
   FForms := TQollectorFormList.Create(self);
   acSectionWelcome.Execute;
@@ -295,8 +295,8 @@ var
   Parameters: TStringList;
 begin
   Parameters := TStringList.Create;
+  Buffer := StrAlloc(Msg.wParam + 1);
   try
-    Buffer := StrAlloc(Msg.wParam + 1);
     GlobalGetAtomName(Msg.lParam, Buffer, Msg.wParam + 1);
     Parameters.Text := StrPas(Buffer);
     ProcessParameters(Parameters);
