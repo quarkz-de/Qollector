@@ -60,6 +60,13 @@ type
     tbNewNotebook: TToolButton;
     tbNewNote: TToolButton;
     tbDeleteItem: TToolButton;
+    acFormatBold: TAction;
+    acFormatItalic: TAction;
+    acFormatStrikeThrough: TAction;
+    acFormatHeading1: TAction;
+    acFormatHeading2: TAction;
+    acFormatHeading3: TAction;
+    acFormatHeading4: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure acDeleteItemExecute(Sender: TObject);
@@ -86,6 +93,15 @@ type
         Column: TColumnIndex);
     procedure stNotebooksFocusChanging(Sender: TBaseVirtualTree; OldNode, NewNode:
         PVirtualNode; OldColumn, NewColumn: TColumnIndex; var Allowed: Boolean);
+    procedure acFormatBoldExecute(Sender: TObject);
+    procedure acFormatItalicExecute(Sender: TObject);
+    procedure acFormatStrikeThroughExecute(Sender: TObject);
+    procedure acFormatHeading1Execute(Sender: TObject);
+    procedure acFormatHeading2Execute(Sender: TObject);
+    procedure acFormatHeading3Execute(Sender: TObject);
+    procedure acFormatHeading4Execute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
   private
     FLinkVisualizer: ILinkListVisualizer;
     FTreeVisualizer: INotesTreeVisualizer;
@@ -122,6 +138,11 @@ uses
 
 { TwNoteForm }
 
+procedure TwNoteForm.FormActivate(Sender: TObject);
+begin
+  amActions.State := asNormal;
+end;
+
 procedure TwNoteForm.FormCreate(Sender: TObject);
 begin
   MarkdownProcessor := TMarkdownProcessor.CreateDialect(mdCommonMark);
@@ -136,6 +157,11 @@ begin
   FTreeVisualizer.SetVirtualTree(stNotebooks);
 
   MarkdownEditHelper := TMarkdownEditHelper.Create(edText);
+end;
+
+procedure TwNoteForm.FormDeactivate(Sender: TObject);
+begin
+  amActions.State := asSuspended;
 end;
 
 procedure TwNoteForm.FormDestroy(Sender: TObject);
@@ -170,6 +196,41 @@ begin
       Database := GlobalContainer.Resolve<IQollectorDatabase>;
       Database.GetSession.Save(Link);
     end;
+end;
+
+procedure TwNoteForm.acFormatBoldExecute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsBold);
+end;
+
+procedure TwNoteForm.acFormatHeading1Execute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsHeading1);
+end;
+
+procedure TwNoteForm.acFormatHeading2Execute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsHeading2);
+end;
+
+procedure TwNoteForm.acFormatHeading3Execute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsHeading3);
+end;
+
+procedure TwNoteForm.acFormatHeading4Execute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsHeading4);
+end;
+
+procedure TwNoteForm.acFormatItalicExecute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsItalic);
+end;
+
+procedure TwNoteForm.acFormatStrikeThroughExecute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsStrikeThrough);
 end;
 
 procedure TwNoteForm.acNewBookmarkExecute(Sender: TObject);

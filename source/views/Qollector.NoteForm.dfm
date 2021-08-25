@@ -7,8 +7,10 @@ object wNoteForm: TwNoteForm
   Color = clBtnFace
   ParentFont = True
   OldCreateOrder = True
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnDeactivate = FormDeactivate
   PixelsPerInch = 96
   TextHeight = 13
   object spSplitter: TSplitter
@@ -31,6 +33,7 @@ object wNoteForm: TwNoteForm
     TabWidth = 80
     Visible = False
     OnChange = pcNoteChange
+    ExplicitTop = 6
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
       object edText: TSynEdit
@@ -309,10 +312,12 @@ object wNoteForm: TwNoteForm
           end>
       end>
     Images = vilIcons
+    State = asSuspended
     Left = 185
     Top = 40
     StyleName = 'Platform Default'
     object acNewNotebook: TAction
+      Category = 'Notes'
       Caption = 'Neues Notiz&buch'
       Hint = 'Neues Notizbuch'
       ImageIndex = 0
@@ -320,6 +325,7 @@ object wNoteForm: TwNoteForm
       OnExecute = acNewNotebookExecute
     end
     object acNewNote: TAction
+      Category = 'Notes'
       Caption = '&Neue Notiz'
       Hint = 'Neue Notiz'
       ImageIndex = 1
@@ -327,6 +333,7 @@ object wNoteForm: TwNoteForm
       OnExecute = acNewNoteExecute
     end
     object acDeleteItem: TAction
+      Category = 'Notes'
       Caption = '&L'#246'schen'
       Hint = 'Element l'#246'schen'
       ImageIndex = 4
@@ -334,6 +341,7 @@ object wNoteForm: TwNoteForm
       OnExecute = acDeleteItemExecute
     end
     object acNewBookmark: TAction
+      Category = 'Bookmarks'
       Caption = 'Neues &Lesezeichen'
       Hint = 'Neues Lesezeichen'
       ImageIndex = 3
@@ -341,6 +349,7 @@ object wNoteForm: TwNoteForm
       OnExecute = acNewBookmarkExecute
     end
     object acNewFavorite: TFileOpen
+      Category = 'Bookmarks'
       Caption = 'Neue &Datei anheften...'
       Dialog.Filter = 
         'Alle Dateien (*.*)|*.*|Dokumente (*.pdf;*.odt;*.ods;*.doc;*.docx' +
@@ -351,6 +360,7 @@ object wNoteForm: TwNoteForm
       OnAccept = acNewFavoriteAccept
     end
     object acDeleteLink: TAction
+      Category = 'Bookmarks'
       Caption = '&L'#246'schen'
       Hint = 'Lesezeichen l'#246'schen'
       ImageIndex = 4
@@ -358,11 +368,54 @@ object wNoteForm: TwNoteForm
       OnExecute = acDeleteLinkExecute
     end
     object acEditLink: TAction
+      Category = 'Bookmarks'
       Caption = '&Bearbeiten'
       Hint = 'Lesezeichen bearbeiten'
       ImageIndex = 5
       ImageName = '005_Edit'
       OnExecute = acEditLinkExecute
+    end
+    object acFormatBold: TAction
+      Category = 'Format'
+      Caption = '&Fett'
+      ShortCut = 16450
+      OnExecute = acFormatBoldExecute
+    end
+    object acFormatItalic: TAction
+      Category = 'Format'
+      Caption = '&Kursiv'
+      ShortCut = 16457
+      Visible = False
+      OnExecute = acFormatItalicExecute
+    end
+    object acFormatStrikeThrough: TAction
+      Category = 'Format'
+      Caption = '&Durchgestrichen'
+      OnExecute = acFormatStrikeThroughExecute
+    end
+    object acFormatHeading1: TAction
+      Category = 'Format'
+      Caption = #220'berschrift &1'
+      ShortCut = 16433
+      OnExecute = acFormatHeading1Execute
+    end
+    object acFormatHeading2: TAction
+      Category = 'Format'
+      Caption = #220'berschrift &2'
+      ShortCut = 16434
+      OnExecute = acFormatHeading2Execute
+    end
+    object acFormatHeading3: TAction
+      Category = 'Format'
+      Caption = #220'berschrift &3'
+      ShortCut = 16435
+      OnExecute = acFormatHeading3Execute
+    end
+    object acFormatHeading4: TAction
+      Category = 'Format'
+      Caption = #220'berschrift &4'
+      ShortCut = 16436
+      OnExecute = acFormatHeading4Execute
     end
   end
   object vilIcons: TVirtualImageList

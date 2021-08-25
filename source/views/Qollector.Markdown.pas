@@ -10,6 +10,11 @@ type
   TMarkdownItemType = (mitText, mitHeading, mitUnorderedList, mitOrderedList,
     mitQuote, mitTable);
 
+  TMarkdownFormatStyle = (mfsBold, mfsItalic, mfsStrikethrough,
+    mfsHeading1, mfsHeading2, mfsHeading3, mfsHeading4,
+    mfsUnorderedList, mfsOrderedList,
+    mfsQuote, mfsCode);
+
   TMarkdownEditHelper = class
   private
     FEditor: TSynEdit;
@@ -30,6 +35,7 @@ type
   public
     constructor Create(const AEditor: TSynEdit);
     destructor Destroy; override;
+    procedure FormatText(const AFormatStyle: TMarkdownFormatStyle);
   end;
 
 implementation
@@ -160,6 +166,53 @@ begin
     end;
 end;
 
+procedure TMarkdownEditHelper.FormatText(
+  const AFormatStyle: TMarkdownFormatStyle);
+
+  procedure FormatSelection(const AFormatString: String);
+  begin
+    FEditor.SelText := Format(AFormatString, [FEditor.SelText]);
+  end;
+
+  procedure FormatHeading(const ALevel: Integer);
+  var
+    Index: Integer;
+    Line: String;
+  begin
+    Index := GetCurrentLineIndex;
+    Line := FEditor.Lines[Index];
+    while Copy(Line, 1, 1) = '#' do
+      Delete(Line, 1, 1);
+    if Copy(Line, 1, 1) = ' ' then
+      Delete(Line, 1, 1);
+    FEditor.Lines[Index] := DupeString('#', ALevel) + ' ' + Line;
+  end;
+
+var
+  FormatString: String;
+begin
+  case AFormatStyle of
+    mfsBold:
+      FormatSelection('**%s**');
+    mfsItalic:
+      FormatSelection('*%s*');
+    mfsStrikethrough:
+      FormatSelection('~~%s~~');
+    mfsHeading1:
+      FormatHeading(1);
+    mfsHeading2:
+      FormatHeading(2);
+    mfsHeading3:
+      FormatHeading(3);
+    mfsHeading4:
+      FormatHeading(4);
+//    mfsUnorderedList:
+//    mfsOrderedList:
+//    mfsQuote:
+//    mfsCode:
+  end;
+end;
+
 function TMarkdownEditHelper.GetCurrentLineIndex: Integer;
 begin
   Result := Max(0, FEditor.CaretY - 1);
@@ -205,7 +258,7 @@ function TMarkdownEditHelper.IsOrderedList(out AStartLine,
 
   function IsNotEmptyLine(const ALine, ACurrent: Integer): Boolean;
   begin
-    Result := (ALine = ACurrent) or (FEditor.Lines[ALine] <> '');
+    Result := (ALine = ACurrent) or TRegEx.IsMatch(FEditor.Lines[ALine], '\d.');
   end;
 
 var
@@ -221,7 +274,7 @@ begin
   while (EndLine < FEditor.Lines.Count - 1) and IsNotEmptyLine(StartLine + 1, CurrentLine) do
     Inc(EndLine);
 
-  Result := (StartLine < CurrentLine) or (EndLine > CurrentLine) or TRegEx.IsMatch(FEditor.Lines[CurrentLine], '\d.');
+  Result := (StartLine < CurrentLine) or (EndLine > CurrentLine);
   if Result then
     begin
       AStartLine := StartLine;
