@@ -67,6 +67,7 @@ type
     acFormatHeading2: TAction;
     acFormatHeading3: TAction;
     acFormatHeading4: TAction;
+    tbEditor: TActionToolBar;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure acDeleteItemExecute(Sender: TObject);

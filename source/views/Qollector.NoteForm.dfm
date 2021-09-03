@@ -26,21 +26,20 @@ object wNoteForm: TwNoteForm
     Top = 3
     Width = 641
     Height = 537
-    ActivePage = tsEdit
+    ActivePage = tsLinks
     Align = alClient
     TabHeight = 30
     TabOrder = 0
     TabWidth = 80
     Visible = False
     OnChange = pcNoteChange
-    ExplicitTop = 6
     object tsEdit: TTabSheet
       Caption = 'Bearbeiten'
       object edText: TSynEdit
         Left = 0
-        Top = 0
+        Top = 24
         Width = 633
-        Height = 497
+        Height = 473
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -59,6 +58,30 @@ object wNoteForm: TwNoteForm
         Gutter.Font.Style = []
         Gutter.ShowLineNumbers = True
         RightEdge = 0
+        ExplicitLeft = 51
+        ExplicitTop = 148
+        ExplicitHeight = 497
+      end
+      object tbEditor: TActionToolBar
+        Left = 0
+        Top = 0
+        Width = 633
+        Height = 24
+        ActionManager = amActions
+        Caption = 'tbEditor'
+        Color = clMenuBar
+        ColorMap.DisabledFontColor = 7171437
+        ColorMap.HighlightColor = clWhite
+        ColorMap.BtnSelectedFont = clBlack
+        ColorMap.UnusedColor = clWhite
+        EdgeBorders = [ebBottom]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        Spacing = 0
       end
     end
     object tsView: TTabSheet
@@ -146,6 +169,7 @@ object wNoteForm: TwNoteForm
         Font.Style = []
         ParentFont = False
         Spacing = 0
+        ExplicitLeft = -1
       end
     end
   end
@@ -296,20 +320,34 @@ object wNoteForm: TwNoteForm
       item
         Items = <
           item
-            Action = acNewNotebook
-            ImageIndex = 0
-            ImageName = '000_Notebook'
+            Action = acFormatBold
+            ShortCut = 16450
           end
           item
-            Action = acNewNote
-            ImageIndex = 1
-            ImageName = '001_Note'
+            Visible = False
+            Action = acFormatItalic
+            ShortCut = 16457
           end
           item
-            Action = acDeleteItem
-            ImageIndex = 4
-            ImageName = '004_Delete'
+            Action = acFormatStrikeThrough
+          end
+          item
+            Action = acFormatHeading1
+            ShortCut = 16433
+          end
+          item
+            Action = acFormatHeading2
+            ShortCut = 16434
+          end
+          item
+            Action = acFormatHeading3
+            ShortCut = 16435
+          end
+          item
+            Action = acFormatHeading4
+            ShortCut = 16436
           end>
+        ActionBar = tbEditor
       end>
     Images = vilIcons
     State = asSuspended
