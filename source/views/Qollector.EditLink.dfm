@@ -25,9 +25,9 @@ object wLinkEditor: TwLinkEditor
   object txFilename: TLabel
     Left = 20
     Top = 55
-    Width = 65
+    Width = 77
     Height = 17
-    Caption = 'Dateiname:'
+    Caption = 'Link-Adresse:'
   end
   object edName: TEdit
     Left = 108

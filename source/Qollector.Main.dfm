@@ -313,6 +313,66 @@ object wQollectorMain: TwQollectorMain
         CollectionName = '009_Collection'
         Disabled = False
         Name = '009_Collection'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = '010_Bold'
+        Disabled = False
+        Name = '010_Bold'
+      end
+      item
+        CollectionIndex = 11
+        CollectionName = '011_Italic'
+        Disabled = False
+        Name = '011_Italic'
+      end
+      item
+        CollectionIndex = 12
+        CollectionName = '012_Strikethrough'
+        Disabled = False
+        Name = '012_Strikethrough'
+      end
+      item
+        CollectionIndex = 13
+        CollectionName = '013_Header_1'
+        Disabled = False
+        Name = '013_Header_1'
+      end
+      item
+        CollectionIndex = 14
+        CollectionName = '014_Header_2'
+        Disabled = False
+        Name = '014_Header_2'
+      end
+      item
+        CollectionIndex = 15
+        CollectionName = '015_Header_3'
+        Disabled = False
+        Name = '015_Header_3'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = '016_Source_Code'
+        Disabled = False
+        Name = '016_Source_Code'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = '017_Horizontal_Line'
+        Disabled = False
+        Name = '017_Horizontal_Line'
+      end
+      item
+        CollectionIndex = 18
+        CollectionName = '018_Bulleted_List'
+        Disabled = False
+        Name = '018_Bulleted_List'
+      end
+      item
+        CollectionIndex = 19
+        CollectionName = '019_Numbered_List'
+        Disabled = False
+        Name = '019_Numbered_List'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Left = 476
@@ -382,6 +442,66 @@ object wQollectorMain: TwQollectorMain
         CollectionName = '009_Collection'
         Disabled = False
         Name = '009_Collection'
+      end
+      item
+        CollectionIndex = 10
+        CollectionName = '010_Bold'
+        Disabled = False
+        Name = '010_Bold'
+      end
+      item
+        CollectionIndex = 11
+        CollectionName = '011_Italic'
+        Disabled = False
+        Name = '011_Italic'
+      end
+      item
+        CollectionIndex = 12
+        CollectionName = '012_Strikethrough'
+        Disabled = False
+        Name = '012_Strikethrough'
+      end
+      item
+        CollectionIndex = 13
+        CollectionName = '013_Header_1'
+        Disabled = False
+        Name = '013_Header_1'
+      end
+      item
+        CollectionIndex = 14
+        CollectionName = '014_Header_2'
+        Disabled = False
+        Name = '014_Header_2'
+      end
+      item
+        CollectionIndex = 15
+        CollectionName = '015_Header_3'
+        Disabled = False
+        Name = '015_Header_3'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = '016_Source_Code'
+        Disabled = False
+        Name = '016_Source_Code'
+      end
+      item
+        CollectionIndex = 17
+        CollectionName = '017_Horizontal_Line'
+        Disabled = False
+        Name = '017_Horizontal_Line'
+      end
+      item
+        CollectionIndex = 18
+        CollectionName = '018_Bulleted_List'
+        Disabled = False
+        Name = '018_Bulleted_List'
+      end
+      item
+        CollectionIndex = 19
+        CollectionName = '019_Numbered_List'
+        Disabled = False
+        Name = '019_Numbered_List'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Width = 32

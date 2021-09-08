@@ -66,8 +66,10 @@ type
     acFormatHeading1: TAction;
     acFormatHeading2: TAction;
     acFormatHeading3: TAction;
-    acFormatHeading4: TAction;
     tbEditor: TActionToolBar;
+    acFormatCode: TAction;
+    acFormatBulletedList: TAction;
+    acFormatNumberedList: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure acDeleteItemExecute(Sender: TObject);
@@ -95,12 +97,14 @@ type
     procedure stNotebooksFocusChanging(Sender: TBaseVirtualTree; OldNode, NewNode:
         PVirtualNode; OldColumn, NewColumn: TColumnIndex; var Allowed: Boolean);
     procedure acFormatBoldExecute(Sender: TObject);
+    procedure acFormatBulletedListExecute(Sender: TObject);
+    procedure acFormatCodeExecute(Sender: TObject);
     procedure acFormatItalicExecute(Sender: TObject);
     procedure acFormatStrikeThroughExecute(Sender: TObject);
     procedure acFormatHeading1Execute(Sender: TObject);
     procedure acFormatHeading2Execute(Sender: TObject);
     procedure acFormatHeading3Execute(Sender: TObject);
-    procedure acFormatHeading4Execute(Sender: TObject);
+    procedure acFormatNumberedListExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
   private
@@ -204,6 +208,16 @@ begin
   MarkdownEditHelper.FormatText(mfsBold);
 end;
 
+procedure TwNoteForm.acFormatBulletedListExecute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsUnorderedList);
+end;
+
+procedure TwNoteForm.acFormatCodeExecute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsCode);
+end;
+
 procedure TwNoteForm.acFormatHeading1Execute(Sender: TObject);
 begin
   MarkdownEditHelper.FormatText(mfsHeading1);
@@ -219,14 +233,14 @@ begin
   MarkdownEditHelper.FormatText(mfsHeading3);
 end;
 
-procedure TwNoteForm.acFormatHeading4Execute(Sender: TObject);
-begin
-  MarkdownEditHelper.FormatText(mfsHeading4);
-end;
-
 procedure TwNoteForm.acFormatItalicExecute(Sender: TObject);
 begin
   MarkdownEditHelper.FormatText(mfsItalic);
+end;
+
+procedure TwNoteForm.acFormatNumberedListExecute(Sender: TObject);
+begin
+  MarkdownEditHelper.FormatText(mfsOrderedList);
 end;
 
 procedure TwNoteForm.acFormatStrikeThroughExecute(Sender: TObject);

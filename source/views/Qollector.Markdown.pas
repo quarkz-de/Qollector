@@ -170,8 +170,24 @@ procedure TMarkdownEditHelper.FormatText(
   const AFormatStyle: TMarkdownFormatStyle);
 
   procedure FormatSelection(const AFormatString: String);
+  var
+    MoveCursor: Boolean;
   begin
-    FEditor.SelText := Format(AFormatString, [FEditor.SelText]);
+    MoveCursor := FEditor.SelText = '';
+    FEditor.SelText := AFormatString + FEditor.SelText + AFormatString;
+    if MoveCursor then
+      FEditor.CaretX := FEditor.CaretX - Length(AFormatString);
+  end;
+
+  procedure FormatBlock(const AFormatString: String);
+  var
+    StartLine, EndLine: Integer;
+  begin
+    StartLine := FEditor.BlockBegin.Line;
+    EndLine := FEditor.BlockEnd.Line;
+
+    FEditor.Lines.Insert(StartLine - 1, AFormatString);
+    FEditor.Lines.Insert(EndLine + 1, AFormatString);
   end;
 
   procedure FormatHeading(const ALevel: Integer);
@@ -188,16 +204,28 @@ procedure TMarkdownEditHelper.FormatText(
     FEditor.Lines[Index] := DupeString('#', ALevel) + ' ' + Line;
   end;
 
-var
-  FormatString: String;
+  procedure FormatLines(const AFormatString: String);
+  var
+    I, StartLine, EndLine: Integer;
+  begin
+    StartLine := FEditor.BlockBegin.Line - 1;
+    EndLine := FEditor.BlockEnd.Line - 1;
+
+    for I := StartLine to EndLine do
+      begin
+        if Copy(FEditor.Lines[I], 1, Length(AFormatString)) <> AFormatString then
+          FEditor.Lines[I] := AFormatString + FEditor.Lines[I];
+      end;
+  end;
+
 begin
   case AFormatStyle of
     mfsBold:
-      FormatSelection('**%s**');
+      FormatSelection('**');
     mfsItalic:
-      FormatSelection('*%s*');
+      FormatSelection('*');
     mfsStrikethrough:
-      FormatSelection('~~%s~~');
+      FormatSelection('~~');
     mfsHeading1:
       FormatHeading(1);
     mfsHeading2:
@@ -206,10 +234,16 @@ begin
       FormatHeading(3);
     mfsHeading4:
       FormatHeading(4);
-//    mfsUnorderedList:
+    mfsUnorderedList:
+      FormatLines('- ');
 //    mfsOrderedList:
-//    mfsQuote:
-//    mfsCode:
+    mfsQuote:
+      FormatLines('> ');
+    mfsCode:
+      if Pos(#10, FEditor.SelText) > 0 then
+        FormatBlock('```')
+      else
+        FormatSelection('`');
   end;
 end;
 
