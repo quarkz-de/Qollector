@@ -336,6 +336,16 @@ object wNoteForm: TwNoteForm
             ShowCaption = False
           end
           item
+            Caption = '|'
+            CommandStyle = csSeparator
+            CommandProperties.Width = -1
+            CommandProperties.Font.Charset = DEFAULT_CHARSET
+            CommandProperties.Font.Color = clWindowText
+            CommandProperties.Font.Height = -11
+            CommandProperties.Font.Name = 'Tahoma'
+            CommandProperties.Font.Style = []
+          end
+          item
             Action = acFormatHeading1
             ImageIndex = 13
             ImageName = '013_Header_1'
@@ -357,6 +367,16 @@ object wNoteForm: TwNoteForm
             ShortCut = 16435
           end
           item
+            Caption = '|'
+            CommandStyle = csSeparator
+            CommandProperties.Width = -1
+            CommandProperties.Font.Charset = DEFAULT_CHARSET
+            CommandProperties.Font.Color = clWindowText
+            CommandProperties.Font.Height = -11
+            CommandProperties.Font.Name = 'Tahoma'
+            CommandProperties.Font.Style = []
+          end
+          item
             Action = acFormatCode
             ImageIndex = 16
             ImageName = '016_Source_Code'
@@ -376,6 +396,23 @@ object wNoteForm: TwNoteForm
             ImageName = '019_Numbered_List'
             ShowCaption = False
             ShortCut = 24655
+          end
+          item
+            Caption = '|'
+            CommandStyle = csSeparator
+            CommandProperties.Width = -1
+            CommandProperties.Font.Charset = DEFAULT_CHARSET
+            CommandProperties.Font.Color = clWindowText
+            CommandProperties.Font.Height = -11
+            CommandProperties.Font.Name = 'Tahoma'
+            CommandProperties.Font.Style = []
+          end
+          item
+            Action = acFormatInsertLink
+            ImageIndex = 20
+            ImageName = '020_Link'
+            ShowCaption = False
+            ShortCut = 24652
           end>
         ActionBar = tbEditor
       end>
@@ -514,6 +551,14 @@ object wNoteForm: TwNoteForm
       ShortCut = 24655
       OnExecute = acFormatNumberedListExecute
     end
+    object acFormatInsertLink: TAction
+      Category = 'Format'
+      Caption = 'L&ink'
+      ImageIndex = 20
+      ImageName = '020_Link'
+      ShortCut = 24652
+      OnExecute = acFormatInsertLinkExecute
+    end
   end
   object vilIcons: TVirtualImageList
     AutoFill = True
@@ -639,6 +684,12 @@ object wNoteForm: TwNoteForm
         CollectionName = '019_Numbered_List'
         Disabled = False
         Name = '019_Numbered_List'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = '020_Link'
+        Disabled = False
+        Name = '020_Link'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Left = 184

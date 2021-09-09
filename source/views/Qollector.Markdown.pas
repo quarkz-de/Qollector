@@ -36,6 +36,7 @@ type
     constructor Create(const AEditor: TSynEdit);
     destructor Destroy; override;
     procedure FormatText(const AFormatStyle: TMarkdownFormatStyle);
+    procedure InsertLink(const AUrl, ADescription: String);
   end;
 
 implementation
@@ -204,7 +205,7 @@ procedure TMarkdownEditHelper.FormatText(
     FEditor.Lines[Index] := DupeString('#', ALevel) + ' ' + Line;
   end;
 
-  procedure FormatLines(const AFormatString: String);
+  procedure PrefixLines(const APrefix, AIgnore: String);
   var
     I, StartLine, EndLine: Integer;
   begin
@@ -213,9 +214,28 @@ procedure TMarkdownEditHelper.FormatText(
 
     for I := StartLine to EndLine do
       begin
-        if Copy(FEditor.Lines[I], 1, Length(AFormatString)) <> AFormatString then
-          FEditor.Lines[I] := AFormatString + FEditor.Lines[I];
+        if (Copy(FEditor.Lines[I], 1, Length(APrefix)) <> APrefix) and
+          ((AIgnore = '') or (Copy(FEditor.Lines[I], 1, Length(AIgnore)) <> AIgnore)) then
+          FEditor.Lines[I] := APrefix + FEditor.Lines[I];
       end;
+  end;
+
+  procedure OrderedPrefixLines;
+  var
+    Value, I, StartLine, EndLine: Integer;
+  begin
+    StartLine := FEditor.BlockBegin.Line - 1;
+    EndLine := FEditor.BlockEnd.Line - 1;
+    Value := 1;
+
+    for I := StartLine to EndLine do
+      begin
+        if not TRegEx.IsMatch(FEditor.Lines[I], '\d.') then
+          FEditor.Lines[I] := Format('%d. %s', [Value, FEditor.Lines[I]]);
+        Inc(Value);
+      end;
+
+    FormatOrderedList;
   end;
 
 begin
@@ -235,10 +255,11 @@ begin
     mfsHeading4:
       FormatHeading(4);
     mfsUnorderedList:
-      FormatLines('- ');
-//    mfsOrderedList:
+      PrefixLines('* ', '- ');
+    mfsOrderedList:
+      OrderedPrefixLines;
     mfsQuote:
-      FormatLines('> ');
+      PrefixLines('> ', '');
     mfsCode:
       if Pos(#10, FEditor.SelText) > 0 then
         FormatBlock('```')
@@ -285,6 +306,14 @@ var
   StartLine, EndLine: Integer;
 begin
   Result := IsOrderedList(StartLine, EndLine);
+end;
+
+procedure TMarkdownEditHelper.InsertLink(const AUrl, ADescription: String);
+begin
+  if ADescription = '' then
+    FEditor.SelText := Format('(%s)', [AUrl])
+  else
+    FEditor.SelText := Format('[%s](%s)', [ADescription, AUrl]);
 end;
 
 function TMarkdownEditHelper.IsOrderedList(out AStartLine,

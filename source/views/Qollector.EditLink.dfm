@@ -20,14 +20,16 @@ object wLinkEditor: TwLinkEditor
     Top = 20
     Width = 75
     Height = 17
-    Caption = 'Bezeichnung:'
+    Caption = '&Bezeichnung:'
+    FocusControl = edName
   end
   object txFilename: TLabel
     Left = 20
     Top = 55
     Width = 77
     Height = 17
-    Caption = 'Link-Adresse:'
+    Caption = '&Link-Adresse:'
+    FocusControl = edFilename
   end
   object edName: TEdit
     Left = 108

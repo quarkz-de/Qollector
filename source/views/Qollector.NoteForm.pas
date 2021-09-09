@@ -70,6 +70,7 @@ type
     acFormatCode: TAction;
     acFormatBulletedList: TAction;
     acFormatNumberedList: TAction;
+    acFormatInsertLink: TAction;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure acDeleteItemExecute(Sender: TObject);
@@ -104,6 +105,7 @@ type
     procedure acFormatHeading1Execute(Sender: TObject);
     procedure acFormatHeading2Execute(Sender: TObject);
     procedure acFormatHeading3Execute(Sender: TObject);
+    procedure acFormatInsertLinkExecute(Sender: TObject);
     procedure acFormatNumberedListExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
@@ -231,6 +233,16 @@ end;
 procedure TwNoteForm.acFormatHeading3Execute(Sender: TObject);
 begin
   MarkdownEditHelper.FormatText(mfsHeading3);
+end;
+
+procedure TwNoteForm.acFormatInsertLinkExecute(Sender: TObject);
+var
+  Link: TLinkItem;
+begin
+  Link := TLinkItem.Create;
+  if TwLinkEditor.ExecuteDialog(Link) then
+    MarkdownEditHelper.InsertLink(Link.Filename, Link.Name);
+  Link.Free;
 end;
 
 procedure TwNoteForm.acFormatItalicExecute(Sender: TObject);

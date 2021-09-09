@@ -373,6 +373,12 @@ object wQollectorMain: TwQollectorMain
         CollectionName = '019_Numbered_List'
         Disabled = False
         Name = '019_Numbered_List'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = '020_Link'
+        Disabled = False
+        Name = '020_Link'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Left = 476
@@ -502,6 +508,12 @@ object wQollectorMain: TwQollectorMain
         CollectionName = '019_Numbered_List'
         Disabled = False
         Name = '019_Numbered_List'
+      end
+      item
+        CollectionIndex = 20
+        CollectionName = '020_Link'
+        Disabled = False
+        Name = '020_Link'
       end>
     ImageCollection = dmCommon.icDarkIcons
     Width = 32
