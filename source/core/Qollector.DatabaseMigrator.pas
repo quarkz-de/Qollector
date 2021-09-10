@@ -32,11 +32,35 @@ type
     function CreateNewDatabase: Boolean;
     function ExecuteMigrations: Boolean;
     procedure CreateMigrationTable;
+    procedure AddAllMigrations;
   public
     function Execute(const AConnection: IDBConnection): Boolean;
   end;
 
 { TDatabaseMigrator }
+
+procedure TDatabaseMigrator.AddAllMigrations;
+var
+  Migration: TMigration;
+  DatabaseMigrationList: IList<IDatabaseMigration>;
+  DatabaseMigration: IDatabaseMigration;
+begin
+  Migration := TMigration.Create;
+  Migration.Migration := MigrationCreateMigrationTable;
+  Migration.Status := migSuccessful;
+  Session.Save(Migration);
+  Migration.Free;
+
+  DatabaseMigrationList := TMigrationFactory.Build;
+  for DatabaseMigration in DatabaseMigrationList do
+    begin
+      Migration := TMigration.Create;
+      Migration.Migration := DatabaseMigration.ID;
+      Migration.Status := migSuccessful;
+      Session.Save(Migration);
+      Migration.Free;
+    end;
+end;
 
 procedure TDatabaseMigrator.CreateMigrationTable;
 var
@@ -55,6 +79,7 @@ begin
     not DBManager.EntityExists(TNoteItem) then
     begin
       DBManager.BuildDatabase;
+      AddAllMigrations;
       Result := true;
     end;
 end;
@@ -96,7 +121,7 @@ begin
   MigrationList := Session.FindAll<TMigration>();
 
   DatabaseMigrationList := TMigrationFactory.Build;
-  for DatabaseMigration in  DatabaseMigrationList do
+  for DatabaseMigration in DatabaseMigrationList do
     begin
       Predicate := function(const Migration: TMigration): Boolean
         begin
