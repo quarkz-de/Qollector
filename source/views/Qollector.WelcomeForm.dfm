@@ -11,14 +11,13 @@ object wWelcomeForm: TwWelcomeForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  PixelsPerInch = 96
   DesignSize = (
     761
     479)
-  PixelsPerInch = 96
   TextHeight = 13
   object imIcon: TImage
     Left = 14

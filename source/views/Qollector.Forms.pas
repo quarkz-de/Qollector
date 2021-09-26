@@ -81,7 +81,6 @@ begin
         begin
           Form.Deactivate;
           Form.Visible := false;
-          Form.Parent := nil;
         end;
     end;
 end;

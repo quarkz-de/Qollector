@@ -30,7 +30,6 @@ object wQollectorMain: TwQollectorMain
   Font.Style = []
   GlassFrame.Enabled = True
   GlassFrame.Top = 31
-  OldCreateOrder = False
   ShowHint = True
   StyleElements = [seFont, seClient]
   OnCreate = FormCreate
@@ -46,7 +45,7 @@ object wQollectorMain: TwQollectorMain
     object mbMain: TActionMainMenuBar
       Left = 36
       Top = 0
-      Width = 257
+      Width = 97
       Height = 24
       UseSystemFont = False
       ActionManager = amActions
@@ -251,133 +250,110 @@ object wQollectorMain: TwQollectorMain
   end
   object vilIcons: TVirtualImageList
     AutoFill = True
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = '000_Notebook'
-        Disabled = False
         Name = '000_Notebook'
       end
       item
         CollectionIndex = 1
         CollectionName = '001_Note'
-        Disabled = False
         Name = '001_Note'
       end
       item
         CollectionIndex = 2
         CollectionName = '002_Link'
-        Disabled = False
         Name = '002_Link'
       end
       item
         CollectionIndex = 3
         CollectionName = '003_Bookmark'
-        Disabled = False
         Name = '003_Bookmark'
       end
       item
         CollectionIndex = 4
         CollectionName = '004_Delete'
-        Disabled = False
         Name = '004_Delete'
       end
       item
         CollectionIndex = 5
         CollectionName = '005_Edit'
-        Disabled = False
         Name = '005_Edit'
       end
       item
         CollectionIndex = 6
         CollectionName = '006_Menu'
-        Disabled = False
         Name = '006_Menu'
       end
       item
         CollectionIndex = 7
         CollectionName = '007_Home'
-        Disabled = False
         Name = '007_Home'
       end
       item
         CollectionIndex = 8
         CollectionName = '008_Settings'
-        Disabled = False
         Name = '008_Settings'
       end
       item
         CollectionIndex = 9
         CollectionName = '009_Collection'
-        Disabled = False
         Name = '009_Collection'
       end
       item
         CollectionIndex = 10
         CollectionName = '010_Bold'
-        Disabled = False
         Name = '010_Bold'
       end
       item
         CollectionIndex = 11
         CollectionName = '011_Italic'
-        Disabled = False
         Name = '011_Italic'
       end
       item
         CollectionIndex = 12
         CollectionName = '012_Strikethrough'
-        Disabled = False
         Name = '012_Strikethrough'
       end
       item
         CollectionIndex = 13
         CollectionName = '013_Header_1'
-        Disabled = False
         Name = '013_Header_1'
       end
       item
         CollectionIndex = 14
         CollectionName = '014_Header_2'
-        Disabled = False
         Name = '014_Header_2'
       end
       item
         CollectionIndex = 15
         CollectionName = '015_Header_3'
-        Disabled = False
         Name = '015_Header_3'
       end
       item
         CollectionIndex = 16
         CollectionName = '016_Source_Code'
-        Disabled = False
         Name = '016_Source_Code'
       end
       item
         CollectionIndex = 17
         CollectionName = '017_Horizontal_Line'
-        Disabled = False
         Name = '017_Horizontal_Line'
       end
       item
         CollectionIndex = 18
         CollectionName = '018_Bulleted_List'
-        Disabled = False
         Name = '018_Bulleted_List'
       end
       item
         CollectionIndex = 19
         CollectionName = '019_Numbered_List'
-        Disabled = False
         Name = '019_Numbered_List'
       end
       item
         CollectionIndex = 20
         CollectionName = '020_Link'
-        Disabled = False
         Name = '020_Link'
       end>
     ImageCollection = dmCommon.icDarkIcons
@@ -386,133 +362,110 @@ object wQollectorMain: TwQollectorMain
   end
   object vilLargeIcons: TVirtualImageList
     AutoFill = True
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = '000_Notebook'
-        Disabled = False
         Name = '000_Notebook'
       end
       item
         CollectionIndex = 1
         CollectionName = '001_Note'
-        Disabled = False
         Name = '001_Note'
       end
       item
         CollectionIndex = 2
         CollectionName = '002_Link'
-        Disabled = False
         Name = '002_Link'
       end
       item
         CollectionIndex = 3
         CollectionName = '003_Bookmark'
-        Disabled = False
         Name = '003_Bookmark'
       end
       item
         CollectionIndex = 4
         CollectionName = '004_Delete'
-        Disabled = False
         Name = '004_Delete'
       end
       item
         CollectionIndex = 5
         CollectionName = '005_Edit'
-        Disabled = False
         Name = '005_Edit'
       end
       item
         CollectionIndex = 6
         CollectionName = '006_Menu'
-        Disabled = False
         Name = '006_Menu'
       end
       item
         CollectionIndex = 7
         CollectionName = '007_Home'
-        Disabled = False
         Name = '007_Home'
       end
       item
         CollectionIndex = 8
         CollectionName = '008_Settings'
-        Disabled = False
         Name = '008_Settings'
       end
       item
         CollectionIndex = 9
         CollectionName = '009_Collection'
-        Disabled = False
         Name = '009_Collection'
       end
       item
         CollectionIndex = 10
         CollectionName = '010_Bold'
-        Disabled = False
         Name = '010_Bold'
       end
       item
         CollectionIndex = 11
         CollectionName = '011_Italic'
-        Disabled = False
         Name = '011_Italic'
       end
       item
         CollectionIndex = 12
         CollectionName = '012_Strikethrough'
-        Disabled = False
         Name = '012_Strikethrough'
       end
       item
         CollectionIndex = 13
         CollectionName = '013_Header_1'
-        Disabled = False
         Name = '013_Header_1'
       end
       item
         CollectionIndex = 14
         CollectionName = '014_Header_2'
-        Disabled = False
         Name = '014_Header_2'
       end
       item
         CollectionIndex = 15
         CollectionName = '015_Header_3'
-        Disabled = False
         Name = '015_Header_3'
       end
       item
         CollectionIndex = 16
         CollectionName = '016_Source_Code'
-        Disabled = False
         Name = '016_Source_Code'
       end
       item
         CollectionIndex = 17
         CollectionName = '017_Horizontal_Line'
-        Disabled = False
         Name = '017_Horizontal_Line'
       end
       item
         CollectionIndex = 18
         CollectionName = '018_Bulleted_List'
-        Disabled = False
         Name = '018_Bulleted_List'
       end
       item
         CollectionIndex = 19
         CollectionName = '019_Numbered_List'
-        Disabled = False
         Name = '019_Numbered_List'
       end
       item
         CollectionIndex = 20
         CollectionName = '020_Link'
-        Disabled = False
         Name = '020_Link'
       end>
     ImageCollection = dmCommon.icDarkIcons
