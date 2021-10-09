@@ -41,6 +41,9 @@ type
 
 implementation
 
+const
+  SRegExOrderedList = '\d\.';
+
 { TMarkdownEditHelper }
 
 procedure TMarkdownEditHelper.AttachEditor;
@@ -145,7 +148,7 @@ begin
       Line := FEditor.Lines[I];
 
       CurrentIsEmpty := (I = CurrentLine) and (Line = '');
-      ChangePrefix := TRegEx.IsMatch(Line, '\d.');
+      ChangePrefix := TRegEx.IsMatch(Line, SRegExOrderedList);
 
       if CurrentIsEmpty or ChangePrefix then
         begin
@@ -230,7 +233,7 @@ procedure TMarkdownEditHelper.FormatText(
 
     for I := StartLine to EndLine do
       begin
-        if not TRegEx.IsMatch(FEditor.Lines[I], '\d.') then
+        if not TRegEx.IsMatch(FEditor.Lines[I], SRegExOrderedList) then
           FEditor.Lines[I] := Format('%d. %s', [Value, FEditor.Lines[I]]);
         Inc(Value);
       end;
@@ -301,13 +304,6 @@ begin
   Result := Max(0, GetCurrentLineIndex - 1);
 end;
 
-function TMarkdownEditHelper.IsOrderedList: Boolean;
-var
-  StartLine, EndLine: Integer;
-begin
-  Result := IsOrderedList(StartLine, EndLine);
-end;
-
 procedure TMarkdownEditHelper.InsertLink(const AUrl, ADescription: String);
 begin
   if ADescription = '' then
@@ -316,20 +312,27 @@ begin
     FEditor.SelText := Format('[%s](%s)', [ADescription, AUrl]);
 end;
 
+function TMarkdownEditHelper.IsOrderedList: Boolean;
+var
+  StartLine, EndLine: Integer;
+begin
+  Result := IsOrderedList(StartLine, EndLine);
+end;
+
 function TMarkdownEditHelper.IsOrderedList(out AStartLine,
   AEndLine: Integer): Boolean;
 
   function IsNotEmptyLine(const ALine, ACurrent: Integer): Boolean;
   begin
-    Result := (ALine = ACurrent) or TRegEx.IsMatch(FEditor.Lines[ALine], '\d.');
+    Result := (ALine = ACurrent) or TRegEx.IsMatch(FEditor.Lines[ALine], SRegExOrderedList);
   end;
 
 var
   CurrentLine, StartLine, EndLine: Integer;
 begin
   CurrentLine := GetCurrentLineIndex;
-  StartLine := CurrentLine;
-  EndLine := CurrentLine;
+  StartLine := CurrentLine + 1;
+  EndLine := CurrentLine - 1;
 
   while (StartLine > 1) and IsNotEmptyLine(StartLine - 1, CurrentLine) do
     Dec(StartLine);
