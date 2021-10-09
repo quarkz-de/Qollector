@@ -2,7 +2,7 @@ object wQollectorMain: TwQollectorMain
   Left = 0
   Top = 0
   Caption = 'Qollector'
-  ClientHeight = 557
+  ClientHeight = 526
   ClientWidth = 1032
   Color = clBtnFace
   CustomTitleBar.CaptionAlignment = taCenter
@@ -47,7 +47,6 @@ object wQollectorMain: TwQollectorMain
       Top = 0
       Width = 97
       Height = 24
-      UseSystemFont = False
       ActionManager = amActions
       Align = alNone
       Caption = 'mbMain'
@@ -57,10 +56,11 @@ object wQollectorMain: TwQollectorMain
       ColorMap.BtnSelectedFont = clBlack
       ColorMap.UnusedColor = clWhite
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
+      Font.Color = clWindowText
       Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
+      StyleName = 'Windows'
       Spacing = 0
       OnPaint = mbMainPaint
     end
@@ -69,7 +69,7 @@ object wQollectorMain: TwQollectorMain
     Left = 0
     Top = 30
     Width = 170
-    Height = 527
+    Height = 496
     CloseStyle = svcCompact
     CompactWidth = 42
     OpenedWidth = 170
@@ -77,6 +77,7 @@ object wQollectorMain: TwQollectorMain
     TabOrder = 1
     OnClosed = svSplitViewClosed
     OnOpened = svSplitViewOpened
+    ExplicitHeight = 527
     object pnHeader: TPanel
       Left = 0
       Top = 0
