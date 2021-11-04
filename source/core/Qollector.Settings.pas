@@ -113,7 +113,11 @@ end;
 
 function TQollectorSettings.GetSettingsFilename: String;
 begin
+{$ifdef DEBUG}
+  Result := TPath.Combine(GetSettingsFoldername, 'Qollector-debug.json');
+{$else}
   Result := TPath.Combine(GetSettingsFoldername, 'Qollector.json');
+{$endif}
 end;
 
 function TQollectorSettings.GetSettingsFoldername: String;
