@@ -47,6 +47,7 @@ object wQollectorMain: TwQollectorMain
       Top = 0
       Width = 97
       Height = 24
+      UseSystemFont = False
       ActionManager = amActions
       Align = alNone
       Caption = 'mbMain'
@@ -56,7 +57,7 @@ object wQollectorMain: TwQollectorMain
       ColorMap.BtnSelectedFont = clBlack
       ColorMap.UnusedColor = clWhite
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clBlack
       Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
@@ -77,7 +78,6 @@ object wQollectorMain: TwQollectorMain
     TabOrder = 1
     OnClosed = svSplitViewClosed
     OnOpened = svSplitViewOpened
-    ExplicitHeight = 527
     object pnHeader: TPanel
       Left = 0
       Top = 0
@@ -91,6 +91,7 @@ object wQollectorMain: TwQollectorMain
         Top = 6
         Width = 32
         Height = 32
+        ImageCollection = dmCommon.icColorIcons
         ImageWidth = 0
         ImageHeight = 0
         ImageIndex = 6
@@ -121,7 +122,7 @@ object wQollectorMain: TwQollectorMain
       Left = 0
       Top = 45
       Width = 170
-      Height = 482
+      Height = 451
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
@@ -155,7 +156,7 @@ object wQollectorMain: TwQollectorMain
       end
       object sbSettings: TSpeedButton
         Left = 0
-        Top = 444
+        Top = 413
         Width = 170
         Height = 38
         Action = acSectionSettings
@@ -177,9 +178,14 @@ object wQollectorMain: TwQollectorMain
             Items = <
               item
                 Action = acFileOpen
-                ImageIndex = 9
-                ImageName = '009_Collection'
+                ImageIndex = 24
+                ImageName = '021_Open_Collection'
                 ShortCut = 16463
+              end
+              item
+                Action = acFileNew
+                ImageIndex = 25
+                ImageName = '022_New_Collection'
               end
               item
                 Caption = '-'
@@ -212,8 +218,10 @@ object wQollectorMain: TwQollectorMain
       Caption = 'Sammlung '#246'&ffnen...'
       Dialog.DefaultExt = 'qollection'
       Dialog.Filter = 'Sammlungen (*.qollection)|*.qollection'
+      Dialog.Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+      Dialog.Title = 'Sammlung '#246'ffnen'
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
-      ImageIndex = 9
+      ImageIndex = 24
       ShortCut = 16463
       OnAccept = acFileOpenAccept
     end
@@ -247,6 +255,16 @@ object wQollectorMain: TwQollectorMain
       ImageIndex = 8
       ImageName = '008_Settings'
       OnExecute = acSectionSettingsExecute
+    end
+    object acFileNew: TFileSaveAs
+      Category = 'Datei'
+      Caption = '&Neue Sammlung...'
+      Dialog.DefaultExt = 'qollection'
+      Dialog.Filter = 'Sammlungen (*.qollection)|*.qollection'
+      Dialog.Title = 'Neue Sammlung beginnen'
+      Hint = 'Speichern unter|Aktive Datei unter einem neuen Namen speichern'
+      ImageIndex = 25
+      OnAccept = acFileNewAccept
     end
   end
   object vilIcons: TVirtualImageList
@@ -309,55 +327,85 @@ object wQollectorMain: TwQollectorMain
       end
       item
         CollectionIndex = 11
+        CollectionName = '010_Bold_32px'
+        Name = '010_Bold_32px'
+      end
+      item
+        CollectionIndex = 12
         CollectionName = '011_Italic'
         Name = '011_Italic'
       end
       item
-        CollectionIndex = 12
+        CollectionIndex = 13
         CollectionName = '012_Strikethrough'
         Name = '012_Strikethrough'
       end
       item
-        CollectionIndex = 13
+        CollectionIndex = 14
         CollectionName = '013_Header_1'
         Name = '013_Header_1'
       end
       item
-        CollectionIndex = 14
+        CollectionIndex = 15
+        CollectionName = '013_Header_1_24px'
+        Name = '013_Header_1_24px'
+      end
+      item
+        CollectionIndex = 16
         CollectionName = '014_Header_2'
         Name = '014_Header_2'
       end
       item
-        CollectionIndex = 15
+        CollectionIndex = 17
         CollectionName = '015_Header_3'
         Name = '015_Header_3'
       end
       item
-        CollectionIndex = 16
+        CollectionIndex = 18
+        CollectionName = '015_Header_3_24px'
+        Name = '015_Header_3_24px'
+      end
+      item
+        CollectionIndex = 19
         CollectionName = '016_Source_Code'
         Name = '016_Source_Code'
       end
       item
-        CollectionIndex = 17
+        CollectionIndex = 20
         CollectionName = '017_Horizontal_Line'
         Name = '017_Horizontal_Line'
       end
       item
-        CollectionIndex = 18
+        CollectionIndex = 21
         CollectionName = '018_Bulleted_List'
         Name = '018_Bulleted_List'
       end
       item
-        CollectionIndex = 19
+        CollectionIndex = 22
         CollectionName = '019_Numbered_List'
         Name = '019_Numbered_List'
       end
       item
-        CollectionIndex = 20
+        CollectionIndex = 23
         CollectionName = '020_Link'
         Name = '020_Link'
+      end
+      item
+        CollectionIndex = 24
+        CollectionName = '021_Open_Collection'
+        Name = '021_Open_Collection'
+      end
+      item
+        CollectionIndex = 25
+        CollectionName = '022_New_Collection'
+        Name = '022_New_Collection'
+      end
+      item
+        CollectionIndex = 26
+        CollectionName = '023_Last_Collection'
+        Name = '023_Last_Collection'
       end>
-    ImageCollection = dmCommon.icDarkIcons
+    ImageCollection = dmCommon.icColorIcons
     Left = 476
     Top = 40
   end
@@ -421,55 +469,85 @@ object wQollectorMain: TwQollectorMain
       end
       item
         CollectionIndex = 11
+        CollectionName = '010_Bold_32px'
+        Name = '010_Bold_32px'
+      end
+      item
+        CollectionIndex = 12
         CollectionName = '011_Italic'
         Name = '011_Italic'
       end
       item
-        CollectionIndex = 12
+        CollectionIndex = 13
         CollectionName = '012_Strikethrough'
         Name = '012_Strikethrough'
       end
       item
-        CollectionIndex = 13
+        CollectionIndex = 14
         CollectionName = '013_Header_1'
         Name = '013_Header_1'
       end
       item
-        CollectionIndex = 14
+        CollectionIndex = 15
+        CollectionName = '013_Header_1_24px'
+        Name = '013_Header_1_24px'
+      end
+      item
+        CollectionIndex = 16
         CollectionName = '014_Header_2'
         Name = '014_Header_2'
       end
       item
-        CollectionIndex = 15
+        CollectionIndex = 17
         CollectionName = '015_Header_3'
         Name = '015_Header_3'
       end
       item
-        CollectionIndex = 16
+        CollectionIndex = 18
+        CollectionName = '015_Header_3_24px'
+        Name = '015_Header_3_24px'
+      end
+      item
+        CollectionIndex = 19
         CollectionName = '016_Source_Code'
         Name = '016_Source_Code'
       end
       item
-        CollectionIndex = 17
+        CollectionIndex = 20
         CollectionName = '017_Horizontal_Line'
         Name = '017_Horizontal_Line'
       end
       item
-        CollectionIndex = 18
+        CollectionIndex = 21
         CollectionName = '018_Bulleted_List'
         Name = '018_Bulleted_List'
       end
       item
-        CollectionIndex = 19
+        CollectionIndex = 22
         CollectionName = '019_Numbered_List'
         Name = '019_Numbered_List'
       end
       item
-        CollectionIndex = 20
+        CollectionIndex = 23
         CollectionName = '020_Link'
         Name = '020_Link'
+      end
+      item
+        CollectionIndex = 24
+        CollectionName = '021_Open_Collection'
+        Name = '021_Open_Collection'
+      end
+      item
+        CollectionIndex = 25
+        CollectionName = '022_New_Collection'
+        Name = '022_New_Collection'
+      end
+      item
+        CollectionIndex = 26
+        CollectionName = '023_Last_Collection'
+        Name = '023_Last_Collection'
       end>
-    ImageCollection = dmCommon.icDarkIcons
+    ImageCollection = dmCommon.icColorIcons
     Width = 32
     Height = 32
     Left = 524

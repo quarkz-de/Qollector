@@ -23,6 +23,7 @@ type
     txItemName: TLabel;
     txItemFilename: TLabel;
     imItem: TVirtualImage;
+    btNew: TButton;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure clRecentFilesBeforeDrawItem(AIndex: Integer; ACanvas: TCanvas;

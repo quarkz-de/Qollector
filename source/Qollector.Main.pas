@@ -41,6 +41,8 @@ type
     aeApplicationEvents: TApplicationEvents;
     sbSettings: TSpeedButton;
     acSectionSettings: TAction;
+    acFileNew: TFileSaveAs;
+    procedure acFileNewAccept(Sender: TObject);
     procedure acFileOpenAccept(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure acHelpAboutExecute(Sender: TObject);
@@ -89,6 +91,11 @@ uses
   Qollector.DataModule, Qollector.Notes, Qollector.About,
   Qollector.Execute, Qollector.Settings;
 
+procedure TwQollectorMain.acFileNewAccept(Sender: TObject);
+begin
+  dmCommon.LoadDatabase(TFileSaveAs(Sender).Dialog.Filename);
+end;
+
 procedure TwQollectorMain.acFileOpenAccept(Sender: TObject);
 begin
   dmCommon.LoadDatabase(TFileOpen(Sender).Dialog.Filename);
@@ -134,6 +141,9 @@ begin
     Filename := '';
   dmCommon.LoadDatabase(Filename);
 }
+
+  svSplitView.Font.Size := svSplitView.Font.Size + 1;
+
   dmCommon.LoadDatabase('');
   RegisterHotkeys;
   InitSettings;

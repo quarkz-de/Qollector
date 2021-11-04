@@ -5,7 +5,7 @@ object wWelcomeForm: TwWelcomeForm
   BorderStyle = bsNone
   ClientHeight = 479
   ClientWidth = 761
-  Color = clBtnFace
+  Color = clWindow
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -275,7 +275,7 @@ object wWelcomeForm: TwWelcomeForm
     Width = 301
     Height = 72
     Action = wQollectorMain.acFileOpen
-    CommandLinkHint = 'Bestehende Sammlung '#246'ffnen oder neue Sammlung anlegen'
+    CommandLinkHint = 'Bestehende Sammlung '#246'ffnen'
     Images = wQollectorMain.vilLargeIcons
     Style = bsCommandLink
     TabOrder = 0
@@ -287,7 +287,6 @@ object wWelcomeForm: TwWelcomeForm
     Height = 422
     Anchors = [akTop, akRight, akBottom]
     BorderStyle = bsNone
-    Color = clBtnFace
     ItemHeight = 48
     ItemMargins.Left = 0
     ItemMargins.Top = 0
@@ -322,11 +321,22 @@ object wWelcomeForm: TwWelcomeForm
       Top = 4
       Width = 24
       Height = 24
-      ImageCollection = dmCommon.icDarkIcons
+      ImageCollection = dmCommon.icColorIcons
       ImageWidth = 24
       ImageHeight = 24
-      ImageIndex = 9
-      ImageName = '009_Collection'
+      ImageIndex = 26
+      ImageName = '023_Last_Collection'
     end
+  end
+  object btNew: TButton
+    Left = 68
+    Top = 200
+    Width = 301
+    Height = 72
+    Action = wQollectorMain.acFileNew
+    CommandLinkHint = 'Eine neue Sammlung beginnen'
+    Images = wQollectorMain.vilLargeIcons
+    Style = bsCommandLink
+    TabOrder = 2
   end
 end

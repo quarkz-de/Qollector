@@ -6,13 +6,12 @@ object wNoteForm: TwNoteForm
   ClientWidth = 871
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object spSplitter: TSplitter
     Left = 221
     Top = 0
@@ -26,7 +25,7 @@ object wNoteForm: TwNoteForm
     Top = 3
     Width = 641
     Height = 537
-    ActivePage = tsEdit
+    ActivePage = tsLinks
     Align = alClient
     TabHeight = 30
     TabOrder = 0
@@ -188,8 +187,8 @@ object wNoteForm: TwNoteForm
       object Label1: TLabel
         Left = 8
         Top = 6
-        Width = 36
-        Height = 13
+        Width = 41
+        Height = 15
         Caption = 'Notizen'
       end
       object ToolBar1: TToolBar
@@ -299,6 +298,8 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acNewFavorite
+            ImageIndex = 2
+            ImageName = '002_Link'
           end
           item
             Action = acEditLink
@@ -324,14 +325,14 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acFormatItalic
-            ImageIndex = 11
+            ImageIndex = 12
             ImageName = '011_Italic'
             ShowCaption = False
             ShortCut = 16457
           end
           item
             Action = acFormatStrikeThrough
-            ImageIndex = 12
+            ImageIndex = 13
             ImageName = '012_Strikethrough'
             ShowCaption = False
           end
@@ -344,24 +345,25 @@ object wNoteForm: TwNoteForm
             CommandProperties.Font.Height = -11
             CommandProperties.Font.Name = 'Tahoma'
             CommandProperties.Font.Style = []
+            CommandProperties.ParentFont = False
           end
           item
             Action = acFormatHeading1
-            ImageIndex = 13
+            ImageIndex = 14
             ImageName = '013_Header_1'
             ShowCaption = False
             ShortCut = 16433
           end
           item
             Action = acFormatHeading2
-            ImageIndex = 14
+            ImageIndex = 16
             ImageName = '014_Header_2'
             ShowCaption = False
             ShortCut = 16434
           end
           item
             Action = acFormatHeading3
-            ImageIndex = 15
+            ImageIndex = 17
             ImageName = '015_Header_3'
             ShowCaption = False
             ShortCut = 16435
@@ -375,24 +377,25 @@ object wNoteForm: TwNoteForm
             CommandProperties.Font.Height = -11
             CommandProperties.Font.Name = 'Tahoma'
             CommandProperties.Font.Style = []
+            CommandProperties.ParentFont = False
           end
           item
             Action = acFormatCode
-            ImageIndex = 16
+            ImageIndex = 19
             ImageName = '016_Source_Code'
             ShowCaption = False
             ShortCut = 24643
           end
           item
             Action = acFormatBulletedList
-            ImageIndex = 18
+            ImageIndex = 21
             ImageName = '018_Bulleted_List'
             ShowCaption = False
             ShortCut = 24661
           end
           item
             Action = acFormatNumberedList
-            ImageIndex = 19
+            ImageIndex = 22
             ImageName = '019_Numbered_List'
             ShowCaption = False
             ShortCut = 24655
@@ -406,10 +409,11 @@ object wNoteForm: TwNoteForm
             CommandProperties.Font.Height = -11
             CommandProperties.Font.Name = 'Tahoma'
             CommandProperties.Font.Style = []
+            CommandProperties.ParentFont = False
           end
           item
             Action = acFormatInsertLink
-            ImageIndex = 20
+            ImageIndex = 23
             ImageName = '020_Link'
             ShowCaption = False
             ShortCut = 24652
@@ -462,6 +466,7 @@ object wNoteForm: TwNoteForm
       Dialog.Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
       Dialog.Title = 'Datei ausw'#228'hlen'
       Hint = 'Neue Datei anheften'
+      ImageIndex = 2
       OnAccept = acNewFavoriteAccept
     end
     object acDeleteLink: TAction
@@ -491,7 +496,7 @@ object wNoteForm: TwNoteForm
     object acFormatItalic: TAction
       Category = 'Format'
       Caption = '&Kursiv'
-      ImageIndex = 11
+      ImageIndex = 12
       ImageName = '011_Italic'
       ShortCut = 16457
       OnExecute = acFormatItalicExecute
@@ -499,14 +504,14 @@ object wNoteForm: TwNoteForm
     object acFormatStrikeThrough: TAction
       Category = 'Format'
       Caption = '&Durchgestrichen'
-      ImageIndex = 12
+      ImageIndex = 13
       ImageName = '012_Strikethrough'
       OnExecute = acFormatStrikeThroughExecute
     end
     object acFormatHeading1: TAction
       Category = 'Format'
       Caption = #220'berschrift &1'
-      ImageIndex = 13
+      ImageIndex = 14
       ImageName = '013_Header_1'
       ShortCut = 16433
       OnExecute = acFormatHeading1Execute
@@ -514,7 +519,7 @@ object wNoteForm: TwNoteForm
     object acFormatHeading2: TAction
       Category = 'Format'
       Caption = #220'berschrift &2'
-      ImageIndex = 14
+      ImageIndex = 16
       ImageName = '014_Header_2'
       ShortCut = 16434
       OnExecute = acFormatHeading2Execute
@@ -522,7 +527,7 @@ object wNoteForm: TwNoteForm
     object acFormatHeading3: TAction
       Category = 'Format'
       Caption = #220'berschrift &3'
-      ImageIndex = 15
+      ImageIndex = 17
       ImageName = '015_Header_3'
       ShortCut = 16435
       OnExecute = acFormatHeading3Execute
@@ -530,7 +535,7 @@ object wNoteForm: TwNoteForm
     object acFormatCode: TAction
       Category = 'Format'
       Caption = '&Code'
-      ImageIndex = 16
+      ImageIndex = 19
       ImageName = '016_Source_Code'
       ShortCut = 24643
       OnExecute = acFormatCodeExecute
@@ -538,7 +543,7 @@ object wNoteForm: TwNoteForm
     object acFormatBulletedList: TAction
       Category = 'Format'
       Caption = 'Auf&z'#228'hlung'
-      ImageIndex = 18
+      ImageIndex = 21
       ImageName = '018_Bulleted_List'
       ShortCut = 24661
       OnExecute = acFormatBulletedListExecute
@@ -546,7 +551,7 @@ object wNoteForm: TwNoteForm
     object acFormatNumberedList: TAction
       Category = 'Format'
       Caption = 'Nummerierte &Liste'
-      ImageIndex = 19
+      ImageIndex = 22
       ImageName = '019_Numbered_List'
       ShortCut = 24655
       OnExecute = acFormatNumberedListExecute
@@ -554,7 +559,7 @@ object wNoteForm: TwNoteForm
     object acFormatInsertLink: TAction
       Category = 'Format'
       Caption = 'L&ink'
-      ImageIndex = 20
+      ImageIndex = 23
       ImageName = '020_Link'
       ShortCut = 24652
       OnExecute = acFormatInsertLinkExecute
@@ -562,136 +567,143 @@ object wNoteForm: TwNoteForm
   end
   object vilIcons: TVirtualImageList
     AutoFill = True
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 0
         CollectionName = '000_Notebook'
-        Disabled = False
         Name = '000_Notebook'
       end
       item
         CollectionIndex = 1
         CollectionName = '001_Note'
-        Disabled = False
         Name = '001_Note'
       end
       item
         CollectionIndex = 2
         CollectionName = '002_Link'
-        Disabled = False
         Name = '002_Link'
       end
       item
         CollectionIndex = 3
         CollectionName = '003_Bookmark'
-        Disabled = False
         Name = '003_Bookmark'
       end
       item
         CollectionIndex = 4
         CollectionName = '004_Delete'
-        Disabled = False
         Name = '004_Delete'
       end
       item
         CollectionIndex = 5
         CollectionName = '005_Edit'
-        Disabled = False
         Name = '005_Edit'
       end
       item
         CollectionIndex = 6
         CollectionName = '006_Menu'
-        Disabled = False
         Name = '006_Menu'
       end
       item
         CollectionIndex = 7
         CollectionName = '007_Home'
-        Disabled = False
         Name = '007_Home'
       end
       item
         CollectionIndex = 8
         CollectionName = '008_Settings'
-        Disabled = False
         Name = '008_Settings'
       end
       item
         CollectionIndex = 9
         CollectionName = '009_Collection'
-        Disabled = False
         Name = '009_Collection'
       end
       item
         CollectionIndex = 10
         CollectionName = '010_Bold'
-        Disabled = False
         Name = '010_Bold'
       end
       item
         CollectionIndex = 11
-        CollectionName = '011_Italic'
-        Disabled = False
-        Name = '011_Italic'
+        CollectionName = '010_Bold_32px'
+        Name = '010_Bold_32px'
       end
       item
         CollectionIndex = 12
-        CollectionName = '012_Strikethrough'
-        Disabled = False
-        Name = '012_Strikethrough'
+        CollectionName = '011_Italic'
+        Name = '011_Italic'
       end
       item
         CollectionIndex = 13
-        CollectionName = '013_Header_1'
-        Disabled = False
-        Name = '013_Header_1'
+        CollectionName = '012_Strikethrough'
+        Name = '012_Strikethrough'
       end
       item
         CollectionIndex = 14
-        CollectionName = '014_Header_2'
-        Disabled = False
-        Name = '014_Header_2'
+        CollectionName = '013_Header_1'
+        Name = '013_Header_1'
       end
       item
         CollectionIndex = 15
-        CollectionName = '015_Header_3'
-        Disabled = False
-        Name = '015_Header_3'
+        CollectionName = '013_Header_1_24px'
+        Name = '013_Header_1_24px'
       end
       item
         CollectionIndex = 16
-        CollectionName = '016_Source_Code'
-        Disabled = False
-        Name = '016_Source_Code'
+        CollectionName = '014_Header_2'
+        Name = '014_Header_2'
       end
       item
         CollectionIndex = 17
-        CollectionName = '017_Horizontal_Line'
-        Disabled = False
-        Name = '017_Horizontal_Line'
+        CollectionName = '015_Header_3'
+        Name = '015_Header_3'
       end
       item
         CollectionIndex = 18
-        CollectionName = '018_Bulleted_List'
-        Disabled = False
-        Name = '018_Bulleted_List'
+        CollectionName = '015_Header_3_24px'
+        Name = '015_Header_3_24px'
       end
       item
         CollectionIndex = 19
-        CollectionName = '019_Numbered_List'
-        Disabled = False
-        Name = '019_Numbered_List'
+        CollectionName = '016_Source_Code'
+        Name = '016_Source_Code'
       end
       item
         CollectionIndex = 20
+        CollectionName = '017_Horizontal_Line'
+        Name = '017_Horizontal_Line'
+      end
+      item
+        CollectionIndex = 21
+        CollectionName = '018_Bulleted_List'
+        Name = '018_Bulleted_List'
+      end
+      item
+        CollectionIndex = 22
+        CollectionName = '019_Numbered_List'
+        Name = '019_Numbered_List'
+      end
+      item
+        CollectionIndex = 23
         CollectionName = '020_Link'
-        Disabled = False
         Name = '020_Link'
+      end
+      item
+        CollectionIndex = 24
+        CollectionName = '021_Open_Collection'
+        Name = '021_Open_Collection'
+      end
+      item
+        CollectionIndex = 25
+        CollectionName = '022_New_Collection'
+        Name = '022_New_Collection'
+      end
+      item
+        CollectionIndex = 26
+        CollectionName = '023_Last_Collection'
+        Name = '023_Last_Collection'
       end>
-    ImageCollection = dmCommon.icDarkIcons
+    ImageCollection = dmCommon.icColorIcons
     Left = 184
     Top = 84
   end

@@ -1,6 +1,6 @@
 ![alt text](/img/Qollector-Productname.png "Qollector Logo")
 
-Ein Manager für Notizen, Links etc.
+Ein Manager fï¿½r Notizen, Links etc.
 
 ## Suchpfad
 
@@ -9,6 +9,7 @@ Ein Manager für Notizen, Links etc.
 ```
 
 ## Links
+
 * [spring4d](https://bitbucket.org/sglienke/spring4d/) Dependency Injection Framework
 * [marshmallow](https://bitbucket.org/soundvibe/marshmallow/wiki/Home/) Project Marshmallow (ORM for Delphi)
 * [vcl-styles-utils](https://github.com/RRUZ/vcl-styles-utils) VCL Styles Utils
