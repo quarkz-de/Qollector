@@ -30,7 +30,8 @@ uses
   Qollector.SettingsForm in 'views\Qollector.SettingsForm.pas' {wSettingsForm},
   Qollector.DatabaseMigrations in 'core\Qollector.DatabaseMigrations.pas',
   Qollector.Parameters in 'core\Qollector.Parameters.pas',
-  Qollector.Markdown in 'views\Qollector.Markdown.pas';
+  Qollector.Markdown in 'views\Qollector.Markdown.pas',
+  Qollector.FontThemeManager in 'views\Qollector.FontThemeManager.pas';
 
 {$R *.res}
 

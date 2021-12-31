@@ -3,11 +3,22 @@ unit Qollector.Forms;
 interface
 
 uses
-  System.Generics.Collections, System.Generics.Defaults,
-  Vcl.Forms, Vcl.Controls;
+  System.Classes, System.Generics.Defaults,
+  Generics.Collections,
+  Vcl.Forms, Vcl.Controls,
+  Qodelib.Forms,
+  Qollector.FontThemeManager;
 
 type
-  TQollectorForm = class(TForm);
+  TQollectorForm = class(TQzForm)
+  private
+    FFontThemeManager: TFontThemeManager;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    property FontThemeManager: TFontThemeManager read FFontThemeManager;
+    procedure AfterConstruction; override;
+  end;
 
   TQollectorFormType = (qftWelcome, qftNotes, qftSettings);
 
@@ -74,6 +85,7 @@ begin
         begin
           Form.Parent := FParent;
           Form.Align := alClient;
+          Form.FontThemeManager.StyleControls;
           Form.Visible := true;
           Form.Activate;
         end
@@ -83,6 +95,27 @@ begin
           Form.Visible := false;
         end;
     end;
+end;
+
+{ TQollectorForm }
+
+procedure TQollectorForm.AfterConstruction;
+begin
+  inherited AfterConstruction;
+  FontThemeManager.StyleControls;
+end;
+
+constructor TQollectorForm.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FFontThemeManager := TFontThemeManager.Create;
+end;
+
+destructor TQollectorForm.Destroy;
+begin
+  FFontThemeManager.Free;
+  FFontThemeManager := nil;
+  inherited Destroy;
 end;
 
 end.

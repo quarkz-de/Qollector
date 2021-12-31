@@ -8,7 +8,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls,
   Eventbus,
-  Qollector.Forms, Qollector.Events;
+  Qollector.Forms, Qollector.Events, Vcl.WinXCtrls, Vcl.WinXPanels;
 
 type
   TwSettingsForm = class(TQollectorForm)
@@ -17,6 +17,8 @@ type
     cbEditorFont: TComboBox;
     txEditorFont: TLabel;
     cbEditorFontSize: TComboBox;
+    txView: TLabel;
+    Bevel1: TBevel;
     procedure cbEditorFontChange(Sender: TObject);
     procedure cbEditorFontSizeChange(Sender: TObject);
     procedure cbThemeChange(Sender: TObject);
@@ -33,7 +35,7 @@ implementation
 
 uses
   Qodelib.Themes, QodeLib.Fonts,
-  Qollector.Settings;
+  Qollector.Settings, Qollector.FontThemeManager;
 
 { TwSettingsForm }
 
@@ -59,6 +61,7 @@ end;
 
 procedure TwSettingsForm.FormCreate(Sender: TObject);
 begin
+  FontThemeManager.AddControl(txView, ftHeading);
 //  GlobalEventBus.RegisterSubscriberForEvents(Self);
   InitControls;
   LoadValues;

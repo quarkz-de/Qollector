@@ -14,11 +14,12 @@ uses
   Vcl.VirtualImageList, Vcl.AppEvnts,
   VirtualTrees,
   Eventbus,
+  Qodelib.Forms,
   Qollector.Visualizers, Qollector.Events, Qollector.Forms,
   Qollector.Parameters;
 
 type
-  TwQollectorMain = class(TForm)
+  TwQollectorMain = class(TQollectorForm)
     amActions: TActionManager;
     acHelpAbout: TAction;
     acFileExit: TFileExit;
@@ -29,10 +30,8 @@ type
     pnHeader: TPanel;
     imBurgerButton: TVirtualImage;
     pnNavigation: TPanel;
-    txHeaderText: TLabel;
     sbStart: TSpeedButton;
     sbNotes: TSpeedButton;
-    txVersion: TLabel;
     acSectionWelcome: TAction;
     acSectionNotes: TAction;
     vilIcons: TVirtualImageList;
@@ -89,7 +88,7 @@ implementation
 uses
   Spring.Container, Spring.Collections,
   Qollector.DataModule, Qollector.Notes, Qollector.About,
-  Qollector.Execute, Qollector.Settings;
+  Qollector.Execute, Qollector.Settings, Qollector.FontThemeManager;
 
 procedure TwQollectorMain.acFileNewAccept(Sender: TObject);
 begin
@@ -127,22 +126,15 @@ begin
 end;
 
 procedure TwQollectorMain.FormCreate(Sender: TObject);
-//var
-//  Filename: String;
 begin
+  CornerType := fctRound;
+
   FForms := TQollectorFormList.Create(self);
   acSectionWelcome.Execute;
   GlobalEventBus.RegisterSubscriberForEvents(Self);
   dmCommon.MainFormCreated;
-{
-  if (ParamCount > 0) then
-    Filename := ParamStr(1)
-  else
-    Filename := '';
-  dmCommon.LoadDatabase(Filename);
-}
 
-  svSplitView.Font.Size := svSplitView.Font.Size + 1;
+  FontThemeManager.AddControl(svSplitView, ftLarger);
 
   dmCommon.LoadDatabase('');
   RegisterHotkeys;

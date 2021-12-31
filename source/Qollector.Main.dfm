@@ -2,7 +2,7 @@ object wQollectorMain: TwQollectorMain
   Left = 0
   Top = 0
   Caption = 'Qollector'
-  ClientHeight = 526
+  ClientHeight = 464
   ClientWidth = 1032
   Color = clBtnFace
   CustomTitleBar.CaptionAlignment = taCenter
@@ -70,7 +70,7 @@ object wQollectorMain: TwQollectorMain
     Left = 0
     Top = 30
     Width = 170
-    Height = 496
+    Height = 434
     CloseStyle = svcCompact
     CompactWidth = 42
     OpenedWidth = 170
@@ -97,35 +97,16 @@ object wQollectorMain: TwQollectorMain
         ImageIndex = 6
         OnClick = imBurgerButtonClick
       end
-      object txHeaderText: TLabel
-        Left = 52
-        Top = 12
-        Width = 64
-        Height = 21
-        Caption = 'Qollector'
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -16
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        ParentFont = False
-      end
-      object txVersion: TLabel
-        Left = 136
-        Top = 16
-        Width = 17
-        Height = 17
-        Caption = '1.0'
-      end
     end
     object pnNavigation: TPanel
       Left = 0
       Top = 45
       Width = 170
-      Height = 451
+      Height = 389
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitTop = 44
       object sbStart: TSpeedButton
         Left = 0
         Top = 0
@@ -156,7 +137,7 @@ object wQollectorMain: TwQollectorMain
       end
       object sbSettings: TSpeedButton
         Left = 0
-        Top = 413
+        Top = 351
         Width = 170
         Height = 38
         Action = acSectionSettings

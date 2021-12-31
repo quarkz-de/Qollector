@@ -10,27 +10,44 @@ object wSettingsForm: TwSettingsForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = True
   OnCreate = FormCreate
   PixelsPerInch = 96
+  DesignSize = (
+    777
+    468)
   TextHeight = 13
   object txTheme: TLabel
-    Left = 20
-    Top = 24
+    Left = 48
+    Top = 64
     Width = 32
     Height = 13
     Caption = 'Thema'
   end
   object txEditorFont: TLabel
-    Left = 20
-    Top = 59
+    Left = 48
+    Top = 99
     Width = 72
     Height = 13
     Caption = 'Editorschriftart'
   end
+  object txView: TLabel
+    Left = 20
+    Top = 20
+    Width = 35
+    Height = 13
+    Caption = 'Ansicht'
+  end
+  object Bevel1: TBevel
+    Left = 20
+    Top = 43
+    Width = 733
+    Height = 6
+    Anchors = [akLeft, akTop, akRight]
+    Shape = bsTopLine
+  end
   object cbTheme: TComboBox
-    Left = 124
-    Top = 21
+    Left = 152
+    Top = 61
     Width = 145
     Height = 21
     Style = csDropDownList
@@ -38,8 +55,8 @@ object wSettingsForm: TwSettingsForm
     OnChange = cbThemeChange
   end
   object cbEditorFont: TComboBox
-    Left = 124
-    Top = 56
+    Left = 152
+    Top = 96
     Width = 249
     Height = 21
     Style = csDropDownList
@@ -47,8 +64,8 @@ object wSettingsForm: TwSettingsForm
     OnChange = cbEditorFontChange
   end
   object cbEditorFontSize: TComboBox
-    Left = 388
-    Top = 56
+    Left = 416
+    Top = 96
     Width = 73
     Height = 21
     TabOrder = 2
