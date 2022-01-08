@@ -91,7 +91,7 @@ object wQollectorMain: TwQollectorMain
         Top = 6
         Width = 32
         Height = 32
-        ImageCollection = dmCommon.icColorIcons
+        ImageCollection = dmCommon.icDarkIcons
         ImageWidth = 0
         ImageHeight = 0
         ImageIndex = 6
@@ -106,7 +106,6 @@ object wQollectorMain: TwQollectorMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 44
       object sbStart: TSpeedButton
         Left = 0
         Top = 0
@@ -159,13 +158,13 @@ object wQollectorMain: TwQollectorMain
             Items = <
               item
                 Action = acFileOpen
-                ImageIndex = 24
+                ImageIndex = 21
                 ImageName = '021_Open_Collection'
                 ShortCut = 16463
               end
               item
                 Action = acFileNew
-                ImageIndex = 25
+                ImageIndex = 22
                 ImageName = '022_New_Collection'
               end
               item
@@ -202,7 +201,7 @@ object wQollectorMain: TwQollectorMain
       Dialog.Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
       Dialog.Title = 'Sammlung '#246'ffnen'
       Hint = #214'ffnen|Vorhandene Datei '#246'ffnen'
-      ImageIndex = 24
+      ImageIndex = 21
       ShortCut = 16463
       OnAccept = acFileOpenAccept
     end
@@ -244,7 +243,7 @@ object wQollectorMain: TwQollectorMain
       Dialog.Filter = 'Sammlungen (*.qollection)|*.qollection'
       Dialog.Title = 'Neue Sammlung beginnen'
       Hint = 'Speichern unter|Aktive Datei unter einem neuen Namen speichern'
-      ImageIndex = 25
+      ImageIndex = 22
       OnAccept = acFileNewAccept
     end
   end
@@ -308,85 +307,70 @@ object wQollectorMain: TwQollectorMain
       end
       item
         CollectionIndex = 11
-        CollectionName = '010_Bold_32px'
-        Name = '010_Bold_32px'
-      end
-      item
-        CollectionIndex = 12
         CollectionName = '011_Italic'
         Name = '011_Italic'
       end
       item
-        CollectionIndex = 13
+        CollectionIndex = 12
         CollectionName = '012_Strikethrough'
         Name = '012_Strikethrough'
       end
       item
-        CollectionIndex = 14
+        CollectionIndex = 13
         CollectionName = '013_Header_1'
         Name = '013_Header_1'
       end
       item
-        CollectionIndex = 15
-        CollectionName = '013_Header_1_24px'
-        Name = '013_Header_1_24px'
-      end
-      item
-        CollectionIndex = 16
+        CollectionIndex = 14
         CollectionName = '014_Header_2'
         Name = '014_Header_2'
       end
       item
-        CollectionIndex = 17
+        CollectionIndex = 15
         CollectionName = '015_Header_3'
         Name = '015_Header_3'
       end
       item
-        CollectionIndex = 18
-        CollectionName = '015_Header_3_24px'
-        Name = '015_Header_3_24px'
-      end
-      item
-        CollectionIndex = 19
+        CollectionIndex = 16
         CollectionName = '016_Source_Code'
         Name = '016_Source_Code'
       end
       item
-        CollectionIndex = 20
+        CollectionIndex = 17
         CollectionName = '017_Horizontal_Line'
         Name = '017_Horizontal_Line'
       end
       item
-        CollectionIndex = 21
+        CollectionIndex = 18
         CollectionName = '018_Bulleted_List'
         Name = '018_Bulleted_List'
       end
       item
-        CollectionIndex = 22
+        CollectionIndex = 19
         CollectionName = '019_Numbered_List'
         Name = '019_Numbered_List'
       end
       item
-        CollectionIndex = 23
+        CollectionIndex = 20
         CollectionName = '020_Link'
         Name = '020_Link'
       end
       item
-        CollectionIndex = 24
+        CollectionIndex = 21
         CollectionName = '021_Open_Collection'
         Name = '021_Open_Collection'
       end
       item
-        CollectionIndex = 25
+        CollectionIndex = 22
         CollectionName = '022_New_Collection'
         Name = '022_New_Collection'
       end
       item
-        CollectionIndex = 26
+        CollectionIndex = 23
         CollectionName = '023_Last_Collection'
         Name = '023_Last_Collection'
       end>
-    ImageCollection = dmCommon.icColorIcons
+    ImageCollection = dmCommon.icDarkIcons
     Left = 476
     Top = 40
   end
@@ -450,85 +434,70 @@ object wQollectorMain: TwQollectorMain
       end
       item
         CollectionIndex = 11
-        CollectionName = '010_Bold_32px'
-        Name = '010_Bold_32px'
-      end
-      item
-        CollectionIndex = 12
         CollectionName = '011_Italic'
         Name = '011_Italic'
       end
       item
-        CollectionIndex = 13
+        CollectionIndex = 12
         CollectionName = '012_Strikethrough'
         Name = '012_Strikethrough'
       end
       item
-        CollectionIndex = 14
+        CollectionIndex = 13
         CollectionName = '013_Header_1'
         Name = '013_Header_1'
       end
       item
-        CollectionIndex = 15
-        CollectionName = '013_Header_1_24px'
-        Name = '013_Header_1_24px'
-      end
-      item
-        CollectionIndex = 16
+        CollectionIndex = 14
         CollectionName = '014_Header_2'
         Name = '014_Header_2'
       end
       item
-        CollectionIndex = 17
+        CollectionIndex = 15
         CollectionName = '015_Header_3'
         Name = '015_Header_3'
       end
       item
-        CollectionIndex = 18
-        CollectionName = '015_Header_3_24px'
-        Name = '015_Header_3_24px'
-      end
-      item
-        CollectionIndex = 19
+        CollectionIndex = 16
         CollectionName = '016_Source_Code'
         Name = '016_Source_Code'
       end
       item
-        CollectionIndex = 20
+        CollectionIndex = 17
         CollectionName = '017_Horizontal_Line'
         Name = '017_Horizontal_Line'
       end
       item
-        CollectionIndex = 21
+        CollectionIndex = 18
         CollectionName = '018_Bulleted_List'
         Name = '018_Bulleted_List'
       end
       item
-        CollectionIndex = 22
+        CollectionIndex = 19
         CollectionName = '019_Numbered_List'
         Name = '019_Numbered_List'
       end
       item
-        CollectionIndex = 23
+        CollectionIndex = 20
         CollectionName = '020_Link'
         Name = '020_Link'
       end
       item
-        CollectionIndex = 24
+        CollectionIndex = 21
         CollectionName = '021_Open_Collection'
         Name = '021_Open_Collection'
       end
       item
-        CollectionIndex = 25
+        CollectionIndex = 22
         CollectionName = '022_New_Collection'
         Name = '022_New_Collection'
       end
       item
-        CollectionIndex = 26
+        CollectionIndex = 23
         CollectionName = '023_Last_Collection'
         Name = '023_Last_Collection'
       end>
-    ImageCollection = dmCommon.icColorIcons
+    ImageCollection = dmCommon.icDarkIcons
     Width = 32
     Height = 32
     Left = 524

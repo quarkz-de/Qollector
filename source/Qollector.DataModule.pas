@@ -13,7 +13,8 @@ uses
 
 type
   TdmCommon = class(TDataModule)
-    icColorIcons: TImageCollection;
+    icLightIcons: TImageCollection;
+    icDarkIcons: TImageCollection;
     procedure DataModuleDestroy(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
   private
@@ -49,7 +50,10 @@ end;
 
 function TdmCommon.GetImageCollection: TImageCollection;
 begin
-  Result := icColorIcons;
+  if QuarkzThemeManager.IsDark then
+    Result := icLightIcons
+  else
+    Result := icDarkIcons;
 end;
 
 procedure TdmCommon.LoadDatabase(const AFilename: String);

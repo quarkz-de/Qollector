@@ -57,6 +57,8 @@ object wNoteForm: TwNoteForm
         Gutter.Font.Style = []
         Gutter.ShowLineNumbers = True
         RightEdge = 0
+        ExplicitTop = 24
+        ExplicitHeight = 473
       end
       object tbEditor: TActionToolBar
         Left = 0
@@ -78,6 +80,7 @@ object wNoteForm: TwNoteForm
         Font.Style = []
         ParentFont = False
         Spacing = 0
+        ExplicitHeight = 24
       end
     end
     object tsView: TTabSheet
@@ -135,8 +138,6 @@ object wNoteForm: TwNoteForm
         OnKeyDown = stLinksKeyDown
         Touch.InteractiveGestures = [igPan, igPressAndTap]
         Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia, igoPanGutter, igoParentPassthrough]
-        ExplicitTop = 26
-        ExplicitHeight = 471
         Columns = <
           item
             Position = 0
@@ -167,7 +168,6 @@ object wNoteForm: TwNoteForm
         Font.Style = []
         ParentFont = False
         Spacing = 0
-        ExplicitHeight = 26
       end
     end
   end
@@ -328,14 +328,14 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acFormatItalic
-            ImageIndex = 12
+            ImageIndex = 11
             ImageName = '011_Italic'
             ShowCaption = False
             ShortCut = 16457
           end
           item
             Action = acFormatStrikeThrough
-            ImageIndex = 13
+            ImageIndex = 12
             ImageName = '012_Strikethrough'
             ShowCaption = False
           end
@@ -352,21 +352,21 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acFormatHeading1
-            ImageIndex = 14
+            ImageIndex = 13
             ImageName = '013_Header_1'
             ShowCaption = False
             ShortCut = 16433
           end
           item
             Action = acFormatHeading2
-            ImageIndex = 16
+            ImageIndex = 14
             ImageName = '014_Header_2'
             ShowCaption = False
             ShortCut = 16434
           end
           item
             Action = acFormatHeading3
-            ImageIndex = 17
+            ImageIndex = 15
             ImageName = '015_Header_3'
             ShowCaption = False
             ShortCut = 16435
@@ -384,21 +384,21 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acFormatCode
-            ImageIndex = 19
+            ImageIndex = 16
             ImageName = '016_Source_Code'
             ShowCaption = False
             ShortCut = 24643
           end
           item
             Action = acFormatBulletedList
-            ImageIndex = 21
+            ImageIndex = 18
             ImageName = '018_Bulleted_List'
             ShowCaption = False
             ShortCut = 24661
           end
           item
             Action = acFormatNumberedList
-            ImageIndex = 22
+            ImageIndex = 19
             ImageName = '019_Numbered_List'
             ShowCaption = False
             ShortCut = 24655
@@ -416,7 +416,7 @@ object wNoteForm: TwNoteForm
           end
           item
             Action = acFormatInsertLink
-            ImageIndex = 23
+            ImageIndex = 20
             ImageName = '020_Link'
             ShowCaption = False
             ShortCut = 24652
@@ -499,7 +499,7 @@ object wNoteForm: TwNoteForm
     object acFormatItalic: TAction
       Category = 'Format'
       Caption = '&Kursiv'
-      ImageIndex = 12
+      ImageIndex = 11
       ImageName = '011_Italic'
       ShortCut = 16457
       OnExecute = acFormatItalicExecute
@@ -507,14 +507,14 @@ object wNoteForm: TwNoteForm
     object acFormatStrikeThrough: TAction
       Category = 'Format'
       Caption = '&Durchgestrichen'
-      ImageIndex = 13
+      ImageIndex = 12
       ImageName = '012_Strikethrough'
       OnExecute = acFormatStrikeThroughExecute
     end
     object acFormatHeading1: TAction
       Category = 'Format'
       Caption = #220'berschrift &1'
-      ImageIndex = 14
+      ImageIndex = 13
       ImageName = '013_Header_1'
       ShortCut = 16433
       OnExecute = acFormatHeading1Execute
@@ -522,7 +522,7 @@ object wNoteForm: TwNoteForm
     object acFormatHeading2: TAction
       Category = 'Format'
       Caption = #220'berschrift &2'
-      ImageIndex = 16
+      ImageIndex = 14
       ImageName = '014_Header_2'
       ShortCut = 16434
       OnExecute = acFormatHeading2Execute
@@ -530,7 +530,7 @@ object wNoteForm: TwNoteForm
     object acFormatHeading3: TAction
       Category = 'Format'
       Caption = #220'berschrift &3'
-      ImageIndex = 17
+      ImageIndex = 15
       ImageName = '015_Header_3'
       ShortCut = 16435
       OnExecute = acFormatHeading3Execute
@@ -538,7 +538,7 @@ object wNoteForm: TwNoteForm
     object acFormatCode: TAction
       Category = 'Format'
       Caption = '&Code'
-      ImageIndex = 19
+      ImageIndex = 16
       ImageName = '016_Source_Code'
       ShortCut = 24643
       OnExecute = acFormatCodeExecute
@@ -546,7 +546,7 @@ object wNoteForm: TwNoteForm
     object acFormatBulletedList: TAction
       Category = 'Format'
       Caption = 'Auf&z'#228'hlung'
-      ImageIndex = 21
+      ImageIndex = 18
       ImageName = '018_Bulleted_List'
       ShortCut = 24661
       OnExecute = acFormatBulletedListExecute
@@ -554,7 +554,7 @@ object wNoteForm: TwNoteForm
     object acFormatNumberedList: TAction
       Category = 'Format'
       Caption = 'Nummerierte &Liste'
-      ImageIndex = 22
+      ImageIndex = 19
       ImageName = '019_Numbered_List'
       ShortCut = 24655
       OnExecute = acFormatNumberedListExecute
@@ -562,7 +562,7 @@ object wNoteForm: TwNoteForm
     object acFormatInsertLink: TAction
       Category = 'Format'
       Caption = 'L&ink'
-      ImageIndex = 23
+      ImageIndex = 20
       ImageName = '020_Link'
       ShortCut = 24652
       OnExecute = acFormatInsertLinkExecute
@@ -628,85 +628,70 @@ object wNoteForm: TwNoteForm
       end
       item
         CollectionIndex = 11
-        CollectionName = '010_Bold_32px'
-        Name = '010_Bold_32px'
-      end
-      item
-        CollectionIndex = 12
         CollectionName = '011_Italic'
         Name = '011_Italic'
       end
       item
-        CollectionIndex = 13
+        CollectionIndex = 12
         CollectionName = '012_Strikethrough'
         Name = '012_Strikethrough'
       end
       item
-        CollectionIndex = 14
+        CollectionIndex = 13
         CollectionName = '013_Header_1'
         Name = '013_Header_1'
       end
       item
-        CollectionIndex = 15
-        CollectionName = '013_Header_1_24px'
-        Name = '013_Header_1_24px'
-      end
-      item
-        CollectionIndex = 16
+        CollectionIndex = 14
         CollectionName = '014_Header_2'
         Name = '014_Header_2'
       end
       item
-        CollectionIndex = 17
+        CollectionIndex = 15
         CollectionName = '015_Header_3'
         Name = '015_Header_3'
       end
       item
-        CollectionIndex = 18
-        CollectionName = '015_Header_3_24px'
-        Name = '015_Header_3_24px'
-      end
-      item
-        CollectionIndex = 19
+        CollectionIndex = 16
         CollectionName = '016_Source_Code'
         Name = '016_Source_Code'
       end
       item
-        CollectionIndex = 20
+        CollectionIndex = 17
         CollectionName = '017_Horizontal_Line'
         Name = '017_Horizontal_Line'
       end
       item
-        CollectionIndex = 21
+        CollectionIndex = 18
         CollectionName = '018_Bulleted_List'
         Name = '018_Bulleted_List'
       end
       item
-        CollectionIndex = 22
+        CollectionIndex = 19
         CollectionName = '019_Numbered_List'
         Name = '019_Numbered_List'
       end
       item
-        CollectionIndex = 23
+        CollectionIndex = 20
         CollectionName = '020_Link'
         Name = '020_Link'
       end
       item
-        CollectionIndex = 24
+        CollectionIndex = 21
         CollectionName = '021_Open_Collection'
         Name = '021_Open_Collection'
       end
       item
-        CollectionIndex = 25
+        CollectionIndex = 22
         CollectionName = '022_New_Collection'
         Name = '022_New_Collection'
       end
       item
-        CollectionIndex = 26
+        CollectionIndex = 23
         CollectionName = '023_Last_Collection'
         Name = '023_Last_Collection'
       end>
-    ImageCollection = dmCommon.icColorIcons
+    ImageCollection = dmCommon.icDarkIcons
     Left = 184
     Top = 84
   end
