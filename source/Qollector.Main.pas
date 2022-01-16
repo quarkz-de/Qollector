@@ -14,7 +14,7 @@ uses
   Vcl.VirtualImageList, Vcl.AppEvnts,
   VirtualTrees,
   Eventbus,
-  Qodelib.Forms,
+  Qodelib.Forms, Qodelib.NavigationView,
   Qollector.Visualizers, Qollector.Events, Qollector.Forms,
   Qollector.Parameters;
 
@@ -29,18 +29,16 @@ type
     svSplitView: TSplitView;
     pnHeader: TPanel;
     imBurgerButton: TVirtualImage;
-    pnNavigation: TPanel;
-    sbStart: TSpeedButton;
-    sbNotes: TSpeedButton;
     acSectionWelcome: TAction;
     acSectionNotes: TAction;
     vilIcons: TVirtualImageList;
     vilLargeIcons: TVirtualImageList;
     tiTrayIcon: TTrayIcon;
     aeApplicationEvents: TApplicationEvents;
-    sbSettings: TSpeedButton;
     acSectionSettings: TAction;
     acFileNew: TFileSaveAs;
+    nvNavigation: TQzNavigationView;
+    nvFooter: TQzNavigationView;
     procedure acFileNewAccept(Sender: TObject);
     procedure acFileOpenAccept(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -52,6 +50,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure imBurgerButtonClick(Sender: TObject);
     procedure mbMainPaint(Sender: TObject);
+    procedure nvFooterButtonClicked(Sender: TObject; Index: Integer);
+    procedure nvNavigationButtonClicked(Sender: TObject; Index: Integer);
     procedure svSplitViewClosed(Sender: TObject);
     procedure svSplitViewOpened(Sender: TObject);
     procedure tiTrayIconClick(Sender: TObject);
@@ -181,10 +181,22 @@ begin
   tiTrayIcon.Visible := true;
 end;
 
+procedure TwQollectorMain.nvFooterButtonClicked(Sender: TObject; Index:
+    Integer);
+begin
+  nvNavigation.ItemIndex := -1;
+end;
+
+procedure TwQollectorMain.nvNavigationButtonClicked(Sender: TObject; Index:
+    Integer);
+begin
+  nvFooter.ItemIndex := -1;
+end;
+
 procedure TwQollectorMain.OnDatabaseLoad(AEvent: IDatabaseLoadEvent);
 begin
   acSectionNotes.Execute;
-  sbNotes.Down := true;
+  nvNavigation.ItemIndex := 1;
 end;
 
 procedure TwQollectorMain.OnThemeChange(AEvent: IThemeChangeEvent);
@@ -249,11 +261,15 @@ end;
 procedure TwQollectorMain.svSplitViewClosed(Sender: TObject);
 begin
   QollectorSettings.DrawerOpened := false;
+  nvNavigation.ButtonOptions := nvNavigation.ButtonOptions - [nboShowCaptions];
+  nvFooter.ButtonOptions := nvFooter.ButtonOptions - [nboShowCaptions];
 end;
 
 procedure TwQollectorMain.svSplitViewOpened(Sender: TObject);
 begin
   QollectorSettings.DrawerOpened := true;
+  nvNavigation.ButtonOptions := nvNavigation.ButtonOptions + [nboShowCaptions];
+  nvFooter.ButtonOptions := nvFooter.ButtonOptions + [nboShowCaptions];
 end;
 
 procedure TwQollectorMain.tiTrayIconClick(Sender: TObject);

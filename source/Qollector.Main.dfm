@@ -72,7 +72,7 @@ object wQollectorMain: TwQollectorMain
     Width = 170
     Height = 434
     CloseStyle = svcCompact
-    CompactWidth = 42
+    CompactWidth = 60
     OpenedWidth = 170
     Placement = svpLeft
     TabOrder = 1
@@ -87,7 +87,7 @@ object wQollectorMain: TwQollectorMain
       BevelOuter = bvNone
       TabOrder = 0
       object imBurgerButton: TVirtualImage
-        Left = 6
+        Left = 16
         Top = 6
         Width = 32
         Height = 32
@@ -98,56 +98,46 @@ object wQollectorMain: TwQollectorMain
         OnClick = imBurgerButtonClick
       end
     end
-    object pnNavigation: TPanel
+    object nvNavigation: TQzNavigationView
       Left = 0
       Top = 45
       Width = 170
-      Height = 389
+      Height = 340
       Align = alClient
-      BevelOuter = bvNone
+      BorderStyle = bsNone
+      ButtonHeight = 48
+      ButtonOptions = [nboAllowReorder, nboGroupStyle, nboShowCaptions]
+      Images = vilLargeIcons
+      Items = <
+        item
+          Action = acSectionWelcome
+          AllowReorder = False
+        end
+        item
+          Action = acSectionNotes
+        end>
+      ItemIndex = 0
       TabOrder = 1
-      object sbStart: TSpeedButton
-        Left = 0
-        Top = 0
-        Width = 170
-        Height = 38
-        Action = acSectionWelcome
-        Align = alTop
-        GroupIndex = 1
-        Images = vilLargeIcons
-        Flat = True
-        Margin = 6
-        ExplicitTop = -6
-        ExplicitWidth = 200
-      end
-      object sbNotes: TSpeedButton
-        Left = 0
-        Top = 38
-        Width = 170
-        Height = 38
-        Action = acSectionNotes
-        Align = alTop
-        GroupIndex = 1
-        Images = vilLargeIcons
-        Flat = True
-        Margin = 6
-        ExplicitTop = 4
-        ExplicitWidth = 200
-      end
-      object sbSettings: TSpeedButton
-        Left = 0
-        Top = 351
-        Width = 170
-        Height = 38
-        Action = acSectionSettings
-        Align = alBottom
-        GroupIndex = 1
-        Images = vilLargeIcons
-        Flat = True
-        Margin = 6
-        ExplicitTop = 4
-        ExplicitWidth = 200
-      end
+      OnButtonClicked = nvNavigationButtonClicked
+      ExplicitHeight = 289
+    end
+    object nvFooter: TQzNavigationView
+      Left = 0
+      Top = 385
+      Width = 170
+      Height = 49
+      Align = alBottom
+      BorderStyle = bsNone
+      ButtonHeight = 48
+      ButtonOptions = [nboGroupStyle, nboShowCaptions]
+      Images = vilLargeIcons
+      Items = <
+        item
+          Action = acSectionSettings
+        end>
+      TabOrder = 2
+      OnButtonClicked = nvFooterButtonClicked
+      ExplicitTop = 334
     end
   end
   object amActions: TActionManager
